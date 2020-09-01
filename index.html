@@ -268,7 +268,7 @@
       function GetSteamProfile (steam64){
 
         var xmlhttp = new XMLHttpRequest();
-        var url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8DDDBE9C6A344ECDA9EC11B6BA6C38DD&steamids=" + steam64;
+        var url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8DDDBE9C6A344ECDA9EC11B6BA6C38DD&steamids=" + steam64;
         
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
