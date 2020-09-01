@@ -1,0 +1,33 @@
+body{
+    color: white;
+    background-color: #121212;
+}
+
+table{
+    background-color: #1e1e1e !important;
+    table-layout: fixed;
+}
+
+thead{
+    background-color: #272727;
+}
+
+.table-top{
+    height: 54px;
+    background-color: #232323;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: 400;
+}
+
+.form-control:focus{
+    color: white;
+}
+
+.steamid-input::placeholder {
+    opacity: 0.4 !important;
+}
+
+.countryFlag{
+    margin-left: 20px;
+}

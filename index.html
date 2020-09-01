@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>KZ Profile</title>
+  <!-- Icon -->
+  <link rel="icon" href="img/Logo.ico" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="css/addons/datatables.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Start -->  
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
+      <div class="container">
+
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Profile
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Maps</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Servers</a>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Extras</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Forum</a>
+                <a class="dropdown-item" href="#">Distbug Calculator</a>
+                <a class="dropdown-item" href="#">Youtube</a>
+              </div>
+            </li>
+
+          </ul>
+          <!-- Links -->
+
+          <form id="steamid" class="form-inline">
+            <div class="md-form my-0">
+              <input id="steamid-input" class="form-control mr-sm-2 steamid-input" type="text" placeholder="Steam ID" aria-label="Steam ID">
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="rememberSteamID">
+              <label class="custom-control-label" for="rememberSteamID">Remember</label>
+          </div>
+          </form>
+
+      </div>
+    </nav>
+    <!--/.Navbar-->
+
+    <div class="container">
+      <!--Profile Portfolio-->
+      <div class="row" style="margin-top: 20px;">
+        
+        <!--Profile Picture-->
+        <div id="playerAvatar" class="col-2 d-flex align-items-center">
+          
+        </div>
+
+        <!--Profile Data-->
+        <div class="col-8" style="padding-left: 50px;">
+          <h1 id="playerName" style="font-size: 80px;">
+            
+          </h1>
+          <h1 id="playerPoints" style="color: #bcbcbc;">
+          
+          </h1>
+          <h1 id="playerRank" style="color: #cf4479;font-weight: 400;">
+            
+          </h1>
+        </div>
+      </div>
+      <!--/.Profile Portfolio-->
+
+      <div class="row z-depth-1-half" style="margin-top: 30px;">
+        <div class="col">
+          <div class="row table-top">
+            <div class="col">
+              
+            </div>
+            <div class="col d-flex align-items-center justify-content-center">
+              Finished Maps
+            </div>
+            <div class="col d-flex flex-row-reverse align-items-center">
+              <!-- Search form -->
+              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off">
+                <input id="finishedMapsSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <table id="FinishedMaps" class="table table-borderless table-hover table-dark text-truncate text-center" width="100%">
+              <thead class="z-depth-1">
+                <tr>
+                  <th class="text-center">Map</th>
+                  <th>Points</th>
+                  <th>Time</th>
+                  <th>Tier</th>
+                  <th>Date</th>
+                  <th class="text-center">Server</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>  
+    
+  <!-- End -->
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Datatables and Fixed Table Header  -->
+  <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      //Datatable Initialization
+      var t = $('#FinishedMaps').DataTable({        
+                  "iDisplayLength": 1000,
+                  "order": [[ 1, "desc" ]],
+                  "columnDefs": [
+                    { "width": "17%", "targets": [0,1,2,3,4,5] }, //para que todos los datos tengan el mismo ancho
+                    { "targets": [0,5] , className: "text-left"} //les doy un nombre de css a estar columnas para ponerlas sobre la izquierda
+                  ],
+                  'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
+                    if (data[1]==1000){
+                      $(row).find('td:eq(1)').css('color', '#e4ae39');
+                    } else if(data[1] >= 900){
+                      $(row).find('td:eq(1)').css('color', '#ff0000');
+                    } else if (data[1] >= 800) {
+                      $(row).find('td:eq(1)').css('color', '#3ffc3f');
+                    } else if (data[1] >= 700) {
+                      $(row).find('td:eq(1)').css('color', '#5d96d6');
+                    }
+                  },
+                  "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+      
+      //Get steam id
+      if (localStorage.getItem('steamid')!=null){     //si hay id guardada
+        var steamid = localStorage.getItem('steamid');//conseguir la id
+        $("#steamid-input").val(steamid);             //rellenar el input con la id (visual)
+        $("#rememberSteamID").prop('checked', true);  //poner como checked la checkbox (visual)
+        GetPlayerData(steamid);                       //comenzar
+      }
+
+      //si no hay id guardada, entonces esperamos a que manden una
+      $( "#steamid" ).submit(function( event ) {    //si apretan enter en el input de steamid
+        var steamid = $("#steamid-input").val();    //tomamos el steamid que pusieron en el input
+        if ($("#rememberSteamID").is(":checked")){  //si quieren que el steamid se guarde:
+          localStorage.setItem('steamid', steamid)  //guardamos el steamid en su pc
+          GetPlayerData(steamid);                   //comenzamos
+        } else {                                    //pero si no quieren guardar el steamid:
+          GetPlayerData(steamid);                   //solo comenzamos
+        }
+        return false;                               //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
+      });
+      
+      //Getting the data from the API
+      function GetPlayerData(playerSteamID){
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://kztimerglobal.com/api/v1.0/records/top?steam_id=" + playerSteamID + "&tickrate=128&modes_list_string=kz_timer&has_teleports=true&limit=1000";
+        
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myArr = JSON.parse(this.responseText);
+                ShowPlayerData(myArr);
+                var steam64 = this.responseText.substring(27,44); //tengo que hacer un substring porque js no puede trabajar con ints de 64bits
+                GetSteamProfile(steam64);
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+      }
+
+      //proceso todo ahora para mostrar la información relevante (stats) sin tener que esperar a la info visual de steam (avatar, flag, url, etc)
+      function ShowPlayerData(arr){
+
+        t.clear(); //Primero que nada borramos la tabla
+
+        var player_points = 0;
+        var player_wrs = 0;
+        var player_900s = 0;
+        var player_800s = 0;
+
+        for (i in arr) {
+          
+          //Transform time
+          var map_time = new Date(arr[i].time * 1000).toISOString().substr(11, 11);
+
+          //Add points to wrs,900s, 800s and total
+          if (arr[i].points==1000){
+            player_wrs++;
+            player_points += arr[i].points;
+          } else if (arr[i].points>=900) {
+            player_900s++;
+            player_points += arr[i].points;
+          } else if (arr[i].points>=800) {
+            player_800s++;
+            player_points += arr[i].points;
+          } else {
+            player_points += arr[i].points;
+          }
+
+          t.row.add( [
+            arr[i].map_name,
+            arr[i].points, //les cambio el color en rowcallback cuando inicializo la database
+            map_time,
+            "X",
+            arr[i].updated_on.substr(0,10),
+            arr[i].server_name
+          ] );
+        }
+        
+        //Name
+        $("#playerName").html(arr[0].player_name);
+
+        //Points
+        $("#playerPoints").html(player_points.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + " (" + (player_points/arr.length).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ")");
+        
+        //Rank
+        $("#playerRank").html("RANK");
+        t.draw();
+      }
+
+      //sinconizar la search box con la tabla
+      $('#finishedMapsSearch').keyup(function(){
+        t.search($(this).val()).draw();
+      });
+
+      //Ahora si empezamos a pedir la info del perfil
+      function GetSteamProfile (steam64){
+
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8DDDBE9C6A344ECDA9EC11B6BA6C38DD&steamids=" + steam64;
+        
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myArr = JSON.parse(this.responseText);
+                ShowSteamProfile(myArr);
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+      }
+
+      function ShowSteamProfile(arr){
+
+        //Avatar
+        $("#playerAvatar").html("<img src=" + arr.response.players[0].avatarfull + "></img>");
+
+        var countryFlag = "";
+        if (arr.response.players[0].loccountrycode!=null){  //algunos jugadores no configuran u ocultan su pais
+          countryFlag = '<img class="countryFlag" title=' + arr.response.players[0].loccountrycode + ' src="https://www.countryflags.io/' + arr.response.players[0].loccountrycode + '/flat/64.png">'
+        }
+        $("#playerName").append(countryFlag);
+      }
+    });
+  </script>
+
+</body>
+</html>
