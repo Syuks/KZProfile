@@ -351,7 +351,7 @@
                 if (myArr.length > 0){
                   ShowPlayerData(myArr, new_id);
                   if (new_id){
-                    var steam64 = this.responseText.substring(27,44); //tengo que hacer un substring porque js no puede trabajar con ints de 64bits
+                    var steam64 = this.responseText.substring( this.responseText.indexOf('steamid64":'), this.responseText.indexOf(',"player_name"')); //tengo que hacer un substring porque js no puede trabajar con ints de 64bits
                     GetSteamProfile(steam64);
                   }
                 } else {  //si vino vacia es porque no hay datos sobre ese jugador
@@ -405,6 +405,7 @@
         if(new_id){
           //Name
           $("#playerName").html(arr[0].player_name);
+          document.title = arr[0].player_name;
         }
 
         //Points
