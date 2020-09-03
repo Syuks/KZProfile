@@ -343,7 +343,7 @@
         }
 
         var xmlhttp = new XMLHttpRequest();
-        var url = "https://kztimerglobal.com/api/v1.0/records/top?steam_id=" + playerSteamID + "&tickrate=128&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=1000";
+        var url = "https://kztimerglobal.com/api/v1.0/records/top?steam_id=" + playerSteamID + "&tickrate=128&stage=0&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=1000";
         
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {

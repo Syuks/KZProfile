@@ -295,7 +295,7 @@
         }
 
         var xmlhttp = new XMLHttpRequest();
-        var url = "https://kztimerglobal.com/api/v1.0/records/top?map_name=" + mapName + "&tickrate=128&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=100";
+        var url = "https://kztimerglobal.com/api/v1.0/records/top?map_name=" + mapName + "&tickrate=128&stage=0&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=100";
         
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
