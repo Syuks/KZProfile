@@ -325,7 +325,8 @@
 
           t.row.add( [
             i,
-          '<a href="' + window.location.protocol + "//" + window.location.host + '/index.html?steamid=' + arr[i].steam_id + '">' + arr[i].player_name + '</a>',
+            //Solo por ahora al estar hosteandolo en github pages, agrego la parte de /KZProfile
+            '<a href="index.html?steamid=' + arr[i].steam_id + '">' + arr[i].player_name + '</a>',
             map_time,
             arr[i].points,
             arr[i].teleports,

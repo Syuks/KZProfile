@@ -391,7 +391,8 @@
           }
 
           t.row.add( [
-            '<a href="' + window.location.protocol + "//" + window.location.host + '/maps.html?map=' + arr[i].map_name + '">' + arr[i].map_name + '</a>',
+            //Solo por ahora al estar hosteandolo en github pages, agrego la parte de /KZProfile
+            '<a href="maps.html?map=' + arr[i].map_name + '">' + arr[i].map_name + '</a>',
             arr[i].points, //les cambio el color en rowcallback cuando inicializo la database
             map_time,
             "X",
