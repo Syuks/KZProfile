@@ -8,16 +8,21 @@ table{
     table-layout: fixed;
 }
 
-thead{
+thead th{
     background-color: #272727;
+    height: 50px;
 }
 
 .table-top{
-    height: 54px;
+    height: 50px;
     background-color: #232323;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     font-weight: 400;
+}
+
+a{
+    color:white;
 }
 
 .form-control:focus{
@@ -28,6 +33,160 @@ thead{
     opacity: 0.4 !important;
 }
 
+.map-input::placeholder {
+    opacity: 0.4 !important;
+}
+
 .countryFlag{
     margin-left: 20px;
+}
+
+.configuration-row{
+    padding-top:30px;
+    font-weight: 500;
+}
+
+.configuration-radio {
+    display: none; 
+}
+
+.configuration-radio:not(:checked) + label {
+    color: grey;
+}
+
+.radio-label{
+    cursor: pointer;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #2E2E2E inset !important;
+    box-shadow: 0 0 0 30px #2E2E2E inset !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+}
+
+.medal800sCount {
+    position: absolute;
+    font-size: 12px;
+    top: 160px;
+    left: 105px;
+    padding: 2px 5px;
+    border-radius: 15%;
+    background: #164f89;
+    color: white;
+    user-select: none;
+}
+
+.medal900sCount {
+    position: absolute;
+    font-size: 12px;
+    top: 105px;
+    left: 105px;
+    padding: 2px 5px;
+    border-radius: 15%;
+    background: #701018;
+    color: white;
+    user-select: none;
+}
+
+.medalWRsCount {
+    position: absolute;
+    font-size: 12px;
+    top: 14px;
+    left: 105px;
+    padding: 2px 5px;
+    border-radius: 15%;
+    background: #936e00;
+    color: white;
+    user-select: none;
+}
+
+/*RANK COLORS*/
+
+.GOD{
+    color: #e3ad39;
+}
+.DEMIGOD{
+    color: #ecc166;
+}
+.PRO\+{
+    color: #fe0000;
+}
+.PRO{
+    color: #ff2929;
+}
+.SEMIPRO\+{
+    color: #f9690e;
+}
+.SEMIPRO{
+    color: #f27935;
+}
+.EXPERT\+{
+    color: #d22ce5;
+}
+.EXPERT{
+    color: #da5ee8;
+}
+.SKILLED\+{
+    color: #3254fc;
+}
+.SKILLED{
+    color: #5975ff;
+}
+.REGULAR\+{
+    color: #5e97d8;
+}
+.REGULAR{
+    color: #658cb9;
+}
+.CASUAL\+{
+    color: #67809f;
+}
+.CASUAL{
+    color: #6c7a89;
+}
+.TRAINEE\+{
+    color: #919ca8;
+}
+.TRAINEE{
+    color: #bdc3c7;
+}
+.SCRUB\+{
+    color: #dadfe1;
+}
+.SCRUB{
+    color: #eeeeee;
+}
+.NEWBIE\+{
+    color: #ffffff;
+}
+.NEWBIE{
+    color: #ffffff;
+}
+
+/*TIER COLORS*/
+
+.DEATH{
+    color: #d22ce5;
+}
+.EXTREME{
+    color: #fe0000;
+}
+.VERY\ HARD{
+    color: #fe4040;
+}
+.HARD{
+    color: #e4ae39;
+}
+.MEDIUM{
+    color: #ece37a;
+}
+.EASY{
+    color: #a1fe47;
+}
+.VERY\ EASY{
+    color: #40fe40;
 }

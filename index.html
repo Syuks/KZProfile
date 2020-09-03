@@ -6,7 +6,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>KZ Profile</title>
   <!-- Icon -->
-  <link rel="icon" href="img/Logo.ico" type="image/x-icon">
+  <link rel="icon" href="img/Logo.png" type="image/x-icon">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Google Fonts Roboto -->
@@ -30,19 +30,13 @@
 
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
-            </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">Profile
+              <a class="nav-link" href="index.html">Profile
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Maps</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Servers</a>
+              <a class="nav-link" href="maps.html">Maps</a>
             </li>
 
             <!-- Dropdown -->
@@ -50,9 +44,9 @@
               <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Extras</a>
               <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Forum</a>
-                <a class="dropdown-item" href="#">Distbug Calculator</a>
-                <a class="dropdown-item" href="#">Youtube</a>
+                <a class="dropdown-item" href="https://forum.gokz.org/" target="_blank">Forum</a>
+                <a class="dropdown-item" href="https://syuks.github.io/DistbugCalculator/" target="_blank">Distbug Calculator</a>
+                <a class="dropdown-item" href="https://www.youtube.com/c/Syuks" target="_blank">Tutorials</a>
               </div>
             </li>
 
@@ -74,17 +68,72 @@
     <!--/.Navbar-->
 
     <div class="container">
+
+      <!--Mode Chooser-->
+      <div class="row configuration-row">
+        <div class="col text-right" style="border-right: 2px solid white;">
+          <!-- KZTimer -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio"  id="kztimerRadio" value="kz_timer" name="game_mode" checked>
+            <label class="radio-label" for="kztimerRadio">KZ Timer</label>
+          </div>
+
+          <!-- SimpleKZ -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio" id="simplekzRadio" value="kz_simple" name="game_mode">
+            <label class="radio-label" for="simplekzRadio">Simple KZ</label>
+          </div>
+
+          <!-- Vanilla -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio" id="vanillaRadio" value="kz_vanilla" name="game_mode">
+            <label class="radio-label" for="vanillaRadio">Vanilla</label>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- PRO -->
+          <div class="custom-control-inline" style="margin-left:16px">
+            <input class="configuration-radio" type="radio" id="proRunsRadio" value="false" name="run_type" checked>
+            <label class="radio-label" for="proRunsRadio">Pro</label>
+          </div>
+
+          <!-- TP -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio" id="tpRunsRadio" value="true" name="run_type">
+            <label class="radio-label" for="tpRunsRadio">Tp</label>
+          </div>
+
+
+
+        </div>
+      </div>
+      <!--Mode Chooser-->
+
       <!--Profile Portfolio-->
       <div class="row" style="margin-top: 20px;">
         
         <!--Profile Picture-->
-        <div id="playerAvatar" class="col-2 d-flex align-items-center">
+        <div id="playerAvatar" class="col-2 d-flex align-items-center" style="padding-left:5px;">
           
         </div>
 
+        <!--Profile Medals-->
+        <div class="col-2 text-center" style="padding-left:15px">
+          <h1 id="WRs_medals" style="margin-top:8px;margin-bottom:0px;">
+            
+          </h1>
+          <h1 id="900s_medals" style="margin-top:14px;margin-bottom:2px;">
+            
+          </h1>
+          <h1 id="800s_medals" style="margin-bottom:0px">
+            
+          </h1>
+        </div>
+
         <!--Profile Data-->
-        <div class="col-8" style="padding-left: 50px;">
-          <h1 id="playerName" style="font-size: 80px;">
+        <div class="col-8" style="padding-left: 0px;">
+          <h1 id="playerName" class="text-nowrap" style="font-size: 80px;">
             
           </h1>
           <h1 id="playerPoints" style="color: #bcbcbc;">
@@ -115,7 +164,7 @@
             </div>
           </div>
           <div class="row">
-            <table id="FinishedMaps" class="table table-borderless table-hover table-dark text-truncate text-center" width="100%">
+            <table id="FinishedMaps" class="table-sm table-borderless table-hover table-dark text-truncate text-center" width="100%">
               <thead class="z-depth-1">
                 <tr>
                   <th class="text-center">Map</th>
@@ -147,7 +196,32 @@
   <!-- Custom scripts -->
   <script type="text/javascript">
 
+    var RANKING = {
+        19: "GOD",
+        18: "DEMIGOD",
+        17: "PRO+",
+        16: "PRO",
+        15: "SEMIPRO+",
+        14: "SEMIPRO",
+        13: "EXPERT+",
+        12: "EXPERT",
+        11: "SKILLED+",
+        10: "SKILLED",
+        9: "REGULAR+",
+        8: "REGULAR",
+        7: "CASUAL+",
+        6: "CASUAL",
+        5: "TRAINEE+",
+        4: "TRAINEE",
+        3: "SCRUB+",
+        2: "SCRUB",
+        1: "NEWBIE+",
+        0: "NEWBIE",
+    }
+
     $(document).ready(function () {
+
+      var currentSteamID;
 
       //Datatable Initialization
       var t = $('#FinishedMaps').DataTable({        
@@ -161,48 +235,128 @@
                     if (data[1]==1000){
                       $(row).find('td:eq(1)').css('color', '#e4ae39');
                     } else if(data[1] >= 900){
-                      $(row).find('td:eq(1)').css('color', '#ff0000');
+                      $(row).find('td:eq(1)').css('color', '#fa292e');
                     } else if (data[1] >= 800) {
-                      $(row).find('td:eq(1)').css('color', '#3ffc3f');
-                    } else if (data[1] >= 700) {
                       $(row).find('td:eq(1)').css('color', '#5d96d6');
+                    } else if (data[1] >= 700) {
+                      $(row).find('td:eq(1)').css('color', '#4abc8d');
                     }
                   },
                   "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
                 });
       $('.dataTables_length').addClass('bs-select');
       
-      //Get steam id
-      if (localStorage.getItem('steamid')!=null){     //si hay id guardada
-        var steamid = localStorage.getItem('steamid');//conseguir la id
-        $("#steamid-input").val(steamid);             //rellenar el input con la id (visual)
-        $("#rememberSteamID").prop('checked', true);  //poner como checked la checkbox (visual)
-        GetPlayerData(steamid);                       //comenzar
+      //Get preferred Game Mode
+      if (localStorage.getItem('game_mode')!=null){
+        $("input[type='radio'][name=game_mode][value=" + localStorage.getItem('game_mode') + "]").prop('checked', true);
       }
 
-      //si no hay id guardada, entonces esperamos a que manden una
-      $( "#steamid" ).submit(function( event ) {    //si apretan enter en el input de steamid
-        var steamid = $("#steamid-input").val();    //tomamos el steamid que pusieron en el input
-        if ($("#rememberSteamID").is(":checked")){  //si quieren que el steamid se guarde:
-          localStorage.setItem('steamid', steamid)  //guardamos el steamid en su pc
-          GetPlayerData(steamid);                   //comenzamos
-        } else {                                    //pero si no quieren guardar el steamid:
-          GetPlayerData(steamid);                   //solo comenzamos
+      //Get preferred Run Type
+      if (localStorage.getItem('run_type')!=null){
+        $("input[type='radio'][name=run_type][value=" + localStorage.getItem('run_type') + "]").prop('checked', true);
+      }
+
+      //First of all see if there is a steamid parameter in url. If there is one, load data from that id, if there isn't load saved id
+      var steamIDParameter = new URLSearchParams(window.location.search).get("steamid");
+      if (steamIDParameter!=null && steamIDParameter!="" ){
+        currentSteamID = steamIDParameter;
+        $("#steamid-input").val(currentSteamID); //visual
+        $("#rememberSteamID").prop('checked', false); //visual
+        GetPlayerData(true, currentSteamID, $("input[type='radio'][name='game_mode']:checked").val(), $("input[type='radio'][name='run_type']:checked").val());
+      } else {
+        //If there is no steamid on the url, get stored id if there is one
+        if (localStorage.getItem('steamid')!=null){            //si hay id guardada
+          currentSteamID = localStorage.getItem('steamid');//conseguir la id
+          $("#steamid-input").val(currentSteamID);             //rellenar el input con la id (visual)
+          $("#rememberSteamID").prop('checked', true);         //poner como checked la checkbox (visual)
+          GetPlayerData(true, currentSteamID, $("input[type='radio'][name='game_mode']:checked").val(), $("input[type='radio'][name='run_type']:checked").val());
         }
-        return false;                               //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
+      }
+
+      //If a Enter is pressed on the steamid input, submitting a new id
+      $( "#steamid" ).submit(function( event ) {
+        ProcessFetchingOptions();
+        return false;         //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
+      });
+
+      //If the radio group state is changed (Game Type)
+      $("input[name='game_mode']").click(function() {
+        ProcessFetchingOptions();
+      });
+
+      //If the radio group state is changed (Run Type)
+      $("input[name='run_type']").click(function() {
+        ProcessFetchingOptions();
       });
       
+      //If the remember checkmark is pressed, then save the id if it is now checked
+      $("input[id='rememberSteamID']").click(function() {
+        if ($("#rememberSteamID").is(":checked")){
+          if (isValidSteamID($("#steamid-input").val())){
+            localStorage.setItem('steamid', $("#steamid-input").val());
+          } else{
+            alert("Please, use a valid SteamID");
+          }
+        }
+      });
+      
+      //Todos los chequeos para saber la id, el game mode y la run type
+      function ProcessFetchingOptions () {
+        if (isValidSteamID($("#steamid-input").val())){ //antes que nada fijarnos si es una steam id lo que pusieron
+          var steamidInput = $("#steamid-input").val();
+          var game_mode_radio = $("input[type='radio'][name='game_mode']:checked").val();
+          var run_type_radio = $("input[type='radio'][name='run_type']:checked").val();
+
+          localStorage.setItem('game_mode', game_mode_radio);
+          localStorage.setItem('run_type', run_type_radio);
+
+          if (currentSteamID!= steamidInput){  //detecting if a new steamid is written in the text input is important for player details refreshing (so we don't have to refresh every time)
+            currentSteamID = steamidInput;
+            if ($("#rememberSteamID").is(":checked")){
+              localStorage.setItem('steamid', currentSteamID);
+            }
+            GetPlayerData(true, currentSteamID, game_mode_radio, run_type_radio);
+          } else {
+            GetPlayerData(false, currentSteamID, game_mode_radio, run_type_radio);
+          }
+        } else {
+          alert("Please, use a valid SteamID");
+        }
+      }
+
       //Getting the data from the API
-      function GetPlayerData(playerSteamID){
+      function GetPlayerData(new_id, playerSteamID, game_mode, run_type){
+
+        //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        t.clear();
+        t.draw();
+
+        //Refresh name flag and avatar only if we are fetching a new player (different steamid is detected inside text input)
+        if (new_id){
+          $("#playerName").html("");
+          $("#playerAvatar").html("");
+          $("#playerPoints").html("");
+          $("#playerRank").html("");
+          $("#WRs_medals").html("");
+          $("#900s_medals").html("");
+          $("#800s_medals").html("");
+        }
+
         var xmlhttp = new XMLHttpRequest();
-        var url = "https://kztimerglobal.com/api/v1.0/records/top?steam_id=" + playerSteamID + "&tickrate=128&modes_list_string=kz_timer&has_teleports=true&limit=1000";
+        var url = "https://kztimerglobal.com/api/v1.0/records/top?steam_id=" + playerSteamID + "&tickrate=128&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=1000";
         
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myArr = JSON.parse(this.responseText);
-                ShowPlayerData(myArr);
-                var steam64 = this.responseText.substring(27,44); //tengo que hacer un substring porque js no puede trabajar con ints de 64bits
-                GetSteamProfile(steam64);
+                if (myArr.length > 0){
+                  ShowPlayerData(myArr, new_id);
+                  if (new_id){
+                    var steam64 = this.responseText.substring(27,44); //tengo que hacer un substring porque js no puede trabajar con ints de 64bits
+                    GetSteamProfile(steam64);
+                  }
+                } else {  //si vino vacia es porque no hay datos sobre ese jugador
+                  alert("No data was found for that player.");
+                }
             }
         };
         xmlhttp.open("GET", url, true);
@@ -210,9 +364,7 @@
       }
 
       //proceso todo ahora para mostrar la información relevante (stats) sin tener que esperar a la info visual de steam (avatar, flag, url, etc)
-      function ShowPlayerData(arr){
-
-        t.clear(); //Primero que nada borramos la tabla
+      function ShowPlayerData(arr, new_id){
 
         var player_points = 0;
         var player_wrs = 0;
@@ -239,7 +391,7 @@
           }
 
           t.row.add( [
-            arr[i].map_name,
+            '<a href="' + window.location.protocol + "//" + window.location.host + '/maps.html?map=' + arr[i].map_name + '">' + arr[i].map_name + '</a>',
             arr[i].points, //les cambio el color en rowcallback cuando inicializo la database
             map_time,
             "X",
@@ -248,14 +400,42 @@
           ] );
         }
         
-        //Name
-        $("#playerName").html(arr[0].player_name);
+        //Los puntos y rankings lo calculo siempre que cambio algo, pero el nombre no lo cambio si sigue siendo la misma id, para que la flag siga estando
+        if(new_id){
+          //Name
+          $("#playerName").html(arr[0].player_name);
+        }
 
         //Points
         $("#playerPoints").html(player_points.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + " (" + (player_points/arr.length).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ")");
         
         //Rank
-        $("#playerRank").html("RANK");
+        //The rank is bassically dependant on avg points, but if you have less than 50k points, your rank will be decreased by an ease cubic function
+        var promedio = player_points/50000;
+        var easeOutCubic = (1 - (Math.pow(1 - promedio, 3)));
+        if (easeOutCubic > 1) {
+          easeOutCubic = 1;
+        }
+        ranking_placement = Math.floor(((player_points/arr.length) * easeOutCubic) * 0.02);
+        $("#playerRank").html('<span class="' + RANKING[ranking_placement] + '">' + RANKING[ranking_placement] + '</span>');
+
+        //Medals
+        if (player_wrs>0){
+          $("#WRs_medals").html('<img src="img/WRs.png" title="WRs" alt="WRs" width="80" height="80"> <span class="medalWRsCount">' + player_wrs + '</span>');
+        } else {
+          $("#WRs_medals").html('<img src="img/WRs-empty.png" title="WRs" alt="WRs" width="80" height="80">');
+        }
+        if (player_900s>0){
+          $("#900s_medals").html('<img src="img/900s.png" title="900s" alt="900s" width="48" height="48"> <span class="medal900sCount">' + player_900s + '</span>');
+        } else {
+          $("#900s_medals").html('<img src="img/900s-empty.png" title="900s" alt="900s" width="48" height="48">');
+        }
+        if (player_800s>0){
+          $("#800s_medals").html('<img src="img/800s.png" title="800s" alt="800s" width="48" height="48"> <span class="medal800sCount">' + player_800s + '</span>');
+        } else {
+          $("#800s_medals").html('<img src="img/800s-empty.png" title="800s" alt="800s" width="48" height="48">');
+        }
+
         t.draw();
       }
 
@@ -290,6 +470,10 @@
           countryFlag = '<img class="countryFlag" title=' + arr.response.players[0].loccountrycode + ' src="https://www.countryflags.io/' + arr.response.players[0].loccountrycode + '/flat/64.png">'
         }
         $("#playerName").append(countryFlag);
+      }
+
+      function isValidSteamID(steamID) {
+        return /^STEAM_[0-5]:[01]:\d+$/.test(steamID);
       }
     });
   </script>
