@@ -31,7 +31,7 @@
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Profile
+              <a class="nav-link" href="/">Profile
               </a>
             </li>
             <li class="nav-item active">
@@ -325,8 +325,7 @@
 
           t.row.add( [
             i,
-            //Solo por ahora al estar hosteandolo en github pages, agrego la parte de /KZProfile
-            '<a href="index.html?steamid=' + arr[i].steam_id + '">' + arr[i].player_name + '</a>',
+            '<a href="/?steamid=' + arr[i].steam_id + '">' + arr[i].player_name + '</a>',
             map_time,
             arr[i].points,
             arr[i].teleports,

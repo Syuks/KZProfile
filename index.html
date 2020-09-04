@@ -31,7 +31,7 @@
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="index.html">Profile
+              <a class="nav-link" href="/">Profile
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -351,7 +351,8 @@
                 if (myArr.length > 0){
                   ShowPlayerData(myArr, new_id);
                   if (new_id){
-                    var steam64 = this.responseText.substring( this.responseText.indexOf('steamid64":') + 11, this.responseText.indexOf(',"player_name"')); //tengo que hacer un substring porque js no puede trabajar con ints de 64bits
+                    //tengo que hacer un substring porque js no puede trabajar con ints de 64bits (el +11 es para desfazar el index el largo de "steamid64")
+                    var steam64 = this.responseText.substring( this.responseText.indexOf('steamid64":') + 11, this.responseText.indexOf(',"player_name"'));
                     GetSteamProfile(steam64);
                   }
                 } else {  //si vino vacia es porque no hay datos sobre ese jugador
@@ -391,7 +392,6 @@
           }
 
           t.row.add( [
-            //Solo por ahora al estar hosteandolo en github pages, agrego la parte de /KZProfile
             '<a href="maps.html?map=' + arr[i].map_name + '">' + arr[i].map_name + '</a>',
             arr[i].points, //les cambio el color en rowcallback cuando inicializo la database
             map_time,
