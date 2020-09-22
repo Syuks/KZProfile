@@ -313,7 +313,7 @@
         }
 
         //RECENT WR DATA
-        recentWRRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/recent?tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&place_top_at_least=1&limit=100", dataType: 'json', success: function(result){
+        recentWRRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/recent?tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&place_top_at_least=1&limit=200", dataType: 'json', success: function(result){
           
           currentWRRecentData = result;
 
