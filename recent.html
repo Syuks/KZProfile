@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>KZ Profile</title>
+  <!-- Icon -->
+  <link rel="icon" href="img/Logo.png" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="css/addons/datatables.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Start -->  
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="maps.html">Maps</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="recent.html">Recent
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Extras</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="https://forum.gokz.org/" target="_blank">Forum</a>
+                <a class="dropdown-item" href="https://syuks.github.io/DistbugCalculator/" target="_blank">Distbug Calculator</a>
+                <a class="dropdown-item" href="https://www.youtube.com/c/Syuks" target="_blank">Tutorials</a>
+              </div>
+            </li>
+
+          </ul>
+          <!-- Links -->
+
+          <form id="steamid" class="form-inline">
+            <div class="md-form my-0">
+              <input id="steamid-input" class="form-control mr-sm-2 steamid-input" type="text" placeholder="Steam ID" aria-label="Steam ID">
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="rememberSteamID">
+              <label class="custom-control-label" for="rememberSteamID">Remember</label>
+          </div>
+          </form>
+        </div>
+
+      </div>
+    </nav>
+    <!--/.Navbar-->
+
+    <div class="container">
+
+      <!--Mode Chooser-->
+      <div class="row configuration-row">
+        <div class="col text-center">
+          <!-- KZTimer -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio"  id="kztimerRadio" value="kz_timer" name="game_mode" checked>
+            <label class="radio-label" for="kztimerRadio">KZ Timer</label>
+          </div>
+
+          <!-- SimpleKZ -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio" id="simplekzRadio" value="kz_simple" name="game_mode">
+            <label class="radio-label" for="simplekzRadio">Simple KZ</label>
+          </div>
+
+          <!-- Vanilla -->
+          <div class="custom-control-inline">
+            <input class="configuration-radio" type="radio" id="vanillaRadio" value="kz_vanilla" name="game_mode">
+            <label class="radio-label" for="vanillaRadio">Vanilla</label>
+          </div>
+        </div>
+      </div>
+      <!--Mode Chooser-->
+
+      <div class="row">
+
+        <div class="col-lg-6 text-center">
+          
+          <h1 style="font-weight: 400;margin-top: 40px;">PRO Records</h1>
+
+          <div id="pro-records"></div>
+        
+        </div>
+        
+        <div class="col-lg-6 text-center">
+          
+          <h1 style="font-weight: 400;margin-top: 40px;">TP Records</h1>
+
+          <div id="tp-records"></div>
+        
+        </div>
+      </div>
+
+      <div class="row text-center" style="margin-top: 30px;">
+        <div class="col">
+          <a id="loadMoreCards"><i class="fas fa-chevron-down"></i></a>
+        </div>
+      </div>
+
+      <div class="row z-depth-1-half" style="margin-top: 50px;">
+        <div class="col">
+
+          <!-- TABLE HEADER -->
+          <div class="row table-top">
+            <!-- 1. Refresh Button -->
+            <div class="col d-flex align-items-center" id="refreshColumn">
+              <a id="refreshButton">
+                <i class="fas fa-redo-alt"></i>
+              </a>
+            </div>
+            <!-- 2. Table state changer -->
+            <div class="col d-flex align-items-center justify-content-center">
+              <div class="text-center" id="table-state-title" style="width: 150px;">
+                Top 100s
+              </div>
+            </div>
+            <!-- 3. Search form -->
+            <div class="col d-flex flex-row-reverse align-items-center">
+              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
+                <input id="finishedMapsSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </form>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="row">
+            <!-- FINISHED MAPS TABLE -->
+            <div class="table-responsive">
+              <table id="Top100s" class="table-sm table-borderless table-hover table-dark text-center text-nowrap">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th class="text-center th-lg">Top</th>
+                    <th class="th-lg">Player</th>
+                    <th class="th-lg">Map</th>
+                    <th class="th-lg">Time</th>
+                    <th class="th-lg">Date</th>
+                    <th class="th-lg">Server</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+    
+  <!-- End -->
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Datatables  -->
+  <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+
+    var recentWRRequest;
+    var currentWRRecentData;
+
+    var recentTOP100Request;
+    var currentTOP100RecentData;
+    
+    var proSteamid64s;
+    var tpSteamid64s;
+    var proCardsDisplayed = 0;
+    var tpCardsDisplayed = 0;
+
+    //Datatables
+    var t;
+
+    var currentSteamID;
+
+    var timezoneOffset = new Date().getTimezoneOffset();
+
+    //jquery extension for cleaner radio group value retrieving
+    jQuery.fn.extend({
+      groupVal: function() {
+          return $(this).filter(':checked').val();
+      }
+    });
+
+    $(document).ready(function () {
+
+      //Local Storage
+      var storedSteamID = localStorage.getItem('steamid');
+      var storedGameMode = localStorage.getItem('game_mode');
+
+      //UI Elements
+      var steamidInput = $("#steamid-input");
+      var steamidRemember = $("#rememberSteamID");
+      var gameModeSelector = $("input[type='radio'][name='game_mode']");
+      
+      //Finished Maps Datatable Initialization
+      t = $('#Top100s').DataTable({
+                  "iDisplayLength": 100,
+                  "aaSorting": [],  //disables initial sorting
+                  "columnDefs": [
+                    { "targets": 5 , className: "text-left"}, //para que los servers se justifiquen en la izquierda
+                    { "orderable": false, "targets": [0,1,2,3,4,5] }
+                  ],
+                  'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
+                    if(data[1].includes(localStorage.getItem('steamid'))){
+                      $(row).css('background-color', '#2E2E2E');
+                    }
+                  },
+                  "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+
+      //First of all see if there are parameters in url. If there is one, load data from that, if there isn't load saved ones
+      var gameModeParameter = new URLSearchParams(window.location.search).get("mode");
+
+      //Get stored steam id
+      if (storedSteamID!=null){              //si hay id guardada
+        currentSteamID = storedSteamID;      //conseguir la id
+        steamidInput.val(currentSteamID);    //rellenar el input con la id (visual)
+        steamidRemember.prop('checked', true);//poner como checked la checkbox (visual)
+      }
+
+      //GAME MODE PARAMETER
+      if (gameModeParameter == "kz_timer" || gameModeParameter == "kz_simple" || gameModeParameter == "kz_vanilla"){
+        $("input[type='radio'][name=game_mode][value=" + gameModeParameter + "]").prop('checked', true);
+      } else {
+        //If there is no gamemode in the url, get stored gamemode if there is one
+        if (storedGameMode!=null){
+          $("input[type='radio'][name=game_mode][value=" + storedGameMode + "]").prop('checked', true);
+        }
+      }
+
+      GetRecentData();
+
+      //If Enter is pressed on the steamid input
+      $( "#steamid" ).submit(function( event ) {
+        if (isValidSteamID(steamidInput.val()) && steamidRemember.is(":checked")){
+          localStorage.setItem('steamid', fixSteamID(steamidInput.val()));
+        } else{
+          alert("Please, use a valid SteamID");
+        }
+        return false; //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
+      });
+
+      //If the remember checkmark is pressed, then save the id if it is now checked
+      steamidRemember.click(function() {
+        if (steamidRemember.is(":checked")){
+          if (isValidSteamID(steamidInput.val())){
+            localStorage.setItem('steamid', fixSteamID(steamidInput.val()));
+          } else{
+            alert("Please, use a valid SteamID");
+          }
+        }
+      });
+
+      //If the radio group state is changed (Game Type)
+      $("input[name='game_mode']").click(function() {
+        GetRecentData();
+      });
+
+      //Getting the data from the API
+      function GetRecentData(){
+
+        history.replaceState({mapParams: "1"}, "", "recent.html?mode=" + gameModeSelector.groupVal());
+
+        //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        $("#pro-records").html("");
+        $("#tp-records").html("");
+        proSteamid64s = [];
+        tpSteamid64s = [];
+        proCardsDisplayed = 0;
+        tpCardsDisplayed = 0;
+
+        if (recentWRRequest != null && recentWRRequest.readyState < 4) {
+          recentWRRequest.abort();  //abort ajax request if another one is needed
+        }
+
+        if (recentTOP100Request != null && recentTOP100Request.readyState < 4) {
+          recentTOP100Request.abort();  //abort ajax request if another one is needed
+        }
+
+        //RECENT WR DATA
+        recentWRRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/recent?tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&place_top_at_least=1&limit=100", dataType: 'json', success: function(result){
+          
+          currentWRRecentData = result;
+
+          for (let i = 0; i < currentWRRecentData.length; i++) {
+            if (currentWRRecentData[i].teleports == 0) {
+              proSteamid64s.push({"id": i, "steam64": currentWRRecentData[i].steamid64});
+            } else {
+              tpSteamid64s.push({"id": i, "steam64": currentWRRecentData[i].steamid64});
+            }
+          }
+
+          ShowRecentData();
+
+        }});
+
+        GetTOP100Data();
+
+      }
+
+      //If the down arrow is clicked (Load 5 more wrs)
+      $("#loadMoreCards").click(function() {
+        ShowRecentData();
+      });
+
+      function ShowRecentData(){
+
+        //MUST PUT THE LIMIT IN VARIABLE TO PREVENT INFINITE LOOP
+        let proLimit = proCardsDisplayed +5 < proSteamid64s.length ? proCardsDisplayed +5 : proSteamid64s.length;;
+
+        for (var i = proCardsDisplayed; i < proLimit; i++) {
+
+          let runIndex = proSteamid64s[i].id;
+
+          //Transform time
+          let map_time = new Date(currentWRRecentData[runIndex].time * 1000).toISOString().substr(11, 11);
+
+          //Time passed
+          let d = new Date(currentWRRecentData[runIndex].created_on);
+          let time_passed = Date.parse(d) - (timezoneOffset*60*1000); //parse gives miliseconds
+
+
+          $("#pro-records").append(
+            `<div class="card bg-dark hvr-grow-shadow text-left" style="max-height: 253px;max-width: 450px;margin-top:50px;">
+              
+              <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
+              
+              <div class="card-img-overlay">
+                <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro" class="stretched-link"></a>
+                <div class="row" style="height: 50%;">
+                  <div class="col-9"></div>
+                  <div class="col-3">
+                    <img src="` + GetAchievementSticker(currentWRRecentData[runIndex].map_id) + `">  
+                  </div>
+                </div>
+                <div class="row align-items-end" style="height: 50%;">
+                  <div class="col-3" style="margin-bottom:5px">
+                    <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `" style="z-index: 1;position: relative;">
+                      <img class="img-fluid rounded-circle ` + proSteamid64s[i].steam64 + `" src="img/kz.gif">
+                    </a>
+                  </div>
+                  <div class="col-9" style="padding-left: 0px;">
+                    <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro">` + currentWRRecentData[runIndex].map_name + `</a></div>
+                    <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
+                    <div style="font-size:15px; opacity: 0.6;">` + map_time + ` | ` + humanized_time_span(new Date (time_passed)) + `</div>
+                  </div>
+                </div>
+              </div>
+            </div>`);
+          proCardsDisplayed++;
+        }
+
+        //MUST PUT THE LIMIT IN VARIABLE TO PREVENT INFINITE LOOP
+        let tpLimit = tpCardsDisplayed +5 < tpSteamid64s.length ? tpCardsDisplayed +5 : tpSteamid64s.length;
+
+        for (let i = tpCardsDisplayed; i < tpLimit; i++) {
+
+          let runIndex = tpSteamid64s[i].id;
+
+          //Transform time
+          let map_time = new Date(currentWRRecentData[runIndex].time * 1000).toISOString().substr(11, 11);
+
+          //Time passed
+          let d = new Date(currentWRRecentData[runIndex].created_on);
+          let time_passed = Date.parse(d) - (timezoneOffset*60*1000); //parse gives miliseconds
+
+          $("#tp-records").append(
+            `<div class="card bg-dark hvr-grow-shadow text-left" style="max-height: 253px;max-width: 450px;margin-top:50px;">
+              
+              <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
+              
+              <div class="card-img-overlay">
+                <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=tp" class="stretched-link"></a>
+                <div class="row align-items-end" style="height: 100%;">
+                  <div class="col-3" style="margin-bottom:5px">
+                    <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `" style="z-index: 1;position: relative;">
+                      <img class="img-fluid rounded-circle ` + tpSteamid64s[i].steam64 + `" src="img/kz.gif">
+                    </a>
+                  </div>
+                  <div class="col-9" style="padding-left: 0px;">
+                    <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=tp">` + currentWRRecentData[runIndex].map_name + `</a></div>
+                    <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
+                    <div style="font-size:15px; opacity: 0.6;">` + map_time + ` | ` + humanized_time_span(new Date (time_passed)) + `</div>
+                  </div>
+                </div>
+              </div>
+            </div>`);
+          tpCardsDisplayed++;
+        }
+
+        GetSteamProfiles();
+
+        t.draw();
+      }
+
+      function GetSteamProfiles(){
+        
+        //https://github.com/Rob--W/cors-anywhere
+        let steamQueryString = "https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=023DC037A9187B9DD374365F858B5545&steamids="
+
+        //no es NECESARIO se exacto en esto, con menos 5 ya esta, a pesar de que a veces sean menos las que necestio porque llegue al límite.
+        let proStartLoop = proCardsDisplayed - 5;
+        let tpStartLoop = tpCardsDisplayed - 5;
+
+        for (let i = proStartLoop; i < proCardsDisplayed; i++) {
+          steamQueryString += (proSteamid64s[i].steam64 + ",");
+        }
+        for (let i = tpStartLoop; i < tpCardsDisplayed; i++) {
+          steamQueryString += (tpSteamid64s[i].steam64 + ",");
+        }
+        
+        $.ajax({url: steamQueryString, dataType: 'json', success: function(result){
+          
+          for (let i = 0; i < result.response.players.length; i++) {
+            $("."+result.response.players[i].steamid).attr("src",result.response.players[i].avatarmedium);
+          }
+        }});
+      }
+
+      //What happens when i click the Refresh Button on the table
+      $("#refreshButton").click(function() {
+        GetTOP100Data();
+      });
+
+      function GetTOP100Data() {
+        t.clear();
+        t.draw();
+
+        recentTOP100Request = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/recent?tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&place_top_at_least=100&limit=100", dataType: 'json', success: function(result){
+          //I must get the info as a string insted of an object so i can substring the steam64 out of the data
+          currentTOP100RecentData = result;
+
+          ShowTOP100Data();
+
+        }});
+      }
+
+      function ShowTOP100Data() {
+        for (let i = 0; i < currentTOP100RecentData.length; i++) {
+
+          //Transform time
+          let map_time = new Date(currentTOP100RecentData[i].time * 1000).toISOString().substr(11, 11);
+
+          //Time passed
+          let d = new Date(currentTOP100RecentData[i].created_on);
+          let time_passed = Date.parse(d) - (timezoneOffset*60*1000); //parse gives miliseconds
+
+          t.row.add( [
+            currentTOP100RecentData[i].teleports > 0 ? currentTOP100RecentData[i].place + " (TP)" : '<img src="' + GetAchievementSticker(currentTOP100RecentData[i].map_id) + '">' + currentTOP100RecentData[i].place + ' (PRO)',
+            '<a href="/?steamid=' + currentTOP100RecentData[i].steam_id + '">' + currentTOP100RecentData[i].player_name + '</a>',
+            '<a href="maps.html?map=' + currentTOP100RecentData[i].map_name + '">' + currentTOP100RecentData[i].map_name + '</a>',
+            map_time,
+            humanized_time_span(new Date (time_passed)),
+            currentTOP100RecentData[i].server_name
+          ]);
+        }
+        t.draw();
+      }
+
+      //sinconizar la search box con la tabla
+      $('#finishedMapsSearch').keyup(function(){
+        t.search($(this).val()).draw();
+      });
+
+      function isValidSteamID(steamID) {
+        return /^STEAM_[0-5]:[01]:\d+$/.test(steamID);
+      }
+
+      //CS:GO uses STEAM_1, but a lot of steamid finder websites return STEAM_0, so change it to one when saving to localstorage for better compatibility
+      function fixSteamID(steamID) {
+        return "STEAM_1" + steamID.substring(7);
+      }
+
+      function GetAchievementSticker (map_id) {
+        let imgSource = "";
+        switch (map_id) {
+          case 220 : imgSource = "img/Stickers/80/Combine-Helmet.png"; break;
+          case 247 : imgSource = "img/Stickers/80/Viggo.png"; break;
+          case 303 : imgSource = "img/Stickers/80/Perry.png"; break;
+          case 339 : imgSource = "img/Stickers/80/Combine-Helmet-Holo.png"; break;
+          case 542 : imgSource = "img/Stickers/80/Jack-Holo.png"; break;
+          case 546 : imgSource = "img/Stickers/80/Crown.png"; break;
+          case 557 : imgSource = "img/Stickers/80/Boris.png"; break;
+          case 638 : imgSource = "img/Stickers/80/Max.png"; break;
+          case 641 : imgSource = "img/Stickers/80/Stan.png"; break;
+          case 642 : imgSource = "img/Stickers/80/Stan-Holo.png"; break;
+          case 643 : imgSource = "img/Stickers/80/Boris-Holo.png"; break;
+          case 671 : imgSource = "img/Stickers/80/Jack.png"; break;
+          case 683 : imgSource = "img/Stickers/80/Joan.png"; break;
+          case 719 : imgSource = "img/Stickers/80/Perry-Holo.png"; break;
+          case 745 : imgSource = "img/Stickers/80/Viggo-Holo.png"; break;
+          case 746 : imgSource = "img/Stickers/80/Max-Holo.png"; break;
+          case 748 : imgSource = "img/Stickers/80/Joan-Holo.png"; break;
+        }
+        return imgSource;
+      }
+
+
+      // Copyright (C) 2011 by Will Tomlins
+      // 
+      // Github profile: https://github.com/layam
+      //
+      // Permission is hereby granted, free of charge, to any person obtaining a copy
+      // of this software and associated documentation files (the "Software"), to deal
+      // in the Software without restriction, including without limitation the rights
+      // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+      // copies of the Software, and to permit persons to whom the Software is
+      // furnished to do so, subject to the following conditions:
+      // 
+      // The above copyright notice and this permission notice shall be included in
+      // all copies or substantial portions of the Software.
+      // 
+      // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+      // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+      // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+      // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+      // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+      // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+      // THE SOFTWARE.
+      function humanized_time_span(date, ref_date, date_formats, time_units) {
+        //Date Formats must be be ordered smallest -> largest and must end in a format with ceiling of null
+        date_formats = date_formats || {
+          past: [
+            { ceiling: 60, text: "$seconds seconds ago" },
+            { ceiling: 3600, text: "$minutes minutes ago" },
+            { ceiling: 86400, text: "$hours hours ago" },
+            { ceiling: 2629744, text: "$days days ago" },
+            { ceiling: 31556926, text: "$months months ago" },
+            { ceiling: null, text: "$years years ago" }      
+          ],
+          future: [
+            { ceiling: 60, text: "in $seconds seconds" },
+            { ceiling: 3600, text: "in $minutes minutes" },
+            { ceiling: 86400, text: "in $hours hours" },
+            { ceiling: 2629744, text: "in $days days" },
+            { ceiling: 31556926, text: "in $months months" },
+            { ceiling: null, text: "in $years years" }
+          ]
+        };
+        //Time units must be be ordered largest -> smallest
+        time_units = time_units || [
+          [31556926, 'years'],
+          [2629744, 'months'],
+          [86400, 'days'],
+          [3600, 'hours'],
+          [60, 'minutes'],
+          [1, 'seconds']
+        ];
+        
+        date = new Date(date);
+        ref_date = ref_date ? new Date(ref_date) : new Date();
+        var seconds_difference = (ref_date - date) / 1000;
+        
+        var tense = 'past';
+        if (seconds_difference < 0) {
+          tense = 'future';
+          seconds_difference = 0-seconds_difference;
+        }
+        
+        function get_format() {
+          for (var i=0; i<date_formats[tense].length; i++) {
+            if (date_formats[tense][i].ceiling == null || seconds_difference <= date_formats[tense][i].ceiling) {
+              return date_formats[tense][i];
+            }
+          }
+          return null;
+        }
+        
+        function get_time_breakdown() {
+          var seconds = seconds_difference;
+          var breakdown = {};
+          for(var i=0; i<time_units.length; i++) {
+            var occurences_of_unit = Math.floor(seconds / time_units[i][0]);
+            seconds = seconds - (time_units[i][0] * occurences_of_unit);
+            breakdown[time_units[i][1]] = occurences_of_unit;
+          }
+          return breakdown;
+        }
+
+        function render_date(date_format) {
+          var breakdown = get_time_breakdown();
+          var time_ago_text = date_format.text.replace(/\$(\w+)/g, function() {
+            return breakdown[arguments[1]];
+          });
+          return depluralize_time_ago_text(time_ago_text, breakdown);
+        }
+        
+        function depluralize_time_ago_text(time_ago_text, breakdown) {
+          for(var i in breakdown) {
+            if (breakdown[i] == 1) {
+              var regexp = new RegExp("\\b"+i+"\\b");
+              time_ago_text = time_ago_text.replace(regexp, function() {
+                return arguments[0].replace(/s\b/g, '');
+              });
+            }
+          }
+          return time_ago_text;
+        }
+                
+        return render_date(get_format());
+      }
+
+    });
+  </script>
+
+</body>
+</html>

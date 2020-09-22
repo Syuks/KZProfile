@@ -27,7 +27,12 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
       <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarToggler">
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -37,6 +42,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="maps.html">Maps</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recent.html">Recent</a>
             </li>
 
             <!-- Dropdown -->
@@ -62,6 +70,7 @@
               <label class="custom-control-label" for="rememberSteamID">Remember</label>
           </div>
           </form>
+        </div>
 
       </div>
     </nav>
@@ -73,19 +82,19 @@
       <div class="row configuration-row">
         <div class="col text-right" style="border-right: 2px solid white;">
           <!-- KZTimer -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline gameModeSelectors">
             <input class="configuration-radio" type="radio"  id="kztimerRadio" value="kz_timer" name="game_mode" checked>
             <label class="radio-label" for="kztimerRadio">KZ Timer</label>
           </div>
 
           <!-- SimpleKZ -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline gameModeSelectors">
             <input class="configuration-radio" type="radio" id="simplekzRadio" value="kz_simple" name="game_mode">
             <label class="radio-label" for="simplekzRadio">Simple KZ</label>
           </div>
 
           <!-- Vanilla -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline gameModeSelectors">
             <input class="configuration-radio" type="radio" id="vanillaRadio" value="kz_vanilla" name="game_mode">
             <label class="radio-label" for="vanillaRadio">Vanilla</label>
           </div>
@@ -99,12 +108,10 @@
           </div>
 
           <!-- TP -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline tpRunsSelector">
             <input class="configuration-radio" type="radio" id="tpRunsRadio" value="true" name="run_type">
             <label class="radio-label" for="tpRunsRadio">Tp</label>
           </div>
-
-
 
         </div>
       </div>
@@ -114,71 +121,251 @@
       <div class="row" style="margin-top: 20px;">
         
         <!--Profile Picture-->
-        <div id="playerAvatar" class="col-2 d-flex align-items-center" style="padding-left:5px;">
+        <div id="playerAvatar" class="col-lg-2 d-flex align-items-center" style="padding-left:5px;">
           
         </div>
 
         <!--Profile Medals-->
-        <div class="col-2 text-center" style="padding-left:15px">
-          <h1 id="WRs_medals" style="margin-top:8px;margin-bottom:0px;">
-            
-          </h1>
-          <h1 id="900s_medals" style="margin-top:14px;margin-bottom:2px;">
-            
-          </h1>
-          <h1 id="800s_medals" style="margin-bottom:0px">
-            
-          </h1>
-        </div>
-
-        <!--Profile Data-->
-        <div class="col-8" style="padding-left: 0px;">
-          <h1 id="playerName" class="text-nowrap" style="font-size: 80px;">
-            
-          </h1>
-          <h1 id="playerPoints" style="color: #bcbcbc;">
+        <div class="col-sm-10">
+          <div id="playerCarousel" class="carousel slide" data-interval="false">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="row" style="min-height: 222px;">
+                  <div class="col-lg-2 text-center MedalsColumn" style="padding-left:50px">
+                    <h1 id="WRs_medals" class="WRMedals" style="margin-top:8px;margin-bottom:0px;">
+                      
+                    </h1>
+                    <h1 id="900s_medals" class="RedMedals" style="margin-top:14px;margin-bottom:2px;">
+                      
+                    </h1>
+                    <h1 id="800s_medals" class="BlueMedals" style="margin-bottom:0px">
+                      
+                    </h1>
+                  </div>
           
-          </h1>
-          <h1 id="playerRank" style="color: #cf4479;font-weight: 400;">
-            
-          </h1>
+                  <!--Profile Data-->
+                  <div class="col-lg-10 ProfileData" style="padding-left: 30px;">
+                    <h1 id="playerName" class="text-nowrap" style="font-size: 80px;">
+                      
+                    </h1>
+                    <h1 id="playerPoints" style="color: #bcbcbc;">
+                    
+                    </h1>
+                    <h1 id="playerRank" style="color: #cf4479;font-weight: 400;">
+                      
+                    </h1>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row" style="min-height: 222px;">
+                  <div class="col-lg-12 achievementsColumn" style="padding-right: 50px; padding-left: 50px;">
+                    <h1 style="padding-left: 20px;">Achievements</h1>
+                    <div id="HiddenStickers" class="text-center">
+                    </div>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Robo-Empty.png" id="veasy"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/SAS-Chicken-Empty.png" id="easy"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Cluck-Empty.png" id="medium"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Toxic-Empty.png" id="hard"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Nuke-Beast-Empty.png" id="vhard"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Aztec-Empty.png" id="extreme"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Emperor-Empty.png" id="death"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/zPrince-Empty.png" id="zhop"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Gold-Web-Empty.png" id="kzra"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Boost-Empty.png" id="bhop"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/CS20-Classic-Empty.png" id="xc"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Fancy-Koi-Empty.png" id="moto"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Guinea-Pig-Empty.png" id="final"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Longevity-Empty.png" id="od"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Move-It-Empty.png" id="bkz"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Pros-Dont-Fix-Empty.png" id="fix"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Remake-Expert-Empty.png" id="v2"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Stay-Frosty-Empty.png" id="gfy"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Surfs-Up-Empty.png" id="slide"></a>
+                    <a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Too-Old-For-This-Empty.png" id="go"></a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-lg-6 text-center barsColumn" style="padding-left: 75px;">
+                    <div id="barsTitle" style="margin-bottom:15px;font-weight:400">Completions</div>
+                    <div class="progress" style="height: 4px; margin-bottom:22px; background-color: #1b411b;">
+                      <div id="VeryEasyBar" class="progress-bar" role="progressbar" style="background-color: #40fe40;"></div>
+                    </div>
+                    <div class="progress" style="height: 4px; margin-bottom:22px; background-color: #2f411d;">
+                      <div id="EasyBar" class="progress-bar" role="progressbar" style="background-color: #a1fe47;"></div>
+                    </div>
+                    <div class="progress" style="height: 4px; margin-bottom:22px; background-color: #3e3c27;">
+                      <div id="MediumBar" class="progress-bar" role="progressbar" style="background-color: #ece37a;"></div>
+                    </div>
+                    <div class="progress" style="height: 4px; margin-bottom:22px; background-color: #3c311a;">
+                      <div id="HardBar" class="progress-bar" role="progressbar" style=" background-color: #e4ae39;"></div>
+                    </div>
+                    <div class="progress" style="height: 4px; margin-bottom:22px; background-color: #411b1b;">
+                      <div id="VeryHardBar" class="progress-bar" role="progressbar" style="background-color: #fe4040;"></div>
+                    </div>
+                    <div class="progress" style="height: 4px; margin-bottom:22px; background-color: #410e0e;">
+                      <div id="ExtremeBar" class="progress-bar" role="progressbar" style="background-color: #fe0000;"></div>
+                    </div>
+                    <div class="progress" style="height: 4px; background-color: #38173c;">
+                      <div id="DeathBar" class="progress-bar" role="progressbar" style="background-color: #d22ce5;"></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <canvas id="radarChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#playerCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#playerCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
         </div>
       </div>
       <!--/.Profile Portfolio-->
 
-      <div class="row z-depth-1-half" style="margin-top: 30px;">
+      <div class="row z-depth-1-half" style="margin-top: 24px;">
         <div class="col">
+
+          <!-- TABLE HEADER -->
           <div class="row table-top">
-            <div class="col">
-              
+            <!-- 1. Refresh Button -->
+            <div class="col d-flex align-items-center" id="refreshColumn">
+              <a id="refreshButton">
+                <i class="fas fa-redo-alt"></i>
+              </a>
+              <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
+                <i class="fas fa-share-alt"></i>
+              </a>
             </div>
+            <!-- 2. Table state changer -->
             <div class="col d-flex align-items-center justify-content-center">
-              Finished Maps
+              <a id="table-state-left" style="z-index: 1;">
+                <i class="fas fa-angle-left"></i>
+              </a>
+              <div class="text-center" id="table-state-title" style="min-width: 150px;">
+                Finished Maps
+              </div>
+              <a id="table-state-right" style="z-index: 1;">
+                <i class="fas fa-angle-right"></i>
+              </a>
             </div>
+            <!-- 3. Search form -->
             <div class="col d-flex flex-row-reverse align-items-center">
-              <!-- Search form -->
-              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off">
+              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
                 <input id="finishedMapsSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
                 <i class="fas fa-search" aria-hidden="true"></i>
               </form>
             </div>
           </div>
+
+          <!-- TABLES -->
           <div class="row">
-            <table id="FinishedMaps" class="table-sm table-borderless table-hover table-dark text-truncate text-center" width="100%">
-              <thead class="z-depth-1">
-                <tr>
-                  <th class="text-center">Map</th>
-                  <th>Points</th>
-                  <th>Time</th>
-                  <th>Tier</th>
-                  <th>Date</th>
-                  <th class="text-center">Server</th>
-                </tr>
-              </thead>
-            </table>
+            <!-- UNFINISHED MAPS TABLE -->
+            <div class="table-responsive">
+              <table id="UnfinishedMaps" class="d-none table-sm table-borderless table-hover table-dark text-center">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th class="text-center th-lg">Map</th>
+                    <th class="th-lg">Points</th>
+                    <th class="th-lg">Time</th>
+                    <th class="th-lg">Tier</th>
+                    <th class="th-lg">Date</th>
+                    <th class="th-lg">Server</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- FINISHED MAPS TABLE -->
+            <div class="table-responsive">
+              <table id="FinishedMaps" class="table-sm table-borderless table-hover table-dark text-center text-nowrap">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th class="text-center th-lg">Map</th>
+                    <th class="th-lg">Points</th>
+                    <th class="th-lg">Time</th>
+                    <th class="th-lg">Tier</th>
+                    <th class="th-lg">Date</th>
+                    <th class="th-lg">Server</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- JUMPSTAT TABLE -->
+            <div class="table-responsive">
+              <table id="Jumpstats" class=" d-none table-sm table-borderless table-hover table-dark text-center">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th class="text-center th-lg">Type</th>
+                    <th class="th-lg">Units</th>
+                    <th class="th-lg">Strafes</th>
+                    <th class="th-lg">Crouchbind</th>
+                    <th class="th-lg">Date</th>
+                    <th class="th-lg">Server</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Double Badges Modal -->
+      <div class="modal fade" id="doubleBadgeModal" tabindex="-1" role="dialog" aria-labelledby="doubleBadgeModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="background-color: #121212;">
+          <div class="modal-header">
+            <div class="col-1"></div>
+            <h5 class="modal-title col-10 text-center" id="doubleBadgeTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <div class="row">
+              <div class="col-lg">
+                <div class="holoSticker">
+                  <img id="doubleBadgeHolo" src="">
+                </div>
+                <style class="holoHover"></style>
+              </div>
+              <div class="col-lg">
+                <img id="doubleBadgeNoHolo" src="">
+              </div>
+            </div>
+          </div>
+          <div id="doubleBadgeFooter" class="modal-footer justify-content-center text-center">
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- Single Badge Modal -->
+      <div class="modal fade" id="singleBadgeModal" tabindex="-1" role="dialog" aria-labelledby="singleBadgeModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content" style="background-color: #121212;">
+            <div class="modal-header">
+              <div class="col-1"></div>
+              <h5 class="modal-title col-10 text-center" id="singleBadgeTitle"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <img id="singleBadgeSticker" src="">
+            </div>
+            <div id="singleBadgeFooter" class="modal-footer justify-content-center text-center">
+            </div>
+          </div>
+        </div>
+        </div>
     </div>  
     
   <!-- End -->
@@ -191,45 +378,138 @@
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="js/mdb.min.js"></script>
-  <!-- Datatables and Fixed Table Header  -->
+  <!-- Datatables  -->
   <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Datatables Enum Ordering  -->
+  <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/enum.js"></script>
   <!-- Custom scripts -->
   <script type="text/javascript">
 
     var RANKING = {
-        19: "GOD",
-        18: "DEMIGOD",
-        17: "PRO+",
-        16: "PRO",
-        15: "SEMIPRO+",
-        14: "SEMIPRO",
-        13: "EXPERT+",
-        12: "EXPERT",
-        11: "SKILLED+",
-        10: "SKILLED",
-        9: "REGULAR+",
-        8: "REGULAR",
-        7: "CASUAL+",
-        6: "CASUAL",
-        5: "TRAINEE+",
-        4: "TRAINEE",
-        3: "SCRUB+",
-        2: "SCRUB",
-        1: "NEWBIE+",
-        0: "NEWBIE",
+      19: "GOD",
+      18: "DEMIGOD",
+      17: "PRO+",
+      16: "PRO",
+      15: "SEMIPRO+",
+      14: "SEMIPRO",
+      13: "EXPERT+",
+      12: "EXPERT",
+      11: "SKILLED+",
+      10: "SKILLED",
+      9: "REGULAR+",
+      8: "REGULAR",
+      7: "CASUAL+",
+      6: "CASUAL",
+      5: "TRAINEE+",
+      4: "TRAINEE",
+      3: "SCRUB+",
+      2: "SCRUB",
+      1: "NEWBIE+",
+      0: "NEWBIE",
     }
+
+    var TIER = {
+      7: "Death",
+      6: "Extreme",
+      5: "Very Hard",
+      4: "Hard",
+      3: "Medium",
+      2: "Easy",
+      1: "Very Easy",
+    }
+
+    var achievements = [
+      {id: "veasy", title: "Robo", sticker: "Robo", count: 0, goal: 0, achievement : 'Finish 80% of very easy maps.'}, //tier achievements have variable goals
+      {id: "easy", title: "SAS Chicken", sticker: "SAS-Chicken", count: 0, goal: 0, achievement : 'Finish 80% of easy maps.'},
+      {id: "medium", title: "Cluck", sticker: "Cluck", count: 0, goal: 0, achievement : 'Finish 80% of medium maps.'},
+      {id: "hard", title: "Toxic", sticker: "Toxic", count: 0, goal: 0, achievement : 'Finish 80% of hard maps.'},
+      {id: "vhard", title: "Nuke Beast", sticker: "Nuke-Beast", count: 0, goal: 0, achievement : 'Finish 80% of very hard maps.'},
+      {id: "extreme", title: "Aztec", sticker: "Aztec", count: 0, goal: 0, achievement : 'Finish 80% of extreme maps.'},
+      {id: "death", title: "Emperor", sticker: "Emperor", count: 0, goal: 0, achievement : 'Finish 80% of death maps.'},
+      {id: "bkz", title: "Move It", sticker: "Move-It", count: 0, goal: 30, achievement : 'Finish 30 maps with prefix "bkz".'},
+      {id: "xc", title: "CS20 Classic", sticker: "CS20-Classic", count: 0, goal: 15, achievement : 'Finish 15 maps with prefix "xc".'},
+      {id: "bhop", title: "Boost", sticker: "Boost", count: 0, goal: 13, achievement : 'Finish 13 maps with prefix "bhop".'},
+      {id: "kzra", title: "Gold Web", sticker: "Gold-Web", count: 0, goal: 13, achievement : 'Finish 13 maps with prefix "kzra" or "kzro" made by Spider1.'},
+      {id: "gfy", title: "Stay Frosty", sticker: "Stay-Frosty", count: 0, goal: 8, achievement : 'Finish 8 maps with prefix "gfy" made by winter Nebs.'},
+      {id: "zhop", title: "zPrince", sticker: "zPrince", count: 0, goal: 6, achievement : 'Finish 6 maps with prefix "zhop" or "zxp" made by zPrince.'},
+      {id: "slide", title: "Surf's Up", sticker: "Surfs-Up", count: 0, goal: 10, achievement : 'Finish 10 maps with prefix "slide".'},
+      {id: "go", title: "Too Old For This", sticker: "Too-Old-For-This", count: 0, goal: 32, achievement : 'Finish 32 maps with sufix "go".'},
+      {id: "v2", title: "Remake Expert", sticker: "Remake-Expert", count: 0, goal: 50, achievement : 'Finish 50 maps with sufix "v2" or "v3".'},
+      {id: "fix", title: "Pros Don't Fix", sticker: "Pros-Dont-Fix", count: 0, goal: 40, achievement : 'Finish 40 maps with sufix "fix".'},
+      {id: "od", title: "Longevity", sticker: "Longevity", count: 0, goal: 8, achievement : 'Finish 8 maps with sufix "od" made by Overdose.'},
+      {id: "final", title: "Guinea Pig", sticker: "Guinea-Pig", count: 0, goal: 20, achievement : 'Finish 20 maps with sufix "final".'},
+      {id: "moto", title: "Fancy Koi", sticker: "Fancy-Koi", count: 0, goal: 9, achievement : 'Find and finish 9 maps with anime sounds on the timer, made by Gemayue'},
+      {id: "crown", title: "Crown", sticker: "Crown", count: 0, goal: 2, achievement : '<a href="maps.html?map=kz_erratum_v2">' + 'kz_erratum_v2</a> PRO Runner'},
+      {id: "stan", title: ["", "Stan", "Stan Holo", "Stan Holo & Stan"], sticker: ["", "Stan", "Stan-Holo", "Stan-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_blackness">kz_blackness</a> PRO Runner.', '<a href="maps.html?map=kz_afterlife">kz_afterlife</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_afterlife">kz_afterlife</a> and <a href="maps.html?map=kz_blackness">kz_blackness</a> PRO Runner.']},
+      {id: "viggo", title: ["", "Viggo", "Viggo Holo", "Viggo Holo & Viggo"], sticker: ["", "Viggo", "Viggo-Holo", "Viggo-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_bananaysoda_v2">kz_bananaysoda_v2</a> PRO Runner.', '<a href="maps.html?map=kz_purgatory">kz_purgatory</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_purgatory">kz_purgatory</a> and <a href="maps.html?map=kz_bananaysoda_v2">kz_bananaysoda_v2</a> PRO Runner.']},
+      {id: "jack", title: ["", "Jack", "Jack Holo", "Jack Holo & Jack"], sticker: ["", "Jack", "Jack-Holo", "Jack-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_shell">kz_shell</a> PRO Runner.', '<a href="maps.html?map=bkz_fear4">bkz_fear4</a> and ????????? PRO Runner.', '<a href="maps.html?map=bkz_fear4">bkz_fear4</a> and <a href="maps.html?map=kz_shell">kz_shell</a> PRO Runner.']},
+      {id: "joan", title: ["", "Joan", "Joan Holo", "Joan Holo & Joan"], sticker: ["", "Joan", "Joan-Holo", "Joan-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_continuum">kz_continuum</a> PRO Runner.', '<a href="maps.html?map=kz_thrombosis">kz_thrombosis</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_thrombosis">kz_thrombosis</a> and <a href="maps.html?map=kz_continuum">kz_continuum</a> PRO Runner.']},
+      {id: "max", title: ["", "Max", "Max Holo", "Max Holo & Max"], sticker: ["", "Max", "Max-Holo", "Max-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_goquicklol_v2">kz_goquicklol_v2</a> PRO Runner.', '<a href="maps.html?map=kz_slidemap">kz_slidemap</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_slidemap">kz_slidemap</a> and <a href="maps.html?map=kz_goquicklol_v2">kz_goquicklol_v2</a> PRO Runner.']},
+      {id: "boris", title: ["", "Boris", "Boris Holo", "Boris Holo & Boris"], sticker: ["", "Boris", "Boris-Holo", "Boris-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_spacemario_h">kz_spacemario_h</a> PRO Runner.', '<a href="maps.html?map=kz_gemischte_gefuehlslagen">kz_gemischte_gefuehlslagen</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_gemischte_gefuehlslagen">kz_gemischte_gefuehlslagen</a> and <a href="maps.html?map=kz_spacemario_h">kz_spacemario_h</a> PRO Runner.']},
+      {id: "perry", title: ["", "Perry", "Perry Holo", "Perry Holo & Perry"], sticker: ["", "Perry", "Perry-Holo", "Perry-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_custos">kz_custos</a> PRO Runner.', '<a href="maps.html?map=kz_high_socks">kz_high_socks</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_high_socks">kz_high_socks</a> and <a href="maps.html?map=kz_custos">kz_custos</a> PRO Runner.']},
+      {id: "chelm", title: ["", "Combine Helmet", "Combine Helmet Holo", "Combine Helmet Holo & Combine Helmet"], sticker: ["", "Combine-Helmet", "Combine-Helmet-Holo", "Combine-Helmet-Holo"], count: 0, goal: 3, achievement : ["?????????",'????????? and <a href="maps.html?map=kz_synergy_x">kz_synergy_x</a> PRO Runner.', '<a href="maps.html?map=kz_failed_fastrun_rt">kz_failed_fastrun_rt</a> and ????????? PRO Runner.', '<a href="maps.html?map=kz_failed_fastrun_rt">kz_failed_fastrun_rt</a> and <a href="maps.html?map=kz_synergy_x">kz_synergy_x</a> PRO Runner.']},
+      {id: "100%", title: "Tyranids Hive Tyrant", sticker: "Tyranids-Hive-Tyrant", count: 0, goal: 1, achievement: "100% Completionist."}
+    ];
+
+    let mapsByTier = [0,0,0,0,0,0,0];
+    let completedMapsByTier = [0,0,0,0,0,0,0];
+
+    //This enum defines the order the Tier Column sorts
+    $.fn.dataTable.enum( [ 'Very Easy', 'Easy', 'Medium', 'Hard', 'Very Hard', 'Extreme', 'Death' ] );
+
+    var currentPlayerData;  //Current data of player
+
+    //Persistent Maps Data for Tiers and Unfinished Maps
+    var maps;
+
+    //Globals so I can cancel the ajax request as soon as a new one is needed
+    var playerRequest;
+    var mapsRequest;
+    var steamRequest;
+    var jumpstatsRequest;
+
+    //usamos este bool para evitar problemas al cambiar el mode o run apenas carga la página
+    var firstfecth = true;
+
+    //Datatables
+    var t;
+    var ut;
+    var jt;
+
+    var currentSteamID;
+    var tableState = 1;
+    var currentJumptype;
+
+    //jquery extension for cleaner radio group value retrieving
+    jQuery.fn.extend({
+      groupVal: function() {
+          return $(this).filter(':checked').val();
+      }
+    });
 
     $(document).ready(function () {
 
-      var currentSteamID;
+      //Local Storage
+      var storedSteamID = localStorage.getItem('steamid');
+      var storedGameMode = localStorage.getItem('game_mode');
+      var storedRunType = localStorage.getItem('run_type');
 
-      //Datatable Initialization
-      var t = $('#FinishedMaps').DataTable({        
+      //UI Elements
+      var steamidInput = $("#steamid-input");
+      var steamidRemember = $("#rememberSteamID");
+      var gameModeSelector = $("input[type='radio'][name='game_mode']");
+      var runTypeSelector = $("input[type='radio'][name='run_type']");
+
+      var completionBars = [$("#VeryEasyBar"),$("#EasyBar"),$("#MediumBar"),$("#HardBar"),$("#VeryHardBar"),$("#ExtremeBar"),$("#DeathBar")];
+      
+      //Finished Maps Datatable Initialization
+      t = $('#FinishedMaps').DataTable({        
                   "iDisplayLength": 1000,
                   "order": [[ 1, "desc" ]],
                   "columnDefs": [
-                    { "width": "17%", "targets": [0,1,2,3,4,5] }, //para que todos los datos tengan el mismo ancho
-                    { "targets": [0,5] , className: "text-left"} //les doy un nombre de css a estar columnas para ponerlas sobre la izquierda
+                    { "targets": 5 , className: "text-left"}, //para que los servers se justifiquen en la izquierda
+                    { "targets": 0, className: "text-wrap text-left"}, //la tabla usa text-truncate para que los servers sigan de largo, asi que le pongo wrap a los nombres para sobreescribirlo
+                    { "orderSequence": [ "desc", "asc" ], "targets": [1,3,4] } //defines the direction the column sorts when first clicked
                   ],
                   'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
                     if (data[1]==1000){
@@ -245,36 +525,161 @@
                   "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
                 });
       $('.dataTables_length').addClass('bs-select');
-      
-      //Get preferred Game Mode
-      if (localStorage.getItem('game_mode')!=null){
-        $("input[type='radio'][name=game_mode][value=" + localStorage.getItem('game_mode') + "]").prop('checked', true);
+
+      //Unfinished Maps Datatable Initialization
+      ut = $('#UnfinishedMaps').DataTable({        
+                  "iDisplayLength": 1000,
+                  "order": [[ 0, "asc" ]],
+                  "columnDefs": [
+                    { "orderSequence": [ "desc", "asc" ], "targets": [1,3,4] } //defines the direction the column sorts when first clicked
+                  ],
+                  'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
+                    $(row).find('td:eq(3)').addClass(data[3].toUpperCase().replace(/ /g, "-"));
+                  },
+                  "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+
+      //Unfinished Maps Datatable Initialization
+      jt = $('#Jumpstats').DataTable({        
+                  "iDisplayLength": 50,
+                  "order": [[ 1, "desc" ]],
+                  "columnDefs": [
+                    { "orderSequence": [ "desc", "asc" ], "targets": [1,2,4] } //defines the direction the column sorts when first clicked
+                  ],
+                  'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
+                    if (currentJumptype == "Longjump" && data[1] >= 290 && $("#crouchbindCheck").is(":checked")) {
+                      $(row).addClass("longjumpRainbow");
+                      $(row).find('td:eq(0)').html("290 CLUB");
+                    } else if (currentJumptype == "Longjump" && data[1] >= 286 && !$("#crouchbindCheck").is(":checked")) {
+                      $(row).addClass("longjumpRainbow");
+                      $(row).find('td:eq(0)').html("286 CLUB");
+                    } else {
+                      $(row).find('td:eq(1)').css('color', JumpstatColor(data[1]));
+                    }
+                  },
+                  "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+
+      //Radar Chart Initialization
+      var ctxR = document.getElementById("radarChart").getContext('2d');
+      var myRadarChart = new Chart(ctxR, {
+          type: 'radar',
+          options: {
+            responsive: true,
+            legend : {display	: false},
+            scale: {ticks: {display: false, min:0, max:100},gridLines: {color: 'grey'},angleLines: {color: 'grey'}},
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  return tooltipItem.yLabel + "%";
+                }
+              }
+            }
+          },
+          data: {
+            labels: ["Very Easy", "Easy", "Medium", "Hard", "Very Hard", "Extreme", "Death"],
+            datasets: [
+              {
+                label: "Completions",
+                backgroundColor: ['rgba(54, 162, 235, .7)'],
+                borderColor: ['rgba(54, 162, 235, .7)'],
+                borderWidth: 2
+              }
+            ]
+          }
+      });
+
+      //This if statment is only for backwards compatibility, it's safe to delete after some time (I used to store STEAM_0 ids, now only STEAM_1)
+      if (storedSteamID != null && storedSteamID != fixSteamID(storedSteamID)) {
+        localStorage.setItem('steamid', fixSteamID(storedSteamID));
       }
 
-      //Get preferred Run Type
-      if (localStorage.getItem('run_type')!=null){
-        $("input[type='radio'][name=run_type][value=" + localStorage.getItem('run_type') + "]").prop('checked', true);
-      }
+      //First of all see if there are parameters in url. If there is one, load data from that, if there isn't load saved ones
+      var URLSearchParameters = new URLSearchParams(window.location.search);
+      var steamIDParameter = URLSearchParameters.get("steamid");
+      var gameModeParameter = URLSearchParameters.get("mode");
+      var runTypeParameter = URLSearchParameters.get("run");
+      var jumpstatParameter = URLSearchParameters.get("jumpstat") || URLSearchParameters.get("jumptype");;
 
-      //First of all see if there is a steamid parameter in url. If there is one, load data from that id, if there isn't load saved id
-      var steamIDParameter = new URLSearchParams(window.location.search).get("steamid");
+      //STEAM ID PARAMETER
       if (steamIDParameter!=null && steamIDParameter!="" ){
-        currentSteamID = steamIDParameter;
-        $("#steamid-input").val(currentSteamID); //visual
-        $("#rememberSteamID").prop('checked', false); //visual
-        GetPlayerData(true, currentSteamID, $("input[type='radio'][name='game_mode']:checked").val(), $("input[type='radio'][name='run_type']:checked").val());
+        currentSteamID = fixSteamID(steamIDParameter);
+        steamidInput.val(currentSteamID); //visual
+        if (currentSteamID == storedSteamID) {
+          steamidRemember.prop('checked', true); //visual
+        } else {
+          steamidRemember.prop('checked', false); //visual
+        }
       } else {
         //If there is no steamid on the url, get stored id if there is one
-        if (localStorage.getItem('steamid')!=null){            //si hay id guardada
-          currentSteamID = localStorage.getItem('steamid');//conseguir la id
-          $("#steamid-input").val(currentSteamID);             //rellenar el input con la id (visual)
-          $("#rememberSteamID").prop('checked', true);         //poner como checked la checkbox (visual)
-          GetPlayerData(true, currentSteamID, $("input[type='radio'][name='game_mode']:checked").val(), $("input[type='radio'][name='run_type']:checked").val());
+        if (storedSteamID!=null){         //si hay id guardada
+          currentSteamID = storedSteamID; //conseguir la id
+          steamidInput.val(currentSteamID);    //rellenar el input con la id (visual)
+          steamidRemember.prop('checked', true);//poner como checked la checkbox (visual)
         }
       }
 
-      //If a Enter is pressed on the steamid input, submitting a new id
+      //GAME MODE PARAMETER
+      if (gameModeParameter == "kz_timer" || gameModeParameter == "kz_simple" || gameModeParameter == "kz_vanilla"){
+        $("input[type='radio'][name=game_mode][value=" + gameModeParameter + "]").prop('checked', true);
+      } else {
+        //If there is no gamemode in the url, get stored gamemode if there is one
+        if (storedGameMode!=null){
+          $("input[type='radio'][name=game_mode][value=" + storedGameMode + "]").prop('checked', true);
+        }
+      }
+
+      //RUN TYPE PARAMETER
+      if (runTypeParameter == "tp"){
+        $("input[type='radio'][name=run_type][value=true]").prop('checked', true);
+      } else if (runTypeParameter == "pro") {
+        $("input[type='radio'][name=run_type][value=false]").prop('checked', true);
+      } else {
+        //If there is no runtype in the url, get stored runtype if there is one
+        if (storedRunType!=null){
+          $("input[type='radio'][name=run_type][value=" + storedRunType + "]").prop('checked', true);
+        }
+      }
+
+      //JUMPSTAT PARAMETER
+      if (jumpstatParameter!=null){
+        TableStateRight();
+        if (jumpstatParameter == "longjump" || jumpstatParameter == "lj") {
+          currentJumptype = "Longjump";
+          GetJumpstatsData();
+        } else if (jumpstatParameter == "bunnyhop" || jumpstatParameter == "bhop") {
+          currentJumptype = "Bhop";
+          GetJumpstatsData();
+        } else if (jumpstatParameter == "multibhop" || jumpstatParameter == "multihop" || jumpstatParameter == "mbhop" || jumpstatParameter == "mhop") {
+          currentJumptype = "MultiBhop";
+          GetJumpstatsData();
+        } else if (jumpstatParameter == "ladderjump" || jumpstatParameter == "ladder") {
+          currentJumptype = "Ladderjump";
+          GetJumpstatsData();
+        } else if (jumpstatParameter == "weirdjump" || jumpstatParameter == "wjump" || jumpstatParameter == "wj") {
+          currentJumptype = "Weirdjump";
+          GetJumpstatsData();
+        } else if (jumpstatParameter == "dropbhop" || jumpstatParameter == "drophop" || jumpstatParameter == "dhop") {
+          currentJumptype = "DropBhop";
+          GetJumpstatsData();
+        } else if (jumpstatParameter == "countjump" || jumpstatParameter == "cjump" || jumpstatParameter == "cj") {
+          currentJumptype = "Countjump";
+          GetJumpstatsData();
+        }
+      }
+
+      //Now that we know if there are parameters on the link or stored data, we fetch the info
+      //if nothing was found for game mode or run type, it will use the default values
+      //but if nothing was found for steamid, do nothing, wait for a steamid to be placed on input
+      if (currentSteamID != null) {
+        GetPlayerData(true);
+      }
+
+      //If Enter is pressed on the steamid input, submitting a new id
       $( "#steamid" ).submit(function( event ) {
+        firstfecth = true;
         ProcessFetchingOptions();
         return false;         //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
       });
@@ -288,48 +693,143 @@
       $("input[name='run_type']").click(function() {
         ProcessFetchingOptions();
       });
-      
+
+      //What happens when i click the Refresh Button on the table
+      $("#refreshButton").click(function() {
+        if (tableState==2) {
+          GetJumpstatsData();
+        } else {
+          ProcessFetchingOptions();
+        }
+      });
+
       //If the remember checkmark is pressed, then save the id if it is now checked
-      $("input[id='rememberSteamID']").click(function() {
-        if ($("#rememberSteamID").is(":checked")){
-          if (isValidSteamID($("#steamid-input").val())){
-            localStorage.setItem('steamid', $("#steamid-input").val());
+      steamidRemember.click(function() {
+        if (steamidRemember.is(":checked")){
+          if (isValidSteamID(steamidInput.val())){
+            localStorage.setItem('steamid', fixSteamID(steamidInput.val()));
           } else{
             alert("Please, use a valid SteamID");
           }
         }
       });
       
+      //If the right arrow on table is pressed (Table State)
+      $("#table-state-right").click(TableStateRight);
+
+      function TableStateRight () {
+        switch (tableState) {
+          //Unfinished -> Finished
+          case 0:
+            tableState = 1;
+            $("#table-state-title").html("Finished Maps");
+            $("#table-state-left").removeClass("invisible");
+            $("#UnfinishedMaps").toggleClass("d-none");
+            $("#FinishedMaps").toggleClass("d-none");
+            break;
+          //Finished -> Jumpstats
+          case 1:
+            tableState = 2;
+            $("#table-state-title").html(`<div class="dropdown">
+                                            <a id="jumpstats-table-title" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jumpstats</a>
+                                            <div class="dropdown-menu">
+                                              <form class="px-4 py-1 text-white">
+                                                <div class="form-check">
+                                                  <input id="crouchbindCheck" type="checkbox" class="form-check-input" checked>
+                                                  <label class="form-check-label" for="crouchbindCheck">
+                                                    Crouchbind
+                                                  </label>
+                                                </div>
+                                              </form>
+                                              <div class="dropdown-divider"></div>
+                                              <a id="Longjump" class="dropdown-item text-white">Longjumps</a>
+                                              <a id="Bhop" class="dropdown-item text-white">Bhops</a>
+                                              <a id="MultiBhop" class="dropdown-item text-white">MultiBhops</a>
+                                              <a id="Ladderjump" class="dropdown-item text-white">Ladderjumps</a>
+                                              <a id="Weirdjump" class="dropdown-item text-white">WeirdJumps</a>
+                                              <a id="DropBhop" class="dropdown-item text-white">DropBhops</a>
+                                              <a id="Countjump" class="dropdown-item text-white">Countjumps</a>
+                                            </div>
+                                          </div>`);
+            $("#table-state-right").addClass("invisible");
+            $("#FinishedMaps").toggleClass("d-none");
+            $("#Jumpstats").toggleClass("d-none");
+            let currentParameters = new URLSearchParams(window.location.search);
+
+            break;
+        }
+        //everytime we change tables, clear the table filter input
+        if ($('#finishedMapsSearch').val()!=""){
+          $('#finishedMapsSearch').val("");
+          ut.search("").draw();
+        }
+      }
+
+      //If the left arrow on table is pressed (Table State)
+      $("#table-state-left").click(function() {
+        switch (tableState) {
+          //Finished -> Unfinished
+          case 1:
+            tableState = 0;
+            $("#table-state-title").html("Unfinished Maps");
+            $("#table-state-left").addClass("invisible");
+            $("#FinishedMaps").toggleClass("d-none");
+            $("#UnfinishedMaps").toggleClass("d-none");
+            break;
+          //Jumpstats -> Finished
+          case 2:
+            tableState = 1;
+            $("#table-state-title").html("Finished Maps");
+            $("#table-state-right").removeClass("invisible");
+            $("#Jumpstats").toggleClass("d-none");
+            $("#FinishedMaps").toggleClass("d-none");
+            break;
+        }
+        //everytime we change tables, clear the table filter input
+        if ($('#finishedMapsSearch').val()!=""){
+          $('#finishedMapsSearch').val("");
+          t.search("").draw();
+        }
+      });
+      
       //Todos los chequeos para saber la id, el game mode y la run type
       function ProcessFetchingOptions () {
-        if (isValidSteamID($("#steamid-input").val())){ //antes que nada fijarnos si es una steam id lo que pusieron
-          var steamidInput = $("#steamid-input").val();
-          var game_mode_radio = $("input[type='radio'][name='game_mode']:checked").val();
-          var run_type_radio = $("input[type='radio'][name='run_type']:checked").val();
+        if (isValidSteamID(steamidInput.val())){ //antes que nada fijarnos si es una steam id lo que pusieron
 
-          localStorage.setItem('game_mode', game_mode_radio);
-          localStorage.setItem('run_type', run_type_radio);
+          localStorage.setItem('game_mode', gameModeSelector.groupVal());
+          localStorage.setItem('run_type', runTypeSelector.groupVal());
 
-          if (currentSteamID!= steamidInput){  //detecting if a new steamid is written in the text input is important for player details refreshing (so we don't have to refresh every time)
-            currentSteamID = steamidInput;
-            if ($("#rememberSteamID").is(":checked")){
+          if (currentSteamID!= steamidInput.val() || firstfecth){  //detecting if a new steamid is written in the text input is important for player details refreshing (so we don't have to refresh every time)
+            currentSteamID = fixSteamID(steamidInput.val());
+            steamidInput.val(currentSteamID); //visual
+
+            if (steamidRemember.is(":checked")){
               localStorage.setItem('steamid', currentSteamID);
             }
-            GetPlayerData(true, currentSteamID, game_mode_radio, run_type_radio);
+            GetPlayerData(true);
           } else {
-            GetPlayerData(false, currentSteamID, game_mode_radio, run_type_radio);
+            GetPlayerData(false);
           }
+
+          if (runTypeSelector.groupVal() == "true"){
+            history.pushState({mapParams: "1"}, "", "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=tp");
+          } else if (runTypeSelector.groupVal() == "false") {
+            history.pushState({mapParams: "1"}, "", "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=pro");
+          }
+
         } else {
-          alert("Please, use a valid SteamID");
+          alert("Please, use a valid SteamID.");
         }
       }
 
       //Getting the data from the API
-      function GetPlayerData(new_id, playerSteamID, game_mode, run_type){
+      function GetPlayerData(new_id){
 
         //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
         t.clear();
         t.draw();
+        ut.clear();
+        ut.draw();
 
         //Refresh name flag and avatar only if we are fetching a new player (different steamid is detected inside text input)
         if (new_id){
@@ -340,69 +840,194 @@
           $("#WRs_medals").html("");
           $("#900s_medals").html("");
           $("#800s_medals").html("");
+          jt.clear();
+          jt.draw();
         }
 
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://kztimerglobal.com/api/v1.0/records/top?steam_id=" + playerSteamID + "&tickrate=128&stage=0&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=1000";
-        
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                if (myArr.length > 0){
-                  ShowPlayerData(myArr, new_id);
-                  if (new_id){
-                    //tengo que hacer un substring porque js no puede trabajar con ints de 64bits (el +11 es para desfazar el index el largo de "steamid64")
-                    var steam64 = this.responseText.substring( this.responseText.indexOf('steamid64":') + 11, this.responseText.indexOf(',"player_name"'));
-                    GetSteamProfile(steam64);
-                  }
-                } else {  //si vino vacia es porque no hay datos sobre ese jugador
-                  alert("No data was found for that player.");
+        if (playerRequest != null && playerRequest.readyState < 4) {
+          playerRequest.abort();  //abort ajax request if another one is needed
+        }
+
+        //el ajax de mapas SOLO lo llamamos si la data de mapas es null, si no es null, ya tenemos la data, no ahcemos el ajax
+        if (maps==null && mapsRequest==null){
+          
+          mapsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+            
+            maps = result;
+
+            //if we have player data, that means that it fetched faster than maps and is waiting for maps ajax to succeed
+            if (currentPlayerData != null){
+              if (currentPlayerData.length > 0){
+                ShowPlayerData(currentPlayerData, new_id);
+                if (new_id || firstfecth){
+                  firstfecth = false;
+                  GetSteamProfile(currentPlayerData[0].steamid64);
                 }
+              } else {  //si vino vacia es porque no hay datos sobre ese jugador
+                alert("No data was found for that player.");
+              }
             }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
+            //if we don't have player data, it means that maps data fetched faster, so do nothing. As soon as player data arrives, we'll start analyzing
+          }});
+        }
+
+        //PLAYER DATA
+        playerRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top?steam_id=" + currentSteamID + "&tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&has_teleports=" + runTypeSelector.groupVal() + "&limit=1000", dataType: 'json', success: function(result){
+          
+          currentPlayerData = result;
+
+          //if we have map data, that means that it fetched faster than player and is waiting for player ajax to succeed
+          if (maps != null) {
+            if (currentPlayerData.length > 0){
+              ShowPlayerData(currentPlayerData, new_id);
+              if (new_id || firstfecth){
+                firstfecth = false;
+                GetSteamProfile(currentPlayerData[0].steamid64);
+              }
+            } else {  //si vino vacia es porque no hay datos sobre ese jugador
+              alert("No data was found for that player.");
+            }
+          }
+          //if we don't have map data, it means that player data fetched faster, so do nothing. As soon as map data arrives, we'll start analyzing
+        }});
       }
 
       //proceso todo ahora para mostrar la información relevante (stats) sin tener que esperar a la info visual de steam (avatar, flag, url, etc)
       function ShowPlayerData(arr, new_id){
 
-        var player_points = 0;
-        var player_wrs = 0;
-        var player_900s = 0;
-        var player_800s = 0;
+        let player_points = 0;
+        let player_wrs = 0;
+        let player_900s = 0;
+        let player_800s = 0;
 
-        for (i in arr) {
-          
-          //Transform time
-          var map_time = new Date(arr[i].time * 1000).toISOString().substr(11, 11);
+        mapsByTier = [0,0,0,0,0,0,0];
 
-          //Add points to wrs,900s, 800s and total
-          if (arr[i].points==1000){
-            player_wrs++;
-            player_points += arr[i].points;
-          } else if (arr[i].points>=900) {
-            player_900s++;
-            player_points += arr[i].points;
-          } else if (arr[i].points>=800) {
-            player_800s++;
-            player_points += arr[i].points;
-          } else {
-            player_points += arr[i].points;
-          }
+        completedMapsByTier = [0,0,0,0,0,0,0];
 
-          t.row.add( [
-            '<a href="maps.html?map=' + arr[i].map_name + '">' + arr[i].map_name + '</a>',
-            arr[i].points, //les cambio el color en rowcallback cuando inicializo la database
-            map_time,
-            "X",
-            arr[i].updated_on.substr(0,10),
-            arr[i].server_name
-          ] );
+        for (let i = 0; i < achievements.length; i++) {
+          achievements[i].count = 0;
         }
-        
+
+        for (let j = 0; j < maps.length; j++) {
+          if (gameModeSelector.groupVal()!="kz_simple" && maps[j].name.substring(0,3) == "skz" || gameModeSelector.groupVal()!="kz_vanilla" && maps[j].name.substring(0,3) == "vnl" || runTypeSelector.groupVal() == "true" && maps[j].name.substring(0,5) == "kzpro") {
+            continue;
+          }
+          let mapFound = false;
+
+          mapsByTier[maps[j].difficulty - 1] ++; //lo tengo que hacer cada vez que cambio de modo porque hay mapas especificos de simplekz y vanilla (cambia los % de completions)
+
+          for (let i = 0; i < arr.length; i++) {
+            if (maps[j].id == arr[i].map_id){ //if we get a match
+
+              mapFound = true;
+
+              completedMapsByTier[maps[j].difficulty - 1] ++;
+
+              let map_name = arr[i].map_name;
+              
+              //PRIMERO LOS QUE SEAN EXCLUYENTES Y ORDENADOS DE MAYOR CANTIDAD A MENOR
+              if (map_name.includes("bkz_")) {
+                achievements[7].count ++;
+              } else if (map_name.includes("xc_")) {
+                achievements[8].count ++;
+              } else if (map_name.includes("kz_bhop_")) {
+                achievements[9].count ++;
+              } else if (map_name.includes("kz_kzra_") || map_name.includes("kz_kzro_")) {
+                achievements[10].count ++;
+              } else if (map_name.includes("kz_gfy_")) {
+                achievements[11].count ++;
+              } else if (map_name.includes("kz_zxp") || map_name.includes("kz_zhop")) {
+                achievements[12].count ++;
+              } else if (map_name.includes("kz_2seasons") || map_name.includes("kz_21loop") || map_name.includes("kz_otakuroom") || map_name.includes("kz_whatever") || map_name.includes("agitation") || map_name.includes("kz_blindcity")) {
+                achievements[19].count ++;
+              }
+
+              //I HATE THIS
+              if (map_name.includes("slide")) {
+                achievements[13].count ++;
+              }
+              if (map_name.includes("_go")) {
+                achievements[14].count ++;
+              }
+              if (map_name.includes("_v2") || map_name.includes("_v3")) {
+                achievements[15].count ++;
+              }
+              if (map_name.includes("fix")) {
+                achievements[16].count ++;
+              }
+              if (map_name.includes("_od")) {
+                achievements[17].count ++;
+              }
+              if (map_name.includes("_final")) {
+                achievements[18].count ++;
+              }
+
+              if (runTypeSelector.groupVal() == "false") {
+                //most common first. If at the end is 0: no sticker; 1: no holo sticker; 2: holo sticker 3: holo sticker (+ no holo in modal)
+                switch (arr[i].map_id) {
+                  case 220 : achievements[28].count = achievements[28].count + 1; break;
+                  case 247 : achievements[22].count = achievements[22].count + 1; break;
+                  case 303 : achievements[27].count = achievements[27].count + 1; break;
+                  case 339 : achievements[28].count = achievements[28].count + 2; break;
+                  case 542 : achievements[23].count = achievements[23].count + 2; break;
+                  case 546 : achievements[20].count = achievements[20].count + 2; break;
+                  case 557 : achievements[26].count = achievements[26].count + 1; break;
+                  case 638 : achievements[25].count = achievements[25].count + 1; break;
+                  case 641 : achievements[21].count = achievements[21].count + 1; break;
+                  case 642 : achievements[21].count = achievements[21].count + 2; break;
+                  case 643 : achievements[26].count = achievements[26].count + 2; break;
+                  case 671 : achievements[23].count = achievements[23].count + 1; break;
+                  case 683 : achievements[24].count = achievements[24].count + 1; break;
+                  case 719 : achievements[27].count = achievements[27].count + 2; break;
+                  case 745 : achievements[22].count = achievements[22].count + 2; break;
+                  case 746 : achievements[25].count = achievements[25].count + 2; break;
+                  case 748 : achievements[24].count = achievements[24].count + 2; break;
+                }
+              }
+
+              let points = arr[i].points;
+
+              //Add points to wrs,900s, 800s and total
+              if (points==1000){
+                player_wrs++;
+                player_points += points;
+              } else if (points>=900) {
+                player_900s++;
+                player_points += points;
+              } else if (points>=800) {
+                player_800s++;
+                player_points += points;
+              } else {
+                player_points += points;
+              }
+
+              t.row.add( [
+                '<a href="maps.html?map=' + map_name + '">' + map_name + '</a>',
+                points,
+                new Date(arr[i].time * 1000).toISOString().substr(11, 11),
+                TIER[maps[j].difficulty],
+                arr[i].updated_on.substr(0,10) + '<span style="font-size:0px;">-' + arr[i].updated_on.substr(11,8) + '</span>', //This is the greatest fix of all time
+                arr[i].server_name
+              ]);
+
+              break;
+            }
+          }
+          if (!mapFound) {
+
+            ut.row.add( [
+              '<a href="maps.html?map=' + maps[j].name + '">' + maps[j].name + '</a>',
+              "-",
+              "00:00:00.00",
+              TIER[maps[j].difficulty],
+              "XXXX-XX-XX",
+              "-"
+            ]);
+          }
+        }
+
         //Los puntos y rankings lo calculo siempre que cambio algo, pero el nombre no lo cambio si sigue siendo la misma id, para que la flag siga estando
-        if(new_id){
+        if (new_id || firstfecth){ //si no verifico que sea el primer fetch, termino con el nombre en blanco si cambio el mode o run type mientras carga la pagina por primera vez
           //Name
           $("#playerName").html(arr[0].player_name);
           document.title = arr[0].player_name;
@@ -423,60 +1048,459 @@
 
         //Medals
         if (player_wrs>0){
-          $("#WRs_medals").html('<img src="img/WRs.png" title="WRs" alt="WRs" width="80" height="80"> <span class="medalWRsCount">' + player_wrs + '</span>');
+          $("#WRs_medals").html('<img src="img/WRs.png" title="WRs" alt="WRs" width="80" height="80"> <sup><span class="badge medalWRsCount">' + player_wrs + '</span></sup>');
         } else {
           $("#WRs_medals").html('<img src="img/WRs-empty.png" title="WRs" alt="WRs" width="80" height="80">');
         }
         if (player_900s>0){
-          $("#900s_medals").html('<img src="img/900s.png" title="900s" alt="900s" width="48" height="48"> <span class="medal900sCount">' + player_900s + '</span>');
+          $("#900s_medals").html('<img src="img/900s.png" title="900s" alt="900s" width="48" height="48"> <sup><span class="badge medal900sCount">' + player_900s + '</span></sup>');
         } else {
           $("#900s_medals").html('<img src="img/900s-empty.png" title="900s" alt="900s" width="48" height="48">');
         }
         if (player_800s>0){
-          $("#800s_medals").html('<img src="img/800s.png" title="800s" alt="800s" width="48" height="48"> <span class="medal800sCount">' + player_800s + '</span>');
+          $("#800s_medals").html('<img src="img/800s.png" title="800s" alt="800s" width="48" height="48"> <sup><span class="badge medal800sCount">' + player_800s + '</span></sup>');
         } else {
           $("#800s_medals").html('<img src="img/800s-empty.png" title="800s" alt="800s" width="48" height="48">');
         }
 
         t.draw();
+
+        ut.draw();
+
+        UpdateCharts();
+
+        UpdateBadges();
       }
 
       //sinconizar la search box con la tabla
       $('#finishedMapsSearch').keyup(function(){
-        t.search($(this).val()).draw();
+        switch (tableState) {
+          case 0:
+            ut.search($(this).val()).draw();
+            break;
+          case 1:
+            t.search($(this).val()).draw();
+            break;
+        }
       });
 
-      //Ahora si empezamos a pedir la info del perfil
       function GetSteamProfile (steam64){
 
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8DDDBE9C6A344ECDA9EC11B6BA6C38DD&steamids=" + steam64;
-        
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                ShowSteamProfile(myArr);
-            }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-      }
-
-      function ShowSteamProfile(arr){
-
-        //Avatar
-        $("#playerAvatar").html("<img src=" + arr.response.players[0].avatarfull + "></img>");
-
-        var countryFlag = "";
-        if (arr.response.players[0].loccountrycode!=null){  //algunos jugadores no configuran u ocultan su pais
-          countryFlag = '<img class="countryFlag" title=' + arr.response.players[0].loccountrycode + ' src="https://www.countryflags.io/' + arr.response.players[0].loccountrycode + '/flat/64.png">'
+        if (steamRequest != null && steamRequest.readyState < 4) {
+          steamRequest.abort();  //abort ajax request if another one is needed
         }
-        $("#playerName").append(countryFlag);
+
+        //https://github.com/Rob--W/cors-anywhere
+        steamRequest = $.ajax({url: "https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=023DC037A9187B9DD374365F858B5545&steamids=" + steam64, dataType: 'json', success: function(result){
+          //Avatar
+          $("#playerAvatar").html('<a href="' + result.response.players[0].profileurl + '" target="blank"><img src="' + result.response.players[0].avatarfull + '" class="img-responsive"></img></a>');
+
+          //Flag
+          let countryFlag = "";
+          if (result.response.players[0].loccountrycode!=null){  //algunos jugadores no configuran u ocultan su pais
+            countryFlag = '<img class="countryFlag" title="' + result.response.players[0].loccountrycode + '" src="https://www.countryflags.io/' + result.response.players[0].loccountrycode + '/flat/64.png">'
+          }
+          $("#playerName").append(countryFlag);
+        }});
       }
+
+      function UpdateCharts() {
+        
+        let mapsTotal = mapsByTier.reduce((a, b) => a + b, 0);
+        let completedMapsTotal = completedMapsByTier.reduce((a, b) => a + b, 0);
+
+        myRadarChart.data.datasets[0].data = []; //primero vaciamos la data del chart
+
+        for (let i = 0; i < mapsByTier.length; i++) {
+          //Bars
+          completionBars[i].css("width", (completedMapsByTier[i] / mapsByTier[i])*100 + "%" );
+          completionBars[i].parent().attr("title",(completedMapsByTier[i] + "/" + mapsByTier[i]));
+          //Radar Chart
+          myRadarChart.data.datasets[0].data.push(((completedMapsByTier[i] / mapsByTier[i])*100).toFixed(2));
+        }
+        $("#barsTitle").html( completedMapsTotal + "/" + mapsTotal + " (" + ((completedMapsTotal/mapsTotal)*100).toFixed(2) + "%)" );
+
+        myRadarChart.update();
+      }
+
+      function UpdateBadges () {
+
+        let hiddenStickersContainer = $("#HiddenStickers");
+        hiddenStickersContainer.html("");
+
+        //Tiers
+        for (let i = 0; i < 7; i++) {
+          achievements[i].count = completedMapsByTier[i];
+          achievements[i].goal = Math.round(mapsByTier[i]*0.8);
+          if (achievements[i].count >= achievements[i].goal) {
+            $("#" + achievements[i].id).attr({src: "img/Stickers/80/" + achievements[i].sticker + ".png", title: achievements[i].title + " [" + achievements[i].goal + "/" + achievements[i].goal + "]"});
+          } else {
+            $("#" + achievements[i].id).attr({src: "img/Stickers/80/" + achievements[i].sticker + "-Empty.png", title: "???? [" + achievements[i].count + "/" + achievements[i].goal + "]"});
+          }
+        }
+
+        //Specials
+        for (let i = 7; i < 20; i++) {
+          if (achievements[i].count >= achievements[i].goal) {
+            $("#" + achievements[i].id).attr({src: "img/Stickers/80/" + achievements[i].sticker + ".png", title: achievements[i].title + " [" + achievements[i].goal + "/" + achievements[i].goal + "]"});
+          } else {
+            $("#" + achievements[i].id).attr({src: "img/Stickers/80/" + achievements[i].sticker + "-Empty.png", title: "???? [" + achievements[i].count + "/" + achievements[i].goal + "]"});
+          }
+        }
+
+        //Hidden Stickers
+
+        //100% Completion
+        let completedMapsTotal = completedMapsByTier.reduce((a, b) => a + b, 0);
+        let mapsTotal = mapsByTier.reduce((a, b) => a + b, 0);
+        if (completedMapsTotal/mapsTotal == 1) {
+          hiddenStickersContainer.append('<a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Tyranids-Hive-Tyrant.png" id="100%" title="Tyranids Hive Tyrant"></a>');
+          achievements[29].count = 1;
+        }
+
+
+        if (runTypeSelector.groupVal() == "false") {
+
+          //Crown
+          if (achievements[20].count >= achievements[20].goal){
+            hiddenStickersContainer.append('<a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Crown.png" id="crown" title="Crown"></a>');
+          }
+          //Rest
+          for (let i = 21; i < 29; i++) {
+            if (achievements[i].count > 0) {
+              hiddenStickersContainer.append('<a data-toggle="modal" data-target="#doubleBadgeModal"><img src="img/Stickers/80/' + achievements[i].sticker[achievements[i].count] + '.png" id="' + achievements[i].id + '" title="' + achievements[i].title[achievements[i].count] + '"></a>');
+            }
+          }
+        }
+      }
+
+      //Update Single Badge Modal
+      $("#singleBadgeModal").on('show.bs.modal', function(){
+
+        let selectedAchievement;
+        for (let i = 0; i < achievements.length; i++) {
+          if (achievements[i].id == event.target.id) {
+            selectedAchievement = achievements[i];
+            break;
+          }
+        }
+
+        //Title and Sticker (Shown/Hidden)
+        if (selectedAchievement.count >= selectedAchievement.goal) {
+          $("#singleBadgeTitle").html(selectedAchievement.title + "<br>" + selectedAchievement.goal + "/" + selectedAchievement.goal);
+          $("#singleBadgeSticker").attr("src", "img/Stickers/260/" + selectedAchievement.sticker + ".png");
+        } else {
+          $("#singleBadgeTitle").html("????????? <br>" + selectedAchievement.count + "/" + selectedAchievement.goal);
+          $("#singleBadgeSticker").attr("src", "img/Stickers/260/" + selectedAchievement.sticker + "-Empty.png");
+        }
+
+        //Footer
+        $("#singleBadgeFooter").html(selectedAchievement.achievement);
+      });
+
+      //Update Double Badge Modal
+      $("#doubleBadgeModal").on('show.bs.modal', function(){
+        
+        let selectedAchievement;
+        for (let i = 0; i < achievements.length; i++) {
+          if (achievements[i].id == event.target.id) {
+            selectedAchievement = achievements[i];
+            break;
+          }
+        }
+
+        //Title and Sticker (Shown/Hidden)
+        let modalTitle ="";
+        
+        //Holo
+        if (selectedAchievement.count > 1) {
+          modalTitle = selectedAchievement.title[2] + " & ";
+          $("#doubleBadgeHolo").attr("src", "img/Stickers/260/" + selectedAchievement.sticker[3] + ".png");
+          $("#doubleBadgeHolo").parent().addClass("holoSticker");
+          $(".holoSticker").css('-webkit-mask-image', 'url("img/Stickers/260/' + selectedAchievement.sticker[3] + '.png")');
+        } else {
+          modalTitle = "????????? & ";
+          $("#doubleBadgeHolo").attr("src", "img/Stickers/260/" + selectedAchievement.sticker[1] + "-Empty.png");
+          $("#doubleBadgeHolo").parent().css('-webkit-mask-image', '');
+          $("#doubleBadgeHolo").parent().removeClass("holoSticker");
+        }
+        //No Holo
+        if (selectedAchievement.count == 1 || selectedAchievement.count == 3) {
+          modalTitle += selectedAchievement.title[1];
+          $("#doubleBadgeNoHolo").attr("src", "img/Stickers/260/" + selectedAchievement.sticker[1] + ".png");
+        } else {
+          modalTitle += "?????????";
+          $("#doubleBadgeNoHolo").attr("src", "img/Stickers/260/" + selectedAchievement.sticker[1] + "-Empty.png");
+        }
+
+        $("#doubleBadgeTitle").html(modalTitle);
+
+        //Footer
+        $("#doubleBadgeFooter").html(selectedAchievement.achievement[selectedAchievement.count]);
+
+      });
+
+      //What happens when a jumptype is selected
+      $("#table-state-title").on('click', 'a.dropdown-item', function() {
+        currentJumptype = $(this).attr('id');
+        GetJumpstatsData();
+      });
+
+      function GetJumpstatsData () {
+
+        jt.clear();
+        jt.draw();
+
+        if (jumpstatsRequest != null && jumpstatsRequest.readyState < 4) {
+          jumpstatsRequest.abort();  //abort ajax request if another one is needed
+        }
+
+        let isCrouchBind = $("#crouchbindCheck").is(":checked") && currentJumptype!="Ladderjump" ? "true" : "false";
+
+        jumpstatsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/jumpstats?steam_id=" + currentSteamID + "&jumptype=" + currentJumptype + "&is_crouch_bind=" + isCrouchBind + "&limit=50", dataType: 'json', success: function(result){
+          
+          if (result.length>0) {
+
+            $("#jumpstats-table-title").html(currentJumptype + "s");
+
+            for (let i = 0; i < result.length; i++) {
+              jt.row.add( [
+                currentJumptype,
+                result[i].distance.toFixed(4),
+                result[i].strafe_count,
+                result[i].is_crouch_bind == 0 ? "No" : "Yes",
+                result[i].updated_on.substr(0,10) + '<span style="font-size:0px;">-' + result[i].updated_on.substr(11,8) + '</span>', //This is the greatest fix of all time
+                result[i].server_id
+              ]);
+            }
+          } else {
+            alert ("No data was found.");
+          }
+
+          jt.draw();
+          
+        }});
+      }
+
+      //Tooltip initialization
+      $('[data-toggle="tooltip"]').tooltip();
+      //Copy to clipboard Functionality
+      $('[data-toggle="tooltip"]').click(function(){
+
+        let urlRunType;
+        if (runTypeSelector.groupVal() == "true") {
+          urlRunType = "tp";
+        } else if (runTypeSelector.groupVal() == "false") {
+          urlRunType = "pro";
+        }
+
+        let sharableURL = window.location.host + window.location.pathname;
+
+        if (currentSteamID !=null) {
+          if (tableState == 2 && currentJumptype != null) {
+            sharableURL += "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType + "&jumpstat=" + currentJumptype.toLowerCase();
+          } else {
+            sharableURL += "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType;
+          }
+          
+          const copyText = document.createElement('textarea');
+          copyText.value = sharableURL;
+          document.body.appendChild(copyText);
+          copyText.select();
+          document.execCommand('copy');
+          document.body.removeChild(copyText);
+
+          var shareTooltip = $(this)
+          shareTooltip.tooltip('show');
+          setTimeout(function(){
+            shareTooltip.tooltip('hide');
+          }, 2000);
+
+        } else {
+          alert("Please input a SteamID first.")
+        }
+      });
 
       function isValidSteamID(steamID) {
         return /^STEAM_[0-5]:[01]:\d+$/.test(steamID);
       }
+
+      //CS:GO uses STEAM_1, but a lot of steamid finder websites return STEAM_0, so change it to one when saving to localstorage for better compatibility
+      function fixSteamID(steamID) {
+        return "STEAM_1" + steamID.substring(7);
+      }
+
+      var $cards = $(".holoSticker");
+      var $style = $(".holoHover");
+      $cards.on("mousemove", function(e) {
+        var $card = $(this);
+        var l = e.offsetX;
+        var t = e.offsetY;
+        var h = $card.height();
+        var w = $card.width();
+        var lp = Math.abs(Math.floor(100 / w * l)-100);
+        var tp = Math.abs(Math.floor(100 / h * t)-100);
+        var bg = `background-position: ${lp}% ${tp}%;`
+        var style = `.holoSticker.active:before { ${bg} }`
+        $cards.removeClass("active");
+        $card.addClass("active");
+        $style.html(style);
+      }).on("mouseout", function() {
+        $cards.removeClass("active");
+      });
+
+      function JumpstatColor (units) {
+        switch (currentJumptype) {
+          case "Longjump" :
+            if ($("#crouchbindCheck").is(":checked")) {
+              if (units >= 287){
+                return '#d22ce5';
+              } else if (units >= 285){
+                return '#e4ae39';
+              } else if(units >= 275){
+                return '#fa292e';
+              } else if (units >= 270) {
+                return '#4abc8d';
+              } else if (units >= 265) {
+                return '#5d96d6';
+              }
+            } else {
+              if (units >= 282){
+                return '#d22ce5';
+              } else if(units >= 280){
+                return '#e4ae39';
+              } else if (units >= 275) {
+                return '#fa292e';
+              } else if (units >= 270) {
+                return '#4abc8d';
+              } else if (units >= 265) {
+                return '#5d96d6';
+              }
+            }
+            break;
+          case "Bhop" :
+            if ($("#crouchbindCheck").is(":checked")) {
+              if (units >= 344){
+                return '#d22ce5';
+              } else if (units >= 342){
+                return '#e4ae39';
+              } else if(units >= 330){
+                return '#fa292e';
+              } else if (units >= 325) {
+                return '#4abc8d';
+              } else if (units >= 320) {
+                return '#5d96d6';
+              }
+            } else {
+              if (units >= 342){
+                return '#d22ce5';
+              } else if(units >= 340){
+                return '#e4ae39';
+              } else if (units >= 330) {
+                return '#fa292e';
+              } else if (units >= 325) {
+                return '#4abc8d';
+              } else if (units >= 320) {
+                return '#5d96d6';
+              }
+            }
+            break;
+          case "MultiBhop" :
+            if ($("#crouchbindCheck").is(":checked")) {
+              if (units >= 360){
+                return '#d22ce5';
+              } else if (units >= 358){
+                return '#e4ae39';
+              } else if(units >= 350){
+                return '#fa292e';
+              } else if (units >= 345) {
+                return '#4abc8d';
+              } else if (units >= 340) {
+                return '#5d96d6';
+              }
+            } else {
+              if (units >= 357){
+                return '#d22ce5';
+              } else if(units >= 355){
+                return '#e4ae39';
+              } else if (units >= 350) {
+                return '#fa292e';
+              } else if (units >= 345) {
+                return '#4abc8d';
+              } else if (units >= 340) {
+                return '#5d96d6';
+              }
+            }
+            break;
+          case "Ladderjump" :
+            if (units >= 200){
+              return '#d22ce5';
+            } else if (units >= 193){
+              return '#e4ae39';
+            } else if(units >= 175){
+              return '#fa292e';
+            } else if (units >= 165) {
+              return '#4abc8d';
+            } else if (units >= 155) {
+              return '#5d96d6';
+            }
+            break;
+          case "Weirdjump" :
+            if ($("#crouchbindCheck").is(":checked")) {
+              if (units >= 302){
+                return '#d22ce5';
+              } else if (units >= 300){
+                return '#e4ae39';
+              } else if(units >= 290){
+                return '#fa292e';
+              } else if (units >= 285) {
+                return '#4abc8d';
+              } else if (units >= 280) {
+                return '#5d96d6';
+              }
+            } else {
+              if (units >= 300){
+                return '#d22ce5';
+              } else if(units >= 298){
+                return '#e4ae39';
+              } else if (units >= 290) {
+                return '#fa292e';
+              } else if (units >= 285) {
+                return '#4abc8d';
+              } else if (units >= 280) {
+                return '#5d96d6';
+              }
+            }
+            break;
+          case "DropBhop" : //kztimer dropbhop tiers are wrong. They are the same as in gokz, but i won't take away from the player the ownage they got in server.
+            if (units >= 342){
+              return '#d22ce5';
+            } else if (units >= 340){
+              return '#e4ae39';
+            } else if(units >= 325){
+              return '#fa292e';
+            } else if (units >= 320) {
+              return '#4abc8d';
+            } else if (units >= 315) {
+              return '#5d96d6';
+            }
+            break;
+          case "Countjump" :  //they don't exist in gokz and almost noone jumps binded
+            if (units >= 307){
+              return '#d22ce5';
+            } else if (units >= 305){
+              return '#e4ae39';
+            } else if(units >= 295){
+              return '#fa292e';
+            } else if (units >= 290) {
+              return '#4abc8d';
+            } else if (units >= 285) {
+              return '#5d96d6';
+            }
+            break;
+        }
+      }
+
     });
   </script>
 

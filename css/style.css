@@ -1,3 +1,114 @@
+@media(max-width: 768px) {
+
+    .tpRunsSelector {
+        display: block;
+        margin-left: 16px;
+    }
+
+    .gameModeSelectors {
+        display: block;
+        margin-right: 16px;
+    }
+
+    #playerAvatar {
+        justify-content: center;
+        padding-right: 0;
+        padding-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .MedalsColumn {
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 20px;
+        padding: 0px !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center !important;
+    }
+
+    .WRMedals {
+        order: 2;
+        display: inline-block;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .RedMedals {
+        order: 1;
+        display: inline-block;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .BlueMedals {
+        order: 3;
+        display: inline-block;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .ProfileData {
+        padding-left: 50px !important;
+        padding-right: 0px !important;
+        overflow-x: scroll;
+    }
+
+    .MapData {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        margin-right: 15px;
+        margin-left: 15px;
+        overflow-x: scroll;
+    }
+
+    #playerName, #mapName {
+        font-size: 50px !important;
+    }
+
+    .countryFlag {
+        width: 50px;
+        height: 50px;
+    }
+
+    #playerPoints, #playerRank, #mapTier {
+        font-size: 30px;
+    }
+
+    #finishedMapsSearch, #mapRankingSearch {
+        margin-right: 0px !important;
+        margin-left: auto;
+    }
+    .fa-search {
+        display: none;
+    }
+
+    .achievementsColumn {
+        text-align: center;
+    }
+
+    .barsColumn {
+        padding-right: 70px;
+        padding-left: 70px;
+        margin-bottom: 20px;
+    }
+
+    .carousel-control-next {
+        margin-right: -15px !important;
+    }
+}
+
+html {
+    overflow-y:scroll;
+}
+
 body{
     color: white;
     background-color: #121212;
@@ -13,6 +124,10 @@ thead th{
     height: 50px;
 }
 
+.th-lg {
+    min-width: 190px !important;
+}
+
 .table-top{
     height: 50px;
     background-color: #232323;
@@ -21,10 +136,15 @@ thead th{
     font-weight: 400;
 }
 
+.table-responsive::-webkit-scrollbar {
+    display: none;
+}
+
 a{
     color:white;
 }
 
+.form-control,
 .form-control:focus{
     color: white;
 }
@@ -61,19 +181,112 @@ a{
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
+input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px #2E2E2E inset !important;
     box-shadow: 0 0 0 30px #2E2E2E inset !important;
     -webkit-text-fill-color: white !important;
     caret-color: white;
 }
 
+.dropdown-menu {
+    background-color: #2E2E2E;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item:focus,
+.dropdown-item:active,
+.dropdown-item:hover {
+    color: white;
+    background-color: #4b4c4f;
+    border-style:none;
+    outline: none;
+}
+
+.dropdown-divider {
+    opacity: 20%;
+    margin: 8px;
+}
+
+.navbar .dropdown-menu a:not(.active) {
+    color: white;
+}
+
+/*http://ianlunn.github.io/Hover/*/
+.hvr-grow-shadow {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    -webkit-transition-property: box-shadow, transform;
+    transition-property: box-shadow, transform;
+}
+.hvr-grow-shadow:hover, .hvr-grow-shadow:focus, .hvr-grow-shadow:active {
+box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0);
+-webkit-transform: scale(1.03);
+transform: scale(1.03);
+
+-webkit-animation: rainbow 5s ease infinite;
+-z-animation: rainbow 5s ease infinite;
+-o-animation: rainbow 5s ease infinite;
+animation: rainbow 5s ease infinite;
+}
+
+@-webkit-keyframes rainbow {
+    0% { box-shadow: 0 5px 10px -5px blue; }
+    20% { box-shadow: 0 5px 10px -5px red; }
+    40% { box-shadow: 0 5px 10px -5px orange; }
+    60% { box-shadow: 0 5px 10px -5px green; }
+    80% { box-shadow: 0 5px 10px -5px cyan; }
+    100% { box-shadow: 0 5px 10px -5px blue; }
+}
+@-moz-keyframes rainbow {
+    0% { box-shadow: 0 5px 10px -5px blue; }
+    20% { box-shadow: 0 5px 10px -5px red; }
+    40% { box-shadow: 0 5px 10px -5px orange; }
+    60% { box-shadow: 0 5px 10px -5px green; }
+    80% { box-shadow: 0 5px 10px -5px cyan; }
+    100% { box-shadow: 0 5px 10px -5px blue; }
+}
+@-o-keyframes rainbow {
+    0% { box-shadow: 0 5px 10px -5px blue; }
+    20% { box-shadow: 0 5px 10px -5px red; }
+    40% { box-shadow: 0 5px 10px -5px orange; }
+    60% { box-shadow: 0 5px 10px -5px green; }
+    80% { box-shadow: 0 5px 10px -5px cyan; }
+    100% { box-shadow: 0 5px 10px -5px blue; }
+}
+@keyframes rainbow { 
+    0% { box-shadow: 0 5px 10px -5px blue; }
+    20% { box-shadow: 0 5px 10px -5px red; }
+    40% { box-shadow: 0 5px 10px -5px orange; }
+    60% { box-shadow: 0 5px 10px -5px green; }
+    80% { box-shadow: 0 5px 10px -5px cyan; }
+    100% { box-shadow: 0 5px 10px -5px blue; }
+}
+
+.card-img-overlay {
+    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.8) 24%, rgba(0,0,0,0) 100%);
+    border-radius: 0.5rem;
+}
+
+.card, .card-body, .card-img{
+    border-radius:0.5rem !important;
+    background-color: black;
+}
+
 .medal800sCount {
     position: absolute;
+    font-weight: 300;
     font-size: 12px;
-    top: 160px;
-    left: 105px;
-    padding: 2px 5px;
+    top: 10px;
+    left: -15px;
+    padding: 3px 5px;
     border-radius: 15%;
     background: #164f89;
     color: white;
@@ -82,10 +295,11 @@ input:-webkit-autofill:active  {
 
 .medal900sCount {
     position: absolute;
+    font-weight: 300;
     font-size: 12px;
-    top: 105px;
-    left: 105px;
-    padding: 2px 5px;
+    top: 9px;
+    left: -15px;
+    padding: 3px 5px;
     border-radius: 15%;
     background: #701018;
     color: white;
@@ -94,14 +308,120 @@ input:-webkit-autofill:active  {
 
 .medalWRsCount {
     position: absolute;
+    font-weight: 300;
     font-size: 12px;
-    top: 14px;
-    left: 105px;
-    padding: 2px 5px;
+    top: 5px;
+    left: -31px;
+    padding: 3px 5px;
     border-radius: 15%;
     background: #936e00;
     color: white;
     user-select: none;
+}
+
+.longjumpRainbow {
+    animation: fontRainbow 5s ease infinite;
+}
+
+@keyframes fontRainbow { 
+    0% { color: #5d96d6; }
+    20% { color: #4abc8d; }
+    40% { color: #fa292e; }
+    60% { color: #e4ae39; }
+    80% { color: #d22ce5; }
+    100% { color: #5d96d6; }
+}
+
+.carousel-control-prev {
+    margin-left: -20px;
+    width: 70px;
+}
+  
+.carousel-control-next {
+    margin-right: -20px;
+    width: 70px;
+}
+
+.col-lg:empty { display: none; }
+
+.holoSticker {
+    /*-webkit-mask-image: url('../img/Stickers/260/Stan-Holo.png');
+    mask-image: url('../img/Stickers/260/Stan-Holo.png');*/
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.holoSticker:before,
+.holoSticker:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-image: linear-gradient(
+      115deg,
+      transparent 0%,
+      rgb(0, 231, 255) 30%,
+      rgb(255, 0, 231) 70%,
+      transparent 100%
+    );
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 300% 300%;
+    mix-blend-mode: color-dodge;
+    opacity: 0.2;
+    z-index: 1;
+    animation: holoGradient 15s ease infinite;
+}
+.holoSticker:after {
+    background-image: url("../img/Stickers/260/Sparks-optimize.gif");
+    background-position: center;
+    background-size: 180%;
+    mix-blend-mode: color-dodge;
+    opacity: 0.7;
+    z-index: 2;
+    animation: none;
+}
+  
+.holoSticker.active:before {
+    opacity: 0.5;
+    animation: none;
+    transition: none;
+    background-image: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 25%,
+      rgba(0, 231, 255,0.7) 45%,
+      rgba(255, 0, 231,0.7) 55%,
+      transparent 70%,
+      transparent 100%
+    );
+}
+  
+.holoSticker.active:before,
+.holoSticker.active:after {
+    animation: none;  
+}
+  
+@keyframes holoGradient {
+    0%, 100% {
+      background-position: 0% 0%;
+    }
+    10% {
+      background-position: 0% 0%;
+    }
+    19% {
+      background-position: 100% 100%;
+    }
+    35% {
+      background-position: 100% 100%;
+    }
+    55% {
+      background-position: 0% 0%;
+    }
 }
 
 /*RANK COLORS*/
@@ -175,7 +495,7 @@ input:-webkit-autofill:active  {
 .EXTREME{
     color: #fe0000;
 }
-.VERY\ HARD{
+.VERY-HARD{
     color: #fe4040;
 }
 .HARD{
@@ -187,6 +507,6 @@ input:-webkit-autofill:active  {
 .EASY{
     color: #a1fe47;
 }
-.VERY\ EASY{
+.VERY-EASY{
     color: #40fe40;
 }

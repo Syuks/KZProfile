@@ -27,16 +27,24 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
       <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarToggler">
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/">Profile
-              </a>
+              <a class="nav-link" href="/">Profile</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="maps.html">Maps</a>
-              <span class="sr-only">(current)</span>
+              <a class="nav-link" href="maps.html">Maps
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recent.html">Recent</a>
             </li>
 
             <!-- Dropdown -->
@@ -53,12 +61,13 @@
           </ul>
           <!-- Links -->
 
-          <form id="mapForm" class="form-inline" method="GET">
+          <form id="mapForm" class="form-inline" method="GET" autocomplete="off">
             <div class="md-form my-0">
               <input id="map-input" class="form-control mr-sm-2 map-input" type="text" name="map-input" placeholder="Map" aria-label="Map">
               <i class="fas fa-search" aria-hidden="true"></i>
             </div>
           </form>
+        </div>
 
       </div>
     </nav>
@@ -70,19 +79,19 @@
       <div class="row configuration-row">
         <div class="col text-right" style="border-right: 2px solid white;">
           <!-- KZTimer -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline gameModeSelectors">
             <input class="configuration-radio" type="radio"  id="kztimerRadio" value="kz_timer" name="game_mode" checked>
             <label class="radio-label" for="kztimerRadio">KZ Timer</label>
           </div>
 
           <!-- SimpleKZ -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline gameModeSelectors">
             <input class="configuration-radio" type="radio" id="simplekzRadio" value="kz_simple" name="game_mode">
             <label class="radio-label" for="simplekzRadio">Simple KZ</label>
           </div>
 
           <!-- Vanilla -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline gameModeSelectors">
             <input class="configuration-radio" type="radio" id="vanillaRadio" value="kz_vanilla" name="game_mode">
             <label class="radio-label" for="vanillaRadio">Vanilla</label>
           </div>
@@ -96,12 +105,10 @@
           </div>
 
           <!-- TP -->
-          <div class="custom-control-inline">
+          <div class="custom-control-inline tpRunsSelector">
             <input class="configuration-radio" type="radio" id="tpRunsRadio" value="true" name="run_type">
             <label class="radio-label" for="tpRunsRadio">Tp</label>
           </div>
-
-
 
         </div>
       </div>
@@ -111,15 +118,18 @@
       <div class="row" style="margin-top: 20px;">
         
         <!-- Map Image-->
-        <div id="mapImage" class="col-2 d-flex align-items-center">
+        <div id="mapImage" class="col-lg-3 d-flex align-items-center">
           
         </div>
 
         <!--Map Name-->
-        <div class="col-10" style="padding-left: 50px;">
-          <h1 id="mapName" style="font-size: 80px;">
-            
+        <div class="col-lg-9 text-nowrap MapData" style="padding-left: 20px;">
+          <h1 style="font-size: 80px;">
+            <span id="mapName"></span>
+            <a id="bonus-activator" class="d-none dropdown-toggle" data-toggle="dropdown" style="font-size:24px;"></a>
+            <div id="bonus-dropdown" class="dropdown-menu"></div>
           </h1>
+          
           <h1 id="mapTier" style="color: #cf4479;font-weight: 400;">
             
           </h1>
@@ -129,15 +139,24 @@
 
       <div class="row z-depth-1-half" style="margin-top: 30px;">
         <div class="col">
+
+          <!-- TABLE HEADER -->
           <div class="row table-top">
-            <div class="col">
-              
+            <!-- 1. Refresh Button -->
+            <div class="col d-flex align-items-center" id="refreshColumn">
+              <a id="refreshButton">
+                <i class="fas fa-redo-alt"></i>
+              </a>
+              <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
+                <i class="fas fa-share-alt"></i>
+              </a>
             </div>
-            <div class="col d-flex align-items-center justify-content-center">
+            <!-- 2. Table state changer -->
+            <div id="table-state-title" class="col d-flex align-items-center justify-content-center">
               Map Ranking
             </div>
+            <!-- 3. Search form -->
             <div class="col d-flex flex-row-reverse align-items-center">
-              <!-- Search form -->
               <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off">
                 <input id="mapRankingSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
                 <i class="fas fa-search" aria-hidden="true"></i>
@@ -145,22 +164,42 @@
             </div>
           </div>
           <div class="row">
-            <table id="MapRanking" class="table-sm table-borderless table-hover table-dark text-truncate text-center" width="100%">
-              <thead class="z-depth-1">
-                <tr>
-                  <th>#</th>
-                  <th class="text-center">Player</th>
-                  <th>Time</th>
-                  <th>Points</th>
-                  <th>TPs</th>
-                  <th>Date</th>
-                  <th class="text-center">Server</th>
-                </tr>
-              </thead>
-            </table>
+            <div class="table-responsive">
+              <table id="MapRanking" class="table-sm table-borderless table-hover table-dark text-center text-nowrap">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th>#</th>
+                    <th class="text-center th-lg">Player</th>
+                    <th class="th-lg">Time</th>
+                    <th class="th-lg">Points</th>
+                    <th class="th-lg">TPs</th>
+                    <th class="th-lg">Date</th>
+                    <th class="th-lg">Server</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+
+      <div id="mapImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mapImageModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content"  style="background-color: #121212;">
+          <div class="modal-header">
+            <div class="col-1"></div>
+            <h5 class="modal-title col-10 text-center" id="mapImageModalTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="mapImageModalContent" class="modal-body text-center">
+            ...
+          </div>
+        </div>
+      </div>
+    </div>
+
     </div>  
     
   <!-- End -->
@@ -173,8 +212,10 @@
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="js/mdb.min.js"></script>
-  <!-- Datatables and Fixed Table Header  -->
+  <!-- Datatables  -->
   <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
   <!-- Custom scripts -->
   <script type="text/javascript">
 
@@ -188,21 +229,52 @@
       1: "VERY EASY",
     }
 
+    //jquery extension for cleaner radio group value retrieving
+    jQuery.fn.extend({
+      groupVal: function() {
+          return $(this).filter(':checked').val();
+      }
+    });
+
     $(document).ready(function () {
 
+      var maps; //Maps JSON data for Tiers and Autocompletes
       var currentMap;
+      var currentMapID; //used just for fetching bonuses (doesn't accept map_name parameter)
+      var mapStage = 0;
+
+      //Global so I can cancel the ajax request as soon as a new one is needed
+      var rankingRequest;
+      var recordFiltersRequest;
+
+      //usamos este bool para evitar problemas al cambiar el mode o run apenas carga la página
+      var firstfecth = true;
+
+      //Local Storage
+      var storedSteamID = localStorage.getItem('steamid');
+      var storedGameMode = localStorage.getItem('game_mode');
+      var storedRunType = localStorage.getItem('run_type');
+      var storedMap = localStorage.getItem('map');
+
+      //UI Elements
+      var mapInput = $("#map-input");
+      var gameModeSelector = $("input[type='radio'][name='game_mode']");
+      var runTypeSelector = $("input[type='radio'][name='run_type']");
+      var bonusActivator = $("#bonus-activator");
+      var bonusDropdown = $("#bonus-dropdown");
 
       //Datatable Initialization
       var t = $('#MapRanking').DataTable({        
                   "iDisplayLength": 100,
-                  "order": [[ 2, "asc" ]],
                   "columnDefs": [
-                    { "width": "16%", "targets": [1,2,3,4,5,6] }, //para que todos los datos tengan el mismo ancho
-                    { "width": "4%", "targets": 0 }, //para que el index tenga 4%
-                    { "targets": 6 , className: "text-left"}, //para que los servers se justifiquen en la izquierda
-                    { "targets": 1, className: "text-wrap text-left"}, //la tabla usa text-truncate para que los servers sigan de largo, asi que le pongo wrap a los nombres para sobreescribirlo
-                    { "searchable": false, "orderable": false, "targets": 0 } //para que no busquen ni ordenen la columna del index
+                    { "orderSequence": [ "desc", "asc" ], "targets": [3,5] }, //defines the direction the column sorts when first clicked
+                    { "orderData": [2, 1], "targets": 2 }, //by doing this orering by time is consistent and we don't get points flipped
+                    { "orderData": [3, 1], "targets": 3 }, //by doing this orering by points is consistent and we don't get times and indexes flipped
+                    { "searchable": false, "orderable": false, "targets": 0 }, //para que no busquen ni ordenen la columna del index
+                    { "className": "text-left", "targets": 6}, //para que los servers se justifiquen en la izquierda
+                    { "className": "text-wrap text-left", "targets": 1} //la tabla usa text-truncate para que los servers sigan de largo, asi que le pongo wrap a los nombres para sobreescribirlo
                   ],
+                  "order": [[ 3, "desc" ]], //DON'T CHANGE THIS, IT IS IMPOSSIBLE TO MAKE THE SECOND ORDER SORT BY POINTS "DESCENDING"
                   'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
                     if (data[3]==1000){
                       $(row).find('td:eq(3)').css('color', '#e4ae39');
@@ -213,67 +285,124 @@
                     } else if (data[3] >= 700) {
                       $(row).find('td:eq(3)').css('color', '#4abc8d');
                     }
+                    if(data[1].includes(localStorage.getItem('steamid'))){
+                      $(row).css('background-color', '#2E2E2E');
+                    }
                   },
                   "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
                 });
       $('.dataTables_length').addClass('bs-select');
 
-      //Get preferred Game Mode
-      if (localStorage.getItem('game_mode')!=null){
-        $("input[type='radio'][name=game_mode][value=" + localStorage.getItem('game_mode') + "]").prop('checked', true);
+      $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+        maps = result;
+        //Autocomplete Initialization
+        $("#map-input").autocomplete({
+          source: maps,
+          label: "name",
+          treshold:2,
+          onSelectItem: onSelectAutocomplete
+        });
+      }});
+
+      //Autocomplete Selection Callback
+      function onSelectAutocomplete (item, element) {
+        currentMap = item.label;
+        firstfecth = true;
+        mapStage = 0;
+        GetMapData(true);
       }
 
-      //Get preferred Run Type
-      if (localStorage.getItem('run_type')!=null){
-        $("input[type='radio'][name=run_type][value=" + localStorage.getItem('run_type') + "]").prop('checked', true);
-      }
+      //First of all see if there are parameters in url. If there is one, load data from that, if there isn't load saved ones
+      var URLSearchParameters = new URLSearchParams(window.location.search);
+      var mapNameParameter = URLSearchParameters.get("map");
+      var gameModeParameter = URLSearchParameters.get("mode");
+      var runTypeParameter = URLSearchParameters.get("run");
+      var bonusParameter = URLSearchParameters.get("bonus");
 
-      //First of all see if there is a map parameter in url. If there is one, load data from that map, if there isn't load saved map
-      var mapNameParameter = new URLSearchParams(window.location.search).get("map");
+      //MAP PARAMETER
       if (mapNameParameter!=null && mapNameParameter!="" ){
         currentMap = mapNameParameter;
-        $("#map-input").val(currentMap); //visual
-        GetMapData(true, currentMap, $("input[type='radio'][name='game_mode']:checked").val(), $("input[type='radio'][name='run_type']:checked").val());
+        mapInput.val(currentMap); //visual
       } else {
         //If there is no map on the url, get stored map if there is one
-        if (localStorage.getItem('map')!=null){           //si hay mapa guardado
-          currentMap = localStorage.getItem('map');   //conseguir el nombre
-          $("#map-input").val(currentMap);                //rellenar el input con el nombre (visual)
-          GetMapData(true, currentMap, $("input[type='radio'][name='game_mode']:checked").val(), $("input[type='radio'][name='run_type']:checked").val());
+        if (storedMap!=null){       //si hay mapa guardado
+          currentMap = storedMap;   //conseguir el nombre
+          mapInput.val(currentMap); //rellenar el input con el nombre (visual)
         }
       }
 
-      //If a Enter is pressed on the map input, submitting a new map
+      //GAME MODE PARAMETER
+      if (gameModeParameter == "kz_timer" || gameModeParameter == "kz_simple" || gameModeParameter == "kz_vanilla"){
+        $("input[type='radio'][name=game_mode][value=" + gameModeParameter + "]").prop('checked', true);
+      } else {
+        //If there is no gamemode in the url, get stored gamemode if there is one
+        if (storedGameMode!=null){
+          $("input[type='radio'][name=game_mode][value=" + storedGameMode + "]").prop('checked', true);
+        }
+      }
+
+      //RUN TYPE PARAMETER
+      if (runTypeParameter == "tp"){
+        $("input[type='radio'][name=run_type][value=true]").prop('checked', true);
+      } else if (runTypeParameter == "pro") {
+        $("input[type='radio'][name=run_type][value=false]").prop('checked', true);
+      } else {
+        //If there is no runtype in the url, get stored runtype if there is one
+        if (storedRunType!=null){
+          $("input[type='radio'][name=run_type][value=" + storedRunType + "]").prop('checked', true);
+        }
+      }
+
+      //BONUS PARAMETER
+      if (bonusParameter!=null && bonusParameter!="" ){
+        mapStage = bonusParameter;
+      }
+
+      //Now that we know if there are parameters on the link or stored data, we fetch the info
+      //if nothing was found for game mode or run type, it will use the default values
+      //but if nothing was found for steamid, do nothing, wait for a steamid to be placed on input
+      if (currentMap != null) {
+        GetMapData(true);
+      }
+
+      //If Enter is pressed on the map input, submitting a new map
       $( "#mapForm" ).submit(function( event ) {
-        ProcessFetchingOptions();
+        firstfecth = true;
+        ProcessFetchingOptions(false);
         return false;         //para que no se cargue devuelta la página
       });
 
       //If the radio group state is changed (Game Type)
       $("input[name='game_mode']").click(function() {
-        ProcessFetchingOptions();
+        ProcessFetchingOptions(false);
       });
 
       //If the radio group state is changed (Run Type)
       $("input[name='run_type']").click(function() {
-        ProcessFetchingOptions();
+        ProcessFetchingOptions(false);
+      });
+
+      //What happens when i click the Refresh Button on the table
+      $("#refreshButton").click(function() {
+        ProcessFetchingOptions(true);
       });
       
       //Todos los chequeos para saber el mapa, el game mode y la run type
-      function ProcessFetchingOptions () {
-        if ($("#map-input").val()!=""){ //antes que nada fijarnos si pusieron algo
-          var mapInput = $("#map-input").val();
-          var game_mode_radio = $("input[type='radio'][name='game_mode']:checked").val();
-          var run_type_radio = $("input[type='radio'][name='run_type']:checked").val();
+      function ProcessFetchingOptions (justRefresh) {
+        if (mapInput.val()!=""){ //antes que nada fijarnos si pusieron algo
+          
+          if (!justRefresh) {
+            mapStage = 0; //si solo apretamos refresh, carga devuelta el mismo stage, pero si cambiar de game_mode o run_type, volve al main map
+          }
 
           //localStorage.setItem('game_mode', game_mode_radio); //No cambiar las preferencias del jugador, capaz solo está chusmeando los tiempos en otros modos
           //localStorage.setItem('run_type', run_type_radio);
 
-          if (currentMap!= mapInput){  //detecting if a new map is written in the text input is important for map details refreshing (so we don't have to refresh every time)
-            currentMap = mapInput;
-            GetMapData(true, currentMap, game_mode_radio, run_type_radio);
+          if (currentMap!= mapInput.val() || firstfecth){  //detecting if a new map is written in the text input is important for map details refreshing (so we don't have to refresh every time)
+            currentMap = mapInput.val();
+            GetMapData(true);
           } else {
-            GetMapData(false, currentMap, game_mode_radio, run_type_radio);
+            GetMapData(false);
           }
         }else {
           alert("Please, input a map");
@@ -281,50 +410,78 @@
       }
 
       //Getting the data from the API
-      function GetMapData(new_map, mapName, game_mode, run_type){
+      function GetMapData(new_map){
+
+        if (runTypeSelector.groupVal() == "true"){
+          history.pushState({mapParams: "1"}, "", "?map=" + currentMap + "&mode=" + gameModeSelector.groupVal() + "&run=tp");
+        } else if (runTypeSelector.groupVal() == "false") {
+          history.pushState({mapParams: "1"}, "", "?map=" + currentMap + "&mode=" + gameModeSelector.groupVal() + "&run=pro");
+        }
 
         //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
         t.clear();
         t.draw();
+        //también vaciamos el dropdown de bonus 
+        bonusDropdown.html("");
 
-        //Refresh name flag and avatar only if we are fetching a new player (different steamid is detected inside text input)
+        if (mapStage == 0){
+          $("#table-state-title").html("Map Ranking");
+        } else {
+          $("#table-state-title").html("Bonus " + mapStage + " Ranking");
+        }
+
+        //Refresh map image, name and tier only if we are fetching a new map (different map is detected inside text input)
         if (new_map){
           $("#mapImage").html("");
           $("#mapName").html("");
           $("#mapTier").html("");
+          bonusActivator.addClass("d-none");
         }
 
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://kztimerglobal.com/api/v1.0/records/top?map_name=" + mapName + "&tickrate=128&stage=0&modes_list_string=" + game_mode + "&has_teleports=" + run_type + "&limit=100";
-        
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                if (myArr.length > 0){
-                  localStorage.setItem('map', currentMap); //recien ahora lo guardamos, antes de aca no sabemos si es valido
-                  ShowMapData(myArr, new_map);
-                  if (new_map){
-                    GetMapImageAndTier(mapName);
-                  }
-                } else {  //si la array vino vacia, entonces la api no tiene datos de ese mapa
-                  alert("No map with that name was found");
-                }
+        if (rankingRequest != null && rankingRequest.readyState < 4) {
+          rankingRequest.abort();
+        }
+
+        rankingRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top?map_name=" + currentMap + "&tickrate=128&modes_list_string=" + gameModeSelector.groupVal() + "&has_teleports=" + runTypeSelector.groupVal() + "&stage=" + mapStage + "&limit=100", dataType: 'json', success: function(result){
+          if (result.length > 0){
+            currentMapID = result[0].map_id;
+            localStorage.setItem('map', currentMap); //recien ahora lo guardamos, antes de aca no sabemos si es valido
+            ShowMapData(result);
+            if (new_map || firstfecth){
+              firstfecth = false;
+              ShowMapInformation();
             }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
+          } else {
+            //si la array vino vacia, no hay data para el "Stage 0".
+            //Debemos verificar si el mapa realmente existe, porque tal vez tenga filtros para los bonuses pero no para el stage 0
+            //Pero si el ajax de la lista de mapas tarda mucho en llegar, no puedo usarlo todavía para verificar la existencia (prevención).
+            //Como esto va a pasar en muy pocas ocasiones, no va a ser un peso para la api hacerle otra consulta
+            rankingRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps/name/" + currentMap, dataType: 'json', success: function(backupResult){
+              if (backupResult!=null){
+                alert("This map has no data for this Game Mode and Run Type.");
+                currentMapID = backupResult.id;
+                localStorage.setItem('map', currentMap); //recien ahora lo guardamos, antes de aca no sabemos si es valido
+                if (new_map || firstfecth){
+                  firstfecth = false;
+                  ShowMapInformation();
+                }
+              } else {
+                alert("This map is either not global or doesn't exist.");
+              }
+            }});
+          }
+        }});
       }
 
-      //proceso todo ahora para mostrar la información relevante (rank) sin tener que esperar a la info visual de la imagen y tier
-      function ShowMapData(arr, new_map){
+      function ShowMapData(arr){
 
-        for (i in arr) {
+        for (let i = 0; i < arr.length; i++) {
           
           //Transform time
           var map_time = new Date(arr[i].time * 1000).toISOString().substr(11, 11);
 
           t.row.add( [
-            i,
+            "",
             '<a href="/?steamid=' + arr[i].steam_id + '">' + arr[i].player_name + '</a>',
             map_time,
             arr[i].points,
@@ -333,70 +490,154 @@
             arr[i].server_name
           ] );
         }
-        
-        //Pongo el nombre del mapa rapido asi no espero el resto de la info (imagen y tier)
-        if(new_map){
-          //Name
-          $("#mapName").html(arr[0].map_name);
-          document.title = arr[0].map_name;
-        }
 
-        //para que la columna del index siempre empiece del 1
-        t.on( 'order.dt', function () {
-          t.column(0, {order:'applied'}).nodes().each( function (cell, i) {
-              cell.innerHTML = i+1;
-          } );
-        } ).draw();
+        t.draw();
+
+        //For some reason when two times are identical, the API returns them with points flipped (higher points below).
+        //For this reason I can't add the array index directly to the row, and have to create the indexes after ordering by points
+        //Ordering by time and points MUST have this index as secord order parameter, so it's consistent, see "orderData" on "columnDefs" at datatable initialization
+        t.column(0).nodes().each(function(cell, i){
+          cell.innerHTML = i + 1;
+        }).draw();
       }
+
+      //Esta data solo se pide/muestra si es un nuevo mapa
+      function ShowMapInformation (){
+
+        //NAME
+        $("#mapName").html(currentMap);
+        document.title = currentMap;
+        //show dropdown, reset ajax bonus request and clear dropdown items
+        bonusActivator.removeClass("d-none");
+        recordFiltersRequest = null;
+
+        //IMAGE
+        $("#mapImage").html('<a data-toggle="modal" data-target="#mapImageModal"><img class="img-fluid" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/' + currentMap + `.webp" onerror='this.src="img/kz.png"' id="` + currentMap + `"></a>`);
+        /*$.ajax({url: "https://bitbucket.org/kztimerglobalteam/map-images/raw/f1eec9abf33e5e7d99c58c2ebc58c3280ec92df8/maps.json", dataType: 'json', success: function(result){
+          
+          for (let i = 0; i < result.length; i++){
+            if (result[i].name == currentMap){
+              $("#mapImage").html("<img src=" + result[i].thumb + "></img>");
+              break;
+            }
+          }
+        }});*/
+
+        //TIER
+        for (let i = 0; i < maps.length; i++){
+          if (maps[i].name == currentMap){
+            $("#mapTier").html('<span class="' + TIER[maps[i].difficulty].replace(/ /g, "-") + '">' + TIER[maps[i].difficulty] + '</span>');
+            break;
+          }
+        }
+      }
+
+      //If bonus dropdown arrow is clicked
+      bonusActivator.click(function() {
+        GetRecordFilters ();
+      });
+
+      function GetRecordFilters () {
+        //pido todos los filtros de una y proceso despues para no sobrecargar la api con 1 consulta cada vez que apretan el dropdown y es el mismo mapa
+        if (recordFiltersRequest==null){ //para pedirlo solo una vez, reseteamos a null cuando cambiamos de mapa, no de modo/run type
+          recordFiltersRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/record_filters?map_ids=" + currentMapID, dataType: 'json', success: function(result){
+            ShowRecordFilters(result);
+          }});
+        } else {
+          ShowRecordFilters(JSON.parse(recordFiltersRequest.responseText));
+        }
+      }
+
+      function ShowRecordFilters (filters) {
+        let bonus_mode_id;
+        switch (gameModeSelector.groupVal()) {
+          case "kz_timer"  : bonus_mode_id = 200;break;
+          case "kz_simple" : bonus_mode_id = 201;break;
+          case "kz_vanilla": bonus_mode_id = 202;break;
+        }
+        let bonus_has_teleports = Boolean(runTypeSelector.groupVal());
+
+        //Although this method runs the for loop again, it's much simpler to code and forward compatible. The for loop is not expensive.
+        bonusDropdown.html("");
+
+        let hasMainMap = false; //just two simple checks to see if I should place a dropdown-divider
+        let hasBonuses = false;
+        for (let i = 0; i < filters.length; i++) {
+          if (filters[i].mode_id == bonus_mode_id && filters[i].has_teleports == bonus_has_teleports && filters[i].tickrate == "128") {
+            if (filters[i].stage == 0){
+              if (hasBonuses) { //because sometimes bonuses arrive first
+                bonusDropdown.prepend('<div class="dropdown-divider"></div>');
+              }
+              hasMainMap = true;
+              bonusDropdown.prepend('<a id="0" class="dropdown-item text-white">Main Map</a>');
+            } else {
+              if (hasMainMap && !hasBonuses) {
+                bonusDropdown.append('<div class="dropdown-divider"></div>');
+              }
+              hasBonuses = true;
+              bonusDropdown.append('<a id="' + filters[i].stage + '" class="dropdown-item text-white">Bonus ' + filters[i].stage + '</a>');
+            }
+          }
+        }
+      }
+
+      //What happens when a bonus is selected
+      bonusDropdown.on('click', 'a.dropdown-item', function() {
+        mapStage = $(this).attr('id');
+        GetMapData(false);
+      });
+
+      $("#mapImageModal").on('show.bs.modal', function(){
+        let imageMapName = event.target.id;
+
+        $("#mapImageModalTitle").html(imageMapName);
+        $("#mapImageModalContent").html('<img class="img-fluid" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/images/' + imageMapName + `.jpg" onerror='this.src="img/kz.png"'>`)
+
+      });
 
       //sinconizar la search box con la tabla
       $('#mapRankingSearch').keyup(function(){
         t.search($(this).val()).draw();
       });
 
-      //Ahora si empezamos a pedir la imagen y tier
-      function GetMapImageAndTier (mapName){
+      //Tooltip initialization
+      $('[data-toggle="tooltip"]').tooltip();
+      //Copy to clipboard Functionality
+      $('[data-toggle="tooltip"]').click(function(){
 
-        //IMAGE
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://bitbucket.org/kztimerglobalteam/map-images/raw/f1eec9abf33e5e7d99c58c2ebc58c3280ec92df8/maps.json";
-        
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                ShowMapImage(myArr, mapName);
-            }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-
-        //TIER
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://kztimerglobal.com/api/v1.0/maps/name/" + mapName;
-        
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                ShowMapTier(myArr);
-            }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-      }
-
-      function ShowMapImage(arr, mapName){
-
-        for (i in arr){
-          if (arr[i].name == mapName){
-            $("#mapImage").html("<img src=" + arr[i].thumb + "></img>");
-            break;
-          }
+        let urlRunType;
+        if (runTypeSelector.groupVal() == "true") {
+          urlRunType = "tp";
+        } else if (runTypeSelector.groupVal() == "false") {
+          urlRunType = "pro";
         }
-      }
 
-      function ShowMapTier(arr){
-        $("#mapTier").html('<span class="' + TIER[arr.difficulty] + '">' + TIER[arr.difficulty] + '</span>');
-      }
+        let sharableURL = window.location.host + window.location.pathname;
+
+        if (currentMap !=null) {
+          if (mapStage==0){
+            sharableURL += "?map=" + currentMap + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType;
+          } else {
+            sharableURL += "?map=" + currentMap + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType + "&bonus=" + mapStage;
+          }
+          
+          const copyText = document.createElement('textarea');
+          copyText.value = sharableURL;
+          document.body.appendChild(copyText);
+          copyText.select();
+          document.execCommand('copy');
+          document.body.removeChild(copyText);
+
+          var shareTooltip = $(this)
+          shareTooltip.tooltip('show');
+          setTimeout(function(){
+            shareTooltip.tooltip('hide');
+          }, 2000);
+
+        } else {
+          alert("Please select a map first.")
+        }
+      });
 
     });
   </script>
