@@ -1090,8 +1090,7 @@
           steamRequest.abort();  //abort ajax request if another one is needed
         }
 
-        //https://github.com/Rob--W/cors-anywhere
-        steamRequest = $.ajax({url: "https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=023DC037A9187B9DD374365F858B5545&steamids=" + steam64, dataType: 'json', success: function(result){
+        steamRequest = $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + steam64, dataType: 'json', success: function(result){
           //Avatar
           $("#playerAvatar").html('<a href="' + result.response.players[0].profileurl + '" target="blank"><img src="' + result.response.players[0].avatarfull + '" class="img-responsive"></img></a>');
 

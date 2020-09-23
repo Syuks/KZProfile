@@ -313,7 +313,7 @@
         }
 
         //RECENT WR DATA
-        recentWRRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/recent?tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&place_top_at_least=1&limit=200", dataType: 'json', success: function(result){
+        recentWRRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/recent?tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&place_top_at_least=1&limit=100", dataType: 'json', success: function(result){
           
           currentWRRecentData = result;
 
@@ -430,8 +430,7 @@
 
       function GetSteamProfiles(){
         
-        //https://github.com/Rob--W/cors-anywhere
-        let steamQueryString = "https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=023DC037A9187B9DD374365F858B5545&steamids="
+        let steamQueryString = "https://kzprofile.kreedz.top/api/v1/steam?steamids="
 
         //no es NECESARIO se exacto en esto, con menos 5 ya esta, a pesar de que a veces sean menos las que necestio porque llegue al límite.
         let proStartLoop = proCardsDisplayed - 5;
