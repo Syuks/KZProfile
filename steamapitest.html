@@ -37,7 +37,7 @@
   <!-- Custom scripts -->
   <script type="text/javascript">
 
-    $.ajax({url: "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=D646E8464CD5AE524FD1B16C941D9872&steamids=76561197960435530", dataType: 'json', success: function(result){
+    $.ajax({url: "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=D646E8464CD5AE524FD1B16C941D9872&steamids=76561197960435530", dataType: 'json', success: function(result){
       
       $("#steaminfo").html(result.response.players[0].personaname);
 
