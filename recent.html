@@ -49,6 +49,18 @@
 
             <!-- Dropdown -->
             <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownCommunityLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Community</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownCommunityLink">
+								<a class="dropdown-item" href="leaderboard.html">Leaderboards</a>
+								<a class="dropdown-item" href="servers.html">Servers</a>
+                <a class="dropdown-item" href="players.html">Players</a>
+                <a class="dropdown-item" href="bans.html">Bans</a>
+              </div>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Extras</a>
               <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
@@ -61,17 +73,14 @@
           </ul>
           <!-- Links -->
 
-          <form id="steamid" class="form-inline">
+          <form id="multiPurposeForm" class="form-inline" method="GET" autocomplete="off" style="margin-right: 20px;">
             <div class="md-form my-0">
-              <input id="steamid-input" class="form-control mr-sm-2 steamid-input" type="text" placeholder="Steam ID" aria-label="Steam ID">
+              <input id="multiPurposeInput" class="form-control mr-sm-2 multi-purpose-input" type="text" placeholder="Search" aria-label="Search" minlength="3">
+              <i class="fas fa-search" aria-hidden="true"></i>
             </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="rememberSteamID">
-              <label class="custom-control-label" for="rememberSteamID">Remember</label>
-          </div>
           </form>
+          <div id="userLogin"></div>
         </div>
-
       </div>
     </nav>
     <!--/.Navbar-->
@@ -110,6 +119,11 @@
 
           <div id="pro-records"></div>
         
+        </div>
+
+        <!--Only Mobile-->
+        <div class="loadMoreCards text-center d-none" style="width:100%; margin-top: 30px;">
+          <a id="loadMoreCardsMobile" ><i class="fas fa-chevron-down"></i></a>
         </div>
         
         <div class="col-lg-6 text-center">
@@ -187,6 +201,12 @@
   <script type="text/javascript" src="js/mdb.min.js"></script>
   <!-- Datatables  -->
   <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+  <!-- My Utility functions-->
+  <script type="text/javascript" src="js/myUtils.js"></script>
+  <!-- Humanized Time Span-->
+  <script type="text/javascript" src="js/HumanizedTimeSpan.js"></script>
   <!-- Custom scripts -->
   <script type="text/javascript">
 
@@ -204,16 +224,15 @@
     //Datatables
     var t;
 
-    var currentSteamID;
-
     var timezoneOffset = new Date().getTimezoneOffset();
 
-    //jquery extension for cleaner radio group value retrieving
-    jQuery.fn.extend({
-      groupVal: function() {
-          return $(this).filter(':checked').val();
-      }
-    });
+    //LOGIN LOGIC
+    var storedSteamData = JSON.parse(localStorage.getItem('steamProfileData'));
+    if (storedSteamData!=null) {
+      $("#userLogin").html('<div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="rounded-circle" src="' + storedSteamData.response.players[0].avatar + '"></a><div class="dropdown-menu"><a class="dropdown-item waves-effect waves-light" href="extras/steam.html?logout=true">Logout</a></div></div>');
+    } else {
+      $("#userLogin").html('<a onclick="loadOpenID();"><img src="https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"></a>');
+    }
 
     $(document).ready(function () {
 
@@ -222,8 +241,7 @@
       var storedGameMode = localStorage.getItem('game_mode');
 
       //UI Elements
-      var steamidInput = $("#steamid-input");
-      var steamidRemember = $("#rememberSteamID");
+      var multiPurposeInput = $("#multiPurposeInput");
       var gameModeSelector = $("input[type='radio'][name='game_mode']");
       
       //Finished Maps Datatable Initialization
@@ -242,16 +260,68 @@
                   "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
                 });
       $('.dataTables_length').addClass('bs-select');
+          
+      $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+        
+        var maps = result;
+
+        //Autocomplete Initialization
+        multiPurposeInput.autocomplete({
+          source: maps,
+          label: "name",
+          treshold:2,
+          onSelectItem: onSelectAutocomplete
+        });
+      }});
+    
+      //Autocomplete Selection Callback
+      function onSelectAutocomplete (item, element) {
+        window.location.href = 'maps.html?map=' + item.label;
+      }
+
+      //If Enter is pressed on the multi purpose form
+      $("#multiPurposeForm").submit(function( event ) {
+        //it can be a map, a player name, a steam profile, a steam64 or a steam32
+        let searchValue = multiPurposeInput.val();
+        
+        //MAP
+        if (isValidKZMap(searchValue)) {
+          window.location.href = 'maps.html?map=' + searchValue;
+        //STEAM 32/64
+        } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
+          window.location.href = "/?steamid=" + GetSteam32(searchValue);
+        //Vanity Profiles
+        } else if (isValidVanityProfile(searchValue)) {
+          let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
+          $.ajax({
+            url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+            dataType: 'json',
+            success: function(result){
+              window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
+            },
+            error: function(){
+              alert("Either this profile is invalid or the steam proxy is down.");
+            }
+          });
+        //Legacy Profiles
+        } else if (isValidSteamProfile(searchValue)) {
+          window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
+        //If they search for anything else, search a player with that name
+        } else {
+          window.location.href = "players.html?player=" + searchValue;
+        }
+        return false;
+      });
+
+      //focus multipurposeinput on empty key press
+      $(document).on('keypress',function() {
+        if ( $('input:focus').length == 0) {
+          multiPurposeInput.focus();
+        }
+      });
 
       //First of all see if there are parameters in url. If there is one, load data from that, if there isn't load saved ones
       var gameModeParameter = new URLSearchParams(window.location.search).get("mode");
-
-      //Get stored steam id
-      if (storedSteamID!=null){              //si hay id guardada
-        currentSteamID = storedSteamID;      //conseguir la id
-        steamidInput.val(currentSteamID);    //rellenar el input con la id (visual)
-        steamidRemember.prop('checked', true);//poner como checked la checkbox (visual)
-      }
 
       //GAME MODE PARAMETER
       if (gameModeParameter == "kz_timer" || gameModeParameter == "kz_simple" || gameModeParameter == "kz_vanilla"){
@@ -264,27 +334,6 @@
       }
 
       GetRecentData();
-
-      //If Enter is pressed on the steamid input
-      $( "#steamid" ).submit(function( event ) {
-        if (isValidSteamID(steamidInput.val()) && steamidRemember.is(":checked")){
-          localStorage.setItem('steamid', fixSteamID(steamidInput.val()));
-        } else{
-          alert("Please, use a valid SteamID");
-        }
-        return false; //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
-      });
-
-      //If the remember checkmark is pressed, then save the id if it is now checked
-      steamidRemember.click(function() {
-        if (steamidRemember.is(":checked")){
-          if (isValidSteamID(steamidInput.val())){
-            localStorage.setItem('steamid', fixSteamID(steamidInput.val()));
-          } else{
-            alert("Please, use a valid SteamID");
-          }
-        }
-      });
 
       //If the radio group state is changed (Game Type)
       $("input[name='game_mode']").click(function() {
@@ -337,6 +386,9 @@
       $("#loadMoreCards").click(function() {
         ShowRecentData();
       });
+      $("#loadMoreCardsMobile").click(function() {
+        ShowRecentData();
+      });
 
       function ShowRecentData(){
 
@@ -356,28 +408,29 @@
 
 
           $("#pro-records").append(
-            `<div class="card bg-dark hvr-grow-shadow text-left" style="max-height: 253px;max-width: 450px;margin-top:50px;">
-              
-              <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
-              
-              <div class="card-img-overlay">
-                <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro" class="stretched-link"></a>
-                <div class="row" style="height: 50%;">
-                  <div class="col-9"></div>
-                  <div class="col-3">
-                    <img src="` + GetAchievementSticker(currentWRRecentData[runIndex].map_id) + `">  
+            `<div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:50px;">
+              <div class="embed-responsive-item">
+                <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
+                
+                <div class="card-img-overlay">
+                  <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro" class="stretched-link"></a>
+                  <div class="row" style="height: 50%;">
+                    <div class="col-9"></div>
+                    <div class="col-3">
+                      <img src="` + GetAchievementSticker(currentWRRecentData[runIndex].map_id) + `">  
+                    </div>
                   </div>
-                </div>
-                <div class="row align-items-end" style="height: 50%;">
-                  <div class="col-3" style="margin-bottom:5px">
-                    <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `" style="z-index: 1;position: relative;">
-                      <img class="img-fluid rounded-circle ` + proSteamid64s[i].steam64 + `" src="img/kz.gif">
-                    </a>
-                  </div>
-                  <div class="col-9" style="padding-left: 0px;">
-                    <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro">` + currentWRRecentData[runIndex].map_name + `</a></div>
-                    <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
-                    <div style="font-size:15px; opacity: 0.6;">` + map_time + ` | ` + humanized_time_span(new Date (time_passed)) + `</div>
+                  <div class="row align-items-end" style="height: 50%;">
+                    <div class="col-3" style="margin-bottom:5px">
+                      <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=pro` + `" style="z-index: 1;position: relative;">
+                        <img class="img-fluid rounded-circle ` + proSteamid64s[i].steam64 + `" src="img/kz.gif">
+                      </a>
+                    </div>
+                    <div class="col-9" style="padding-left: 0px;">
+                      <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro">` + currentWRRecentData[runIndex].map_name + `</a></div>
+                      <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=pro` + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
+                      <div style="font-size:15px; opacity: 0.6;">` + map_time + ` • ` + humanized_time_span(new Date (time_passed)) + `</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -400,22 +453,23 @@
           let time_passed = Date.parse(d) - (timezoneOffset*60*1000); //parse gives miliseconds
 
           $("#tp-records").append(
-            `<div class="card bg-dark hvr-grow-shadow text-left" style="max-height: 253px;max-width: 450px;margin-top:50px;">
-              
-              <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
-              
-              <div class="card-img-overlay">
-                <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=tp" class="stretched-link"></a>
-                <div class="row align-items-end" style="height: 100%;">
-                  <div class="col-3" style="margin-bottom:5px">
-                    <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `" style="z-index: 1;position: relative;">
-                      <img class="img-fluid rounded-circle ` + tpSteamid64s[i].steam64 + `" src="img/kz.gif">
-                    </a>
-                  </div>
-                  <div class="col-9" style="padding-left: 0px;">
-                    <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=tp">` + currentWRRecentData[runIndex].map_name + `</a></div>
-                    <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
-                    <div style="font-size:15px; opacity: 0.6;">` + map_time + ` | ` + humanized_time_span(new Date (time_passed)) + `</div>
+            `<div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:50px;">
+              <div class="embed-responsive-item">
+                <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
+                
+                <div class="card-img-overlay">
+                  <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=tp" class="stretched-link"></a>
+                  <div class="row align-items-end" style="height: 100%;">
+                    <div class="col-3" style="margin-bottom:5px">
+                      <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=tp` + `" style="z-index: 1;position: relative;">
+                        <img class="img-fluid rounded-circle ` + tpSteamid64s[i].steam64 + `" src="img/kz.gif">
+                      </a>
+                    </div>
+                    <div class="col-9" style="padding-left: 0px;">
+                      <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=tp">` + currentWRRecentData[runIndex].map_name + `</a></div>
+                      <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=tp` + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
+                      <div style="font-size:15px; opacity: 0.6;">` + map_time + ` • ` + humanized_time_span(new Date (time_passed)) + `</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -495,16 +549,7 @@
       $('#finishedMapsSearch').keyup(function(){
         t.search($(this).val()).draw();
       });
-
-      function isValidSteamID(steamID) {
-        return /^STEAM_[0-5]:[01]:\d+$/.test(steamID);
-      }
-
-      //CS:GO uses STEAM_1, but a lot of steamid finder websites return STEAM_0, so change it to one when saving to localstorage for better compatibility
-      function fixSteamID(steamID) {
-        return "STEAM_1" + steamID.substring(7);
-      }
-
+      
       function GetAchievementSticker (map_id) {
         let imgSource = "";
         switch (map_id) {
@@ -528,112 +573,6 @@
         }
         return imgSource;
       }
-
-
-      // Copyright (C) 2011 by Will Tomlins
-      // 
-      // Github profile: https://github.com/layam
-      //
-      // Permission is hereby granted, free of charge, to any person obtaining a copy
-      // of this software and associated documentation files (the "Software"), to deal
-      // in the Software without restriction, including without limitation the rights
-      // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-      // copies of the Software, and to permit persons to whom the Software is
-      // furnished to do so, subject to the following conditions:
-      // 
-      // The above copyright notice and this permission notice shall be included in
-      // all copies or substantial portions of the Software.
-      // 
-      // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-      // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-      // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-      // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-      // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-      // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-      // THE SOFTWARE.
-      function humanized_time_span(date, ref_date, date_formats, time_units) {
-        //Date Formats must be be ordered smallest -> largest and must end in a format with ceiling of null
-        date_formats = date_formats || {
-          past: [
-            { ceiling: 60, text: "$seconds seconds ago" },
-            { ceiling: 3600, text: "$minutes minutes ago" },
-            { ceiling: 86400, text: "$hours hours ago" },
-            { ceiling: 2629744, text: "$days days ago" },
-            { ceiling: 31556926, text: "$months months ago" },
-            { ceiling: null, text: "$years years ago" }      
-          ],
-          future: [
-            { ceiling: 60, text: "in $seconds seconds" },
-            { ceiling: 3600, text: "in $minutes minutes" },
-            { ceiling: 86400, text: "in $hours hours" },
-            { ceiling: 2629744, text: "in $days days" },
-            { ceiling: 31556926, text: "in $months months" },
-            { ceiling: null, text: "in $years years" }
-          ]
-        };
-        //Time units must be be ordered largest -> smallest
-        time_units = time_units || [
-          [31556926, 'years'],
-          [2629744, 'months'],
-          [86400, 'days'],
-          [3600, 'hours'],
-          [60, 'minutes'],
-          [1, 'seconds']
-        ];
-        
-        date = new Date(date);
-        ref_date = ref_date ? new Date(ref_date) : new Date();
-        var seconds_difference = (ref_date - date) / 1000;
-        
-        var tense = 'past';
-        if (seconds_difference < 0) {
-          tense = 'future';
-          seconds_difference = 0-seconds_difference;
-        }
-        
-        function get_format() {
-          for (var i=0; i<date_formats[tense].length; i++) {
-            if (date_formats[tense][i].ceiling == null || seconds_difference <= date_formats[tense][i].ceiling) {
-              return date_formats[tense][i];
-            }
-          }
-          return null;
-        }
-        
-        function get_time_breakdown() {
-          var seconds = seconds_difference;
-          var breakdown = {};
-          for(var i=0; i<time_units.length; i++) {
-            var occurences_of_unit = Math.floor(seconds / time_units[i][0]);
-            seconds = seconds - (time_units[i][0] * occurences_of_unit);
-            breakdown[time_units[i][1]] = occurences_of_unit;
-          }
-          return breakdown;
-        }
-
-        function render_date(date_format) {
-          var breakdown = get_time_breakdown();
-          var time_ago_text = date_format.text.replace(/\$(\w+)/g, function() {
-            return breakdown[arguments[1]];
-          });
-          return depluralize_time_ago_text(time_ago_text, breakdown);
-        }
-        
-        function depluralize_time_ago_text(time_ago_text, breakdown) {
-          for(var i in breakdown) {
-            if (breakdown[i] == 1) {
-              var regexp = new RegExp("\\b"+i+"\\b");
-              time_ago_text = time_ago_text.replace(regexp, function() {
-                return arguments[0].replace(/s\b/g, '');
-              });
-            }
-          }
-          return time_ago_text;
-        }
-                
-        return render_date(get_format());
-      }
-
     });
   </script>
 

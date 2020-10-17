@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>KZ Profile</title>
+  <!-- Icon -->
+  <link rel="icon" href="img/Logo.png" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="css/addons/datatables.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Start -->  
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="maps.html">Maps</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recent.html">Recent</a>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownCommunityLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Community</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownCommunityLink">
+								<a class="dropdown-item" href="leaderboard.html">Leaderboards</a>
+								<a class="dropdown-item" href="servers.html">Servers</a>
+                <a class="dropdown-item" href="players.html">Players</a>
+                <a class="dropdown-item" href="bans.html">Bans</a>
+              </div>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Extras</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="https://forum.gokz.org/" target="_blank">Forum</a>
+                <a class="dropdown-item" href="https://syuks.github.io/DistbugCalculator/" target="_blank">Distbug Calculator</a>
+                <a class="dropdown-item" href="https://www.youtube.com/c/Syuks" target="_blank">Tutorials</a>
+              </div>
+            </li>
+          </ul>
+          <!-- Links -->
+          <form id="multiPurposeForm" class="form-inline" method="GET" autocomplete="off" style="margin-right: 20px;">
+            <div class="md-form my-0">
+              <input id="multiPurposeInput" class="form-control mr-sm-2 multi-purpose-input" type="text" placeholder="Search" aria-label="Search" minlength="3">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </div>
+          </form>
+          <div id="userLogin"></div>
+        </div>
+      </div>
+    </nav>
+    <!--/.Navbar-->
+
+    <div class="container">
+
+      <div class="row" style="margin-top: 40px;">
+        <div class="col text-center">
+          <h1>Global servers</h1>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 40px;">
+        <div class="col">
+
+          <!-- TABLE HEADER -->
+          <div class="row table-top">
+            <!-- 1. Refresh Button -->
+            <div class="col d-flex align-items-center" id="refreshColumn">
+              <a id="refreshButton">
+                <i class="fas fa-redo-alt"></i>
+              </a>
+              <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
+                <i class="fas fa-share-alt"></i>
+              </a>
+            </div>
+            <!-- 2. Table state changer -->
+            <div class="col d-flex align-items-center justify-content-center">
+              <div class="text-center" id="table-state-title" style="min-width: 150px;">
+                Servers
+              </div>
+            </div>
+            <!-- 3. Search form -->
+            <div class="col d-flex flex-row-reverse align-items-center">
+              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
+                <input id="rankingSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </form>
+            </div>
+          </div>
+
+          <!-- TABLES -->
+          <div class="row">
+            <!-- WRS TABLE -->
+            <div class="table-responsive">
+              <table id="ServersTable" class="table-sm table-borderless table-hover table-dark" style="min-width: 100%;">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th class="text-center th-lg">Name</th>
+                    <th class="text-center th-lg">Connect</th>
+                    <th class="text-center th-lg">IP:port</th>
+                    <th class="text-center th-lg">Owner</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+    
+  <!-- End -->
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Datatables  -->
+  <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+  <!-- My Utility functions-->
+  <script type="text/javascript" src="js/myUtils.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+
+    //Globals so I can cancel the ajax request as soon as a new one is needed
+    var serversRequest;
+
+    var currentServersData;
+
+    //Persistent Maps Data for Autocomplete
+    var maps;
+
+    //Datatables
+    var t;
+
+    //LOGIN LOGIC
+    var storedSteamData = JSON.parse(localStorage.getItem('steamProfileData'));
+    if (storedSteamData!=null) {
+      $("#userLogin").html('<div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="rounded-circle" src="' + storedSteamData.response.players[0].avatar + '"></a><div class="dropdown-menu"><a class="dropdown-item waves-effect waves-light" href="extras/steam.html?logout=true">Logout</a></div></div>');
+    } else {
+      $("#userLogin").html('<a onclick="loadOpenID();"><img src="https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"></a>');
+    }
+
+    $(document).ready(function () {
+
+      //UI Elements
+      var multiPurposeInput = $("#multiPurposeInput");
+      
+      //Server Datatable Initialization
+      t = $('#ServersTable').DataTable({        
+                  "iDisplayLength": 25,
+                  "columnDefs": [
+                    { "className": "text-wrap text-left", "targets": [0,2]}, //para que no se justifiquen en el medio los nombres y no haya overflow
+                    { "className": "text-center", "targets": [1,3]}
+                  ],
+                  "aaSorting": [],
+                  "dom": 'rtp' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+
+      $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+        
+        var maps = result;
+
+        //Autocomplete Initialization
+        multiPurposeInput.autocomplete({
+          source: maps,
+          label: "name",
+          treshold:2,
+          onSelectItem: onSelectAutocomplete
+        });
+      }});
+    
+      //Autocomplete Selection Callback
+      function onSelectAutocomplete (item, element) {
+        window.location.href = 'maps.html?map=' + item.label;
+      }
+
+      //If Enter is pressed on the multi purpose form
+      $("#multiPurposeForm").submit(function( event ) {
+        //it can be a map, a player name, a steam profile, a steam64 or a steam32
+        let searchValue = multiPurposeInput.val();
+        
+        //MAP
+        if (isValidKZMap(searchValue)) {
+          window.location.href = 'maps.html?map=' + searchValue;
+        //STEAM 32/64
+        } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
+          window.location.href = "/?steamid=" + GetSteam32(searchValue);
+        //Vanity Profiles
+        } else if (isValidVanityProfile(searchValue)) {
+          let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
+          $.ajax({
+            url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+            dataType: 'json',
+            success: function(result){
+              window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
+            },
+            error: function(){
+              alert("Either this profile is invalid or the steam proxy is down.");
+            }
+          });
+        //Legacy Profiles
+        } else if (isValidSteamProfile(searchValue)) {
+          window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
+        //If they search for anything else, search a player with that name
+        } else {
+          window.location.href = "players.html?player=" + searchValue;
+        }
+        return false;
+      });
+
+      //focus multipurposeinput on empty key press
+      $(document).on('keypress',function() {
+        if ( $('input:focus').length == 0) {
+          multiPurposeInput.focus();
+        }
+      });
+
+      GetServersData();
+
+      //What happens when i click the Refresh Button on the table
+      $("#refreshButton").click(function() {
+        GetServersData();
+      });
+
+      //Getting the data from the API
+      function GetServersData(){
+
+        //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        t.clear();
+        t.draw();
+        $("#table-state-title").html("Servers");
+
+        if (serversRequest != null && serversRequest.readyState < 4) {
+          serversRequest.abort();  //abort ajax request if another one was requested
+        }
+
+        serversRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/servers?approval_status=1&limit=1000", dataType: 'json', success: function(result){
+          
+          currentServersData = result;
+
+          for (let i = 0; i < currentServersData.length; i++) {
+            t.row.add( [
+              currentServersData[i].name,
+              '<a href="steam://connect/' + currentServersData[i].ip + ':' + currentServersData[i].port + '" type="button" class="btn btn-dark rounded-pill btn-sm">Connect</a>',
+              currentServersData[i].ip + ":" + currentServersData[i].port,
+              currentServersData[i].owner_steamid64 == 0 ? "Hidden" : '<a href="/?steamid=' + GetSteam32(currentServersData[i].owner_steamid64) + '">' + currentServersData[i].owner_steamid64 + '</a>'
+            ] );
+          }
+
+          t.draw();
+          $("#table-state-title").html("Servers (" + currentServersData.length + ")");
+
+        }});
+      }
+
+      //sinconizar la search box con la tabla
+      $('#rankingSearch').keyup(function(){
+        t.search($(this).val()).draw();
+      });
+
+      //Tooltip initialization
+      $('[data-toggle="tooltip"]').tooltip();
+      //Copy to clipboard Functionality
+      $('[data-toggle="tooltip"]').click(function(){
+
+        let sharableURL = window.location.host + window.location.pathname;
+        
+        const copyText = document.createElement('textarea');
+        copyText.value = sharableURL;
+        document.body.appendChild(copyText);
+        copyText.select();
+        document.execCommand('copy');
+        document.body.removeChild(copyText);
+
+        var shareTooltip = $(this)
+        shareTooltip.tooltip('show');
+        setTimeout(function(){
+          shareTooltip.tooltip('hide');
+        }, 2000);        
+      });
+
+    });
+  </script>
+
+</body>
+</html>

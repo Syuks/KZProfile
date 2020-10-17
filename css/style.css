@@ -86,7 +86,11 @@
         margin-right: 0px !important;
         margin-left: auto;
     }
-    .fa-search {
+    .table-top .fa-search {
+        display: none;
+    }
+
+    #multiPurposeForm .fa-search{
         display: none;
     }
 
@@ -102,6 +106,26 @@
 
     .carousel-control-next {
         margin-right: -15px !important;
+    }
+
+    #userLogin {
+        margin: 8px 6px;
+    }
+
+    .loadMoreCards{
+        display: block !important;
+    }
+
+    .FirstPlaceCol {
+        order: 1;
+    }
+
+    .SecondPlaceCol {
+        order: 2;
+    }
+
+    .ThirdPlaceCol {
+        order: 3;
     }
 }
 
@@ -140,6 +164,10 @@ thead th{
     display: none;
 }
 
+.page-link {
+    color: white !important;
+}
+
 a{
     color:white;
 }
@@ -149,11 +177,7 @@ a{
     color: white;
 }
 
-.steamid-input::placeholder {
-    opacity: 0.4 !important;
-}
-
-.map-input::placeholder {
+.multi-purpose-input::placeholder {
     opacity: 0.4 !important;
 }
 
@@ -212,6 +236,14 @@ input:-webkit-autofill:active {
 
 .navbar .dropdown-menu a:not(.active) {
     color: white;
+}
+
+.navbar .dropdown-menu {
+    margin-top: 0.125rem;
+}
+
+a.waves-effect, a.waves-light {
+    display: block;
 }
 
 /*http://ianlunn.github.io/Hover/*/
@@ -277,7 +309,6 @@ animation: rainbow 5s ease infinite;
 
 .card, .card-body, .card-img{
     border-radius:0.5rem !important;
-    background-color: black;
 }
 
 .medal800sCount {
@@ -422,6 +453,60 @@ animation: rainbow 5s ease infinite;
     55% {
       background-position: 0% 0%;
     }
+}
+
+#mapImageCarousel .carousel-indicators {
+    position: relative;
+    height: 56px;
+    margin-top: 1rem;
+    margin-bottom: 0px;
+}
+
+#mapImageCarousel .carousel-indicators>li {
+    position: relative;
+    width: 100px;
+    height: 56px;
+    background-color: transparent;
+    border-bottom: 0px;
+    border-top: 0px;
+}
+
+#mapImageCarousel .carousel-indicators li img {
+    object-fit: cover;
+    display: block;
+    opacity: 0.3;
+}
+
+#mapImageCarousel .carousel-indicators li.active img {
+    opacity: 1;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#mapImageCarousel .carousel-indicators li.active:hover img {
+    opacity: 1;
+}
+
+#mapImageCarousel .carousel-indicators li:hover img {
+    opacity: 0.75;
+}
+
+.videoThumbOverlay {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    background-image: url(../img/VideoOverlay.png);
+}
+
+.workshop-container {
+    background-image: url(../img/WorkshopBackground.png);
+    background-size:cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /*RANK COLORS*/

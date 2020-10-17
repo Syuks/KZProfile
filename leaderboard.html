@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>KZ Profile</title>
+  <!-- Icon -->
+  <link rel="icon" href="img/Logo.png" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="css/addons/datatables.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Start -->  
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="maps.html">Maps</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recent.html">Recent</a>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownCommunityLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Community</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownCommunityLink">
+								<a class="dropdown-item" href="leaderboard.html">Leaderboards</a>
+								<a class="dropdown-item" href="servers.html">Servers</a>
+                <a class="dropdown-item" href="players.html">Players</a>
+                <a class="dropdown-item" href="bans.html">Bans</a>
+              </div>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Extras</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="https://forum.gokz.org/" target="_blank">Forum</a>
+                <a class="dropdown-item" href="https://syuks.github.io/DistbugCalculator/" target="_blank">Distbug Calculator</a>
+                <a class="dropdown-item" href="https://www.youtube.com/c/Syuks" target="_blank">Tutorials</a>
+              </div>
+            </li>
+          </ul>
+          <!-- Links -->
+          <form id="multiPurposeForm" class="form-inline" method="GET" autocomplete="off" style="margin-right: 20px;">
+            <div class="md-form my-0">
+              <input id="multiPurposeInput" class="form-control mr-sm-2 multi-purpose-input" type="text" placeholder="Search" aria-label="Search" minlength="3">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </div>
+          </form>
+          <div id="userLogin"></div>
+        </div>
+      </div>
+    </nav>
+    <!--/.Navbar-->
+
+    <div class="container">
+
+      <!--Mode Chooser-->
+      <div class="row configuration-row">
+        <div class="col text-right" style="border-right: 2px solid white;">
+          <!-- KZTimer -->
+          <div class="custom-control-inline gameModeSelectors">
+            <input class="configuration-radio" type="radio"  id="kztimerRadio" value="kz_timer" name="game_mode" checked>
+            <label class="radio-label" for="kztimerRadio">KZ Timer</label>
+          </div>
+
+          <!-- SimpleKZ -->
+          <div class="custom-control-inline gameModeSelectors">
+            <input class="configuration-radio" type="radio" id="simplekzRadio" value="kz_simple" name="game_mode">
+            <label class="radio-label" for="simplekzRadio">Simple KZ</label>
+          </div>
+
+          <!-- Vanilla -->
+          <div class="custom-control-inline gameModeSelectors">
+            <input class="configuration-radio" type="radio" id="vanillaRadio" value="kz_vanilla" name="game_mode">
+            <label class="radio-label" for="vanillaRadio">Vanilla</label>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- PRO -->
+          <div class="custom-control-inline" style="margin-left:16px">
+            <input class="configuration-radio" type="radio" id="proRunsRadio" value="false" name="run_type" checked>
+            <label class="radio-label" for="proRunsRadio">Pro</label>
+          </div>
+
+          <!-- TP -->
+          <div class="custom-control-inline tpRunsSelector">
+            <input class="configuration-radio" type="radio" id="tpRunsRadio" value="true" name="run_type">
+            <label class="radio-label" for="tpRunsRadio">Tp</label>
+          </div>
+
+        </div>
+      </div>
+      <!--Mode Chooser-->
+
+      <!--TOP 3-->
+      <div class="row" style="margin-top: 50px;">
+        
+        <div class="col-lg text-center SecondPlaceCol" style="padding-top: 10px;">
+          <h2 style="color:#d7d7d7">#2</h2>
+          <a id="2ndLink" href="">
+            <img id="2ndImg" class="img-fluid rounded-circle" style="border: 2px solid #d7d7d7; height: 170px; margin-bottom: 8px;" src="">
+          </a>
+          <h2 id="2ndName"></h2>
+          <h5 id="2ndWRs"></h5>
+        </div>
+
+        <div class="col-lg text-center FirstPlaceCol">
+          <h1 style="color:#e3ad39">#1</h1>
+          <a id="1stLink" href="">
+            <img id="1stImg" class="img-fluid rounded-circle" style="border: 2px solid #e3ad39; height: 188px; margin-bottom: 8px;" src="">
+          </a>
+          <h1 id="1stName"></h1>
+          <h5 id="1stWRs"></h5>
+        </div>
+
+        <div class="col-lg text-center ThirdPlaceCol" style="padding-top: 20px;">
+          <h3 style="color:#ad8a56">#3</h3>
+          <a id="3rdLink" href="">
+            <img id="3rdImg" class="img-fluid rounded-circle" style="border: 2px solid #ad8a56; height: 150px; margin-bottom: 8px;" src="">
+          </a>
+          <h3 id="3rdName"></h3>
+          <h5 id="3rdWRs"></h5>
+        </div>
+
+      </div>
+
+      <div class="row z-depth-1-half" style="margin-top: 40px;">
+        <div class="col">
+
+          <!-- TABLE HEADER -->
+          <div class="row table-top">
+            <!-- 1. Refresh Button -->
+            <div class="col d-flex align-items-center" id="refreshColumn">
+              <a id="refreshButton">
+                <i class="fas fa-redo-alt"></i>
+              </a>
+              <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
+                <i class="fas fa-share-alt"></i>
+              </a>
+            </div>
+            <!-- 2. Table state changer -->
+            <div class="col d-flex align-items-center justify-content-center">
+              <div class="text-center" id="table-state-title" style="min-width: 150px;">
+                Leaderboard
+              </div>
+            </div>
+            <!-- 3. Search form -->
+            <div class="col d-flex flex-row-reverse align-items-center">
+              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
+                <input id="rankingSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </form>
+            </div>
+          </div>
+
+          <!-- TABLES -->
+          <div class="row">
+            <!-- WRS TABLE -->
+            <div class="table-responsive">
+              <table id="RankingTable" class="table-sm table-borderless table-hover table-dark text-center text-nowrap">
+                <thead class="z-depth-1">
+                  <tr>
+                    <th>#</th>
+                    <th class="text-center th-lg">Player</th>
+                    <th class="th-lg">WRs</th>
+                    <th class="th-lg">Rating</th>
+                    <th class="th-lg">Points</th>
+                    <th class="th-lg">Finishes</th>
+                    <th class="text-center th-lg">Average</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+    
+  <!-- End -->
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Datatables  -->
+  <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+  <!-- My Utility functions-->
+  <script type="text/javascript" src="js/myUtils.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+
+    //Globals so I can cancel the ajax request as soon as a new one is needed
+    var WRsRequest;
+    var PlayersRankingRequest;
+    var steamRequest;
+
+    var currentWRsData;
+    var currentPlayersRankingData;
+    var currentSteamData;
+
+    //Persistent Maps Data for Autocomplete
+    var maps;
+
+    //Datatables
+    var t;
+
+    var loggedSteamID32 = ""; //to highlight personal data in table
+
+    //LOGIN LOGIC
+    var storedSteamData = JSON.parse(localStorage.getItem('steamProfileData'));
+    if (storedSteamData!=null) {
+      $("#userLogin").html('<div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="rounded-circle" src="' + storedSteamData.response.players[0].avatar + '"></a><div class="dropdown-menu"><a class="dropdown-item waves-effect waves-light" href="extras/steam.html?logout=true">Logout</a></div></div>');
+      loggedSteamID32 = GetSteam32(storedSteamData.response.players[0].steamid);
+    } else {
+      $("#userLogin").html('<a onclick="loadOpenID();"><img src="https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"></a>');
+    }
+
+    $(document).ready(function () {
+
+      //Local Storage
+      var storedGameMode = localStorage.getItem('game_mode');
+      var storedRunType = localStorage.getItem('run_type');
+
+      //UI Elements
+      var multiPurposeInput = $("#multiPurposeInput");
+      var gameModeSelector = $("input[type='radio'][name='game_mode']");
+      var runTypeSelector = $("input[type='radio'][name='run_type']");
+      
+      //Ranking Datatable Initialization
+      t = $('#RankingTable').DataTable({        
+                  "iDisplayLength": 100,
+                  "columnDefs": [
+                    { "orderSequence": [ "desc", "asc" ], "targets": [2,3,4,5,6] }, //defines the direction the column sorts when first clicked
+                    { "searchable": false, "orderable": false, "targets": 0 }, //para que no busquen ni ordenen la columna del index
+                    { "className": "text-wrap text-left", "targets": 1} //para que no se justifiquen en el medio los nombres y no haya overflow
+                  ],
+                  "order": [[ 2, "desc" ]],
+                  'rowCallback': function(row, data, index){
+                    if (loggedSteamID32!="") { //if logged in
+                      if(data[1].includes(loggedSteamID32)){
+                        $(row).css('background-color', '#2E2E2E');
+                      }
+                    }
+                  },
+                  "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+
+      $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+        
+        var maps = result;
+
+        //Autocomplete Initialization
+        multiPurposeInput.autocomplete({
+          source: maps,
+          label: "name",
+          treshold:2,
+          onSelectItem: onSelectAutocomplete
+        });
+      }});
+    
+      //Autocomplete Selection Callback
+      function onSelectAutocomplete (item, element) {
+        window.location.href = 'maps.html?map=' + item.label;
+      }
+
+      //If Enter is pressed on the multi purpose form
+      $("#multiPurposeForm").submit(function( event ) {
+        //it can be a map, a player name, a steam profile, a steam64 or a steam32
+        let searchValue = multiPurposeInput.val();
+        
+        //MAP
+        if (isValidKZMap(searchValue)) {
+          window.location.href = 'maps.html?map=' + searchValue;
+        //STEAM 32/64
+        } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
+          window.location.href = "/?steamid=" + GetSteam32(searchValue);
+        //Vanity Profiles
+        } else if (isValidVanityProfile(searchValue)) {
+          let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
+          $.ajax({
+            url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+            dataType: 'json',
+            success: function(result){
+              window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
+            },
+            error: function(){
+              alert("Either this profile is invalid or the steam proxy is down.");
+            }
+          });
+        //Legacy Profiles
+        } else if (isValidSteamProfile(searchValue)) {
+          window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
+        //If they search for anything else, search a player with that name
+        } else {
+          window.location.href = "players.html?player=" + searchValue;
+        }
+        return false;
+      });
+
+      //focus multipurposeinput on empty key press
+      $(document).on('keypress',function() {
+        if ( $('input:focus').length == 0) {
+          multiPurposeInput.focus();
+        }
+      });
+
+      //First of all see if there are parameters in url. If there is one, load data from that, if there isn't load saved ones
+      var URLSearchParameters = new URLSearchParams(window.location.search);
+      var gameModeParameter = URLSearchParameters.get("mode");
+      var runTypeParameter = URLSearchParameters.get("run");
+
+      //GAME MODE PARAMETER
+      if (gameModeParameter == "kz_timer" || gameModeParameter == "kz_simple" || gameModeParameter == "kz_vanilla"){
+        $("input[type='radio'][name=game_mode][value=" + gameModeParameter + "]").prop('checked', true);
+      } else {
+        //If there is no gamemode in the url, get stored gamemode if there is one
+        if (storedGameMode!=null){
+          $("input[type='radio'][name=game_mode][value=" + storedGameMode + "]").prop('checked', true);
+        }
+      }
+
+      //RUN TYPE PARAMETER
+      if (runTypeParameter == "tp"){
+        $("input[type='radio'][name=run_type][value=true]").prop('checked', true);
+      } else if (runTypeParameter == "pro") {
+        $("input[type='radio'][name=run_type][value=false]").prop('checked', true);
+      } else {
+        //If there is no runtype in the url, get stored runtype if there is one
+        if (storedRunType!=null){
+          $("input[type='radio'][name=run_type][value=" + storedRunType + "]").prop('checked', true);
+        }
+      }
+
+      GetWRsData();
+
+      //If the radio group state is changed (Game Type)
+      $("input[name='game_mode']").click(function() {
+        GetWRsData();
+      });
+
+      //If the radio group state is changed (Run Type)
+      $("input[name='run_type']").click(function() {
+        GetWRsData();
+      });
+
+      //What happens when i click the Refresh Button on the table
+      $("#refreshButton").click(function() {
+        GetWRsData();
+      });
+
+      //Getting the data from the API
+      function GetWRsData(){
+
+        var runTypeParameterString = "";
+
+        if (runTypeSelector.groupVal() == "true"){
+          runTypeParameterString = "&run=tp";
+        } else if (runTypeSelector.groupVal() == "false") {
+          runTypeParameterString = "&run=pro";
+        }
+
+        history.pushState({mapParams: "1"}, "", "?mode=" + gameModeSelector.groupVal() + runTypeParameterString);
+
+        //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        t.clear();
+        t.draw();
+        $("#1stLink").attr("href", "");
+        $("#1stImg").attr("src", "");
+        $("#1stName").html("");
+        $("#1stWRs").html("");
+
+        $("#2ndLink").attr("href", "");
+        $("#2ndImg").attr("src", "");
+        $("#2ndName").html("");
+        $("#2ndWRs").html("");
+
+        $("#3rdLink").attr("href", "");
+        $("#3rdImg").attr("src", "");
+        $("#3rdName").html("");
+        $("#3rdWRs").html("");
+
+        if (WRsRequest != null && WRsRequest.readyState < 4) {
+          WRsRequest.abort();  //abort ajax request if another one was requested
+        }
+
+        let mode_id = gameModeID(gameModeSelector);
+
+        //WRs DATA
+        WRsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top/world_records?mode_ids=" + mode_id + "&has_teleports=" + runTypeSelector.groupVal() + "&stages=0&tickrates=128&limit=100", dataType: 'json', success: function(result){
+          
+          currentWRsData = result;
+
+          PlayerRankingString = "https://kztimerglobal.com/api/v2.0/player_ranks?mode_ids=" + mode_id + "&has_teleports=" + runTypeSelector.groupVal() + "&stages=0&tickrates=128&limit=100";
+
+          for (let i = 0; i < currentWRsData.length; i++) {
+            PlayerRankingString += ("&steamid64s=" + currentWRsData[i].steamid64); //the api does NOT accept arrays of ids separated by "," so i have to do it this way
+          }
+
+          if (PlayersRankingRequest != null && PlayersRankingRequest.readyState < 4) {
+            PlayersRankingRequest.abort();  //abort ajax request if another one was requested
+          }
+
+          PlayersRankingRequest = $.ajax({url: PlayerRankingString, dataType: 'json', success: function(response){
+          
+            currentPlayersRankingData = response;
+
+            //the players ranking response does not come in the order I requested, so I MUST loop the data
+            for (let i = 0; i < currentWRsData.length; i++) {
+
+              var playerRankingInfo;
+
+              for (let y = 0; y < currentPlayersRankingData.length; y++) {
+                if (currentPlayersRankingData[y].steamid64 == currentWRsData[i].steamid64) {
+                  playerRankingInfo = currentPlayersRankingData[y];
+                  break;
+                }
+              }
+
+              t.row.add( [
+                i+1,
+                '<a href="/?steamid=' + currentWRsData[i].steam_id + '&mode=' + gameModeSelector.groupVal() + runTypeParameterString + '">' + currentWRsData[i].player_name + '</a>',
+                currentWRsData[i].count,
+                playerRankingInfo.rating.toFixed(2),
+                playerRankingInfo.points.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'),
+                playerRankingInfo.finishes,
+                playerRankingInfo.average.toFixed(2)
+              ] );
+            }
+
+            t.draw();
+
+          }});
+
+          SteamProfilesString = "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + currentWRsData[0].steamid64 + "," + currentWRsData[1].steamid64 + "," + currentWRsData[2].steamid64;
+
+          if (steamRequest != null && steamRequest.readyState < 4) {
+            steamRequest.abort();
+          }
+
+          steamRequest = $.ajax({url: SteamProfilesString, dataType: 'json', success: function(response){
+
+            currentSteamData = response;
+
+            //the steam response does not come back in order!
+
+            var firstPlayerSteam;
+            var secondPlayerSteam;
+            var thirdPlayerSteam;
+
+            for (let i = 0; i < currentSteamData.response.players.length; i++) {
+              if (currentSteamData.response.players[i].steamid == currentWRsData[0].steamid64) {
+                firstPlayerSteam = currentSteamData.response.players[i];
+              } else if (currentSteamData.response.players[i].steamid == currentWRsData[1].steamid64) {
+                secondPlayerSteam = currentSteamData.response.players[i];
+              } else {
+                thirdPlayerSteam = currentSteamData.response.players[i];
+              }
+            }
+            
+            $("#1stLink").attr("href", "/?steamid=" + currentWRsData[0].steam_id + "&mode=" + gameModeSelector.groupVal() + runTypeParameterString);
+            $("#1stImg").attr("src", firstPlayerSteam.avatarfull);
+            $("#1stName").html('<a href="/?steamid=' + currentWRsData[0].steam_id + '&mode=' + gameModeSelector.groupVal() + runTypeParameterString + '">' + currentWRsData[0].player_name + '</a>');
+            $("#1stWRs").html(currentWRsData[0].count);
+
+            $("#2ndLink").attr("href", "/?steamid=" + currentWRsData[1].steam_id + "&mode=" + gameModeSelector.groupVal() + runTypeParameterString);
+            $("#2ndImg").attr("src", secondPlayerSteam.avatarfull);
+            $("#2ndName").html('<a href="/?steamid=' + currentWRsData[1].steam_id + '&mode=' + gameModeSelector.groupVal() + runTypeParameterString + '">' + currentWRsData[1].player_name + '</a>');
+            $("#2ndWRs").html(currentWRsData[1].count);
+
+            $("#3rdLink").attr("href", "/?steamid=" + currentWRsData[2].steam_id + "&mode=" + gameModeSelector.groupVal() + runTypeParameterString);
+            $("#3rdImg").attr("src", thirdPlayerSteam.avatarfull);
+            $("#3rdName").html('<a href="/?steamid=' + currentWRsData[2].steam_id + '&mode=' + gameModeSelector.groupVal() + runTypeParameterString + '">' + currentWRsData[2].player_name + '</a>');
+            $("#3rdWRs").html(currentWRsData[2].count);
+
+          }});
+
+        }});
+      }
+
+      //sinconizar la search box con la tabla
+      $('#rankingSearch').keyup(function(){
+        t.search($(this).val()).draw();
+      });
+
+      //Tooltip initialization
+      $('[data-toggle="tooltip"]').tooltip();
+      //Copy to clipboard Functionality
+      $('[data-toggle="tooltip"]').click(function(){
+
+        let urlRunType;
+        if (runTypeSelector.groupVal() == "true") {
+          urlRunType = "tp";
+        } else if (runTypeSelector.groupVal() == "false") {
+          urlRunType = "pro";
+        }
+
+        let sharableURL = window.location.host + window.location.pathname + "?mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType;
+        
+        const copyText = document.createElement('textarea');
+        copyText.value = sharableURL;
+        document.body.appendChild(copyText);
+        copyText.select();
+        document.execCommand('copy');
+        document.body.removeChild(copyText);
+
+        var shareTooltip = $(this)
+        shareTooltip.tooltip('show');
+        setTimeout(function(){
+          shareTooltip.tooltip('hide');
+        }, 2000);        
+      });
+
+    });
+  </script>
+
+</body>
+</html>

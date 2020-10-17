@@ -49,6 +49,18 @@
 
             <!-- Dropdown -->
             <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownCommunityLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Community</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownCommunityLink">
+								<a class="dropdown-item" href="leaderboard.html">Leaderboards</a>
+								<a class="dropdown-item" href="servers.html">Servers</a>
+                <a class="dropdown-item" href="players.html">Players</a>
+                <a class="dropdown-item" href="bans.html">Bans</a>
+              </div>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Extras</a>
               <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
@@ -57,21 +69,16 @@
                 <a class="dropdown-item" href="https://www.youtube.com/c/Syuks" target="_blank">Tutorials</a>
               </div>
             </li>
-
           </ul>
           <!-- Links -->
-
-          <form id="steamid" class="form-inline">
+          <form id="multiPurposeForm" class="form-inline" method="GET" autocomplete="off" style="margin-right: 20px;">
             <div class="md-form my-0">
-              <input id="steamid-input" class="form-control mr-sm-2 steamid-input" type="text" placeholder="Steam ID" aria-label="Steam ID">
+              <input id="multiPurposeInput" class="form-control mr-sm-2 multi-purpose-input" type="text" placeholder="Search" aria-label="Search" minlength="3">
+              <i class="fas fa-search" aria-hidden="true"></i>
             </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="rememberSteamID">
-              <label class="custom-control-label" for="rememberSteamID">Remember</label>
-          </div>
           </form>
+          <div id="userLogin"></div>
         </div>
-
       </div>
     </nav>
     <!--/.Navbar-->
@@ -116,6 +123,13 @@
         </div>
       </div>
       <!--Mode Chooser-->
+
+      <div class="alert alert-warning alert-dismissible fade show d-none" role="alert" style="margin-top: 20px;">
+        <strong>You are not signed in.</strong> To see your KZ profile please first <strong><a onclick="loadOpenID();">sign in</a></strong> to your Steam account. You can still use all the rest of the features in the site.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
       <!--Profile Portfolio-->
       <div class="row" style="margin-top: 20px;">
@@ -382,6 +396,10 @@
   <script type="text/javascript" src="js/addons/datatables.min.js"></script>
   <!-- Datatables Enum Ordering  -->
   <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/enum.js"></script>
+  <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+  <!-- My Utility functions-->
+  <script type="text/javascript" src="js/myUtils.js"></script>
   <!-- Custom scripts -->
   <script type="text/javascript">
 
@@ -430,7 +448,7 @@
       {id: "xc", title: "CS20 Classic", sticker: "CS20-Classic", count: 0, goal: 15, achievement : 'Finish 15 maps with prefix "xc".'},
       {id: "bhop", title: "Boost", sticker: "Boost", count: 0, goal: 13, achievement : 'Finish 13 maps with prefix "bhop".'},
       {id: "kzra", title: "Gold Web", sticker: "Gold-Web", count: 0, goal: 13, achievement : 'Finish 13 maps with prefix "kzra" or "kzro" made by Spider1.'},
-      {id: "gfy", title: "Stay Frosty", sticker: "Stay-Frosty", count: 0, goal: 8, achievement : 'Finish 8 maps with prefix "gfy" made by winter Nebs.'},
+      {id: "gfy", title: "Stay Frosty", sticker: "Stay-Frosty", count: 0, goal: 8, achievement : 'Finish 8 maps with prefix "gfy" made by winter Nebs and 1 impostor.'},
       {id: "zhop", title: "zPrince", sticker: "zPrince", count: 0, goal: 6, achievement : 'Finish 6 maps with prefix "zhop" or "zxp" made by zPrince.'},
       {id: "slide", title: "Surf's Up", sticker: "Surfs-Up", count: 0, goal: 10, achievement : 'Finish 10 maps with prefix "slide".'},
       {id: "go", title: "Too Old For This", sticker: "Too-Old-For-This", count: 0, goal: 32, achievement : 'Finish 32 maps with suffix "go".'},
@@ -451,8 +469,8 @@
       {id: "100%", title: "Tyranids Hive Tyrant", sticker: "Tyranids-Hive-Tyrant", count: 0, goal: 1, achievement: "100% Completionist."}
     ];
 
-    let mapsByTier = [0,0,0,0,0,0,0];
-    let completedMapsByTier = [0,0,0,0,0,0,0];
+    var mapsByTier = [0,0,0,0,0,0,0];
+    var completedMapsByTier = [0,0,0,0,0,0,0];
 
     //This enum defines the order the Tier Column sorts
     $.fn.dataTable.enum( [ 'Very Easy', 'Easy', 'Medium', 'Hard', 'Very Hard', 'Extreme', 'Death' ] );
@@ -469,7 +487,7 @@
     var jumpstatsRequest;
 
     //usamos este bool para evitar problemas al cambiar el mode o run apenas carga la página
-    var firstfecth = true;
+    var firstfetch = true;
 
     //Datatables
     var t;
@@ -478,25 +496,24 @@
 
     var currentSteamID;
     var tableState = 1;
-    var currentJumptype;
+    var currentJumptype = "Longjump";
 
-    //jquery extension for cleaner radio group value retrieving
-    jQuery.fn.extend({
-      groupVal: function() {
-          return $(this).filter(':checked').val();
-      }
-    });
+    //LOGIN LOGIC
+    var storedSteamData = JSON.parse(localStorage.getItem('steamProfileData'));
+    if (storedSteamData!=null) {
+      $("#userLogin").html('<div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="rounded-circle" src="' + storedSteamData.response.players[0].avatar + '"></a><div class="dropdown-menu"><a class="dropdown-item waves-effect waves-light" href="extras/steam.html?logout=true">Logout</a></div></div>');
+    } else {
+      $("#userLogin").html('<a onclick="loadOpenID();"><img src="https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"></a>');
+    }
 
     $(document).ready(function () {
 
       //Local Storage
-      var storedSteamID = localStorage.getItem('steamid');
       var storedGameMode = localStorage.getItem('game_mode');
       var storedRunType = localStorage.getItem('run_type');
 
       //UI Elements
-      var steamidInput = $("#steamid-input");
-      var steamidRemember = $("#rememberSteamID");
+      var multiPurposeInput = $("#multiPurposeInput");
       var gameModeSelector = $("input[type='radio'][name='game_mode']");
       var runTypeSelector = $("input[type='radio'][name='run_type']");
 
@@ -591,35 +608,13 @@
           }
       });
 
-      //This if statment is only for backwards compatibility, it's safe to delete after some time (I used to store STEAM_0 ids, now only STEAM_1)
-      if (storedSteamID != null && storedSteamID != fixSteamID(storedSteamID)) {
-        localStorage.setItem('steamid', fixSteamID(storedSteamID));
-      }
-
       //First of all see if there are parameters in url. If there is one, load data from that, if there isn't load saved ones
       var URLSearchParameters = new URLSearchParams(window.location.search);
-      var steamIDParameter = URLSearchParameters.get("steamid");
       var gameModeParameter = URLSearchParameters.get("mode");
       var runTypeParameter = URLSearchParameters.get("run");
+      var vanityParameter = URLSearchParameters.get("p"); //vanity urls
+      var steamIDParameter = GetSteam64(URLSearchParameters.get("steamid")); //if it's not valid, then null
       var jumpstatParameter = URLSearchParameters.get("jumpstat") || URLSearchParameters.get("jumptype");;
-
-      //STEAM ID PARAMETER
-      if (steamIDParameter!=null && steamIDParameter!="" ){
-        currentSteamID = fixSteamID(steamIDParameter);
-        steamidInput.val(currentSteamID); //visual
-        if (currentSteamID == storedSteamID) {
-          steamidRemember.prop('checked', true); //visual
-        } else {
-          steamidRemember.prop('checked', false); //visual
-        }
-      } else {
-        //If there is no steamid on the url, get stored id if there is one
-        if (storedSteamID!=null){         //si hay id guardada
-          currentSteamID = storedSteamID; //conseguir la id
-          steamidInput.val(currentSteamID);    //rellenar el input con la id (visual)
-          steamidRemember.prop('checked', true);//poner como checked la checkbox (visual)
-        }
-      }
 
       //GAME MODE PARAMETER
       if (gameModeParameter == "kz_timer" || gameModeParameter == "kz_simple" || gameModeParameter == "kz_vanilla"){
@@ -641,6 +636,38 @@
         if (storedRunType!=null){
           $("input[type='radio'][name=run_type][value=" + storedRunType + "]").prop('checked', true);
         }
+      }
+
+      //VANITY URL
+      if (vanityParameter!=null) { //we prioritize vanity urls
+        $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityParameter, dataType: 'json',
+          success: function(result){
+            if (result.response.success == 1) {
+              currentSteamID = result.response.steamid;
+              GetPlayerData();
+            } else if (result.response.success == 42) { //no match
+              alert("There is no player with this vanity url.");
+            } else {
+              alert("There was an error fetching this profile. The steam proxy might be down. Please report this issue.");
+            }
+          },
+          error: function(){
+            alert("There was an error fetching this profile. The steam proxy might be down. Please report this issue.");
+          }
+        });
+      //STEAM ID PARAMETER
+      } else if (steamIDParameter!=null){
+        currentSteamID = steamIDParameter;
+        GetPlayerData();
+      } else if (storedSteamData!=null) {
+        //If there is no steamid on the url, get stored id if there is one
+          currentSteamID = storedSteamData.response.players[0].steamid;
+          GetPlayerData();
+      } else {
+        //mostrar un indicador para que inicie sesion
+        $('.alert').removeClass("d-none");
+        $('.alert').alert();
+        //window.location.replace("recent.html");
       }
 
       //JUMPSTAT PARAMETER
@@ -670,28 +697,48 @@
         }
       }
 
-      //Now that we know if there are parameters on the link or stored data, we fetch the info
-      //if nothing was found for game mode or run type, it will use the default values
-      //but if nothing was found for steamid, do nothing, wait for a steamid to be placed on input
-      if (currentSteamID != null) {
-        GetPlayerData(true);
-      }
-
-      //If Enter is pressed on the steamid input, submitting a new id
-      $( "#steamid" ).submit(function( event ) {
-        firstfecth = true;
-        ProcessFetchingOptions();
-        return false;         //para que no se cargue devuelta la página (si se carga devuelta se vuelve a cargar la steamid guardada)
+      //If Enter is pressed on the multi purpose form
+      $("#multiPurposeForm").submit(function( event ) {
+        //it can be a map, a player name, a steam profile, a steam64 or a steam32
+        let searchValue = multiPurposeInput.val();
+        
+        //MAP
+        if (isValidKZMap(searchValue)) {
+          window.location.href = 'maps.html?map=' + searchValue;
+        //STEAM 32/64
+        } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
+          window.location.href = "/?steamid=" + GetSteam32(searchValue);
+        //Vanity Profiles
+        } else if (isValidVanityProfile(searchValue)) {
+          let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
+          $.ajax({
+            url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+            dataType: 'json',
+            success: function(result){
+              window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
+            },
+            error: function(){
+              alert("Either this profile is invalid or the steam proxy is down.");
+            }
+          });
+        //Legacy Profiles
+        } else if (isValidSteamProfile(searchValue)) {
+          window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
+        //If they search for anything else, search a player with that name
+        } else {
+          window.location.href = "players.html?player=" + searchValue;
+        }
+        return false;
       });
 
       //If the radio group state is changed (Game Type)
       $("input[name='game_mode']").click(function() {
-        ProcessFetchingOptions();
+        GetPlayerData();
       });
 
       //If the radio group state is changed (Run Type)
       $("input[name='run_type']").click(function() {
-        ProcessFetchingOptions();
+        GetPlayerData();
       });
 
       //What happens when i click the Refresh Button on the table
@@ -699,18 +746,7 @@
         if (tableState==2) {
           GetJumpstatsData();
         } else {
-          ProcessFetchingOptions();
-        }
-      });
-
-      //If the remember checkmark is pressed, then save the id if it is now checked
-      steamidRemember.click(function() {
-        if (steamidRemember.is(":checked")){
-          if (isValidSteamID(steamidInput.val())){
-            localStorage.setItem('steamid', fixSteamID(steamidInput.val()));
-          } else{
-            alert("Please, use a valid SteamID");
-          }
+          GetPlayerData();
         }
       });
       
@@ -754,7 +790,6 @@
             $("#table-state-right").addClass("invisible");
             $("#FinishedMaps").toggleClass("d-none");
             $("#Jumpstats").toggleClass("d-none");
-            let currentParameters = new URLSearchParams(window.location.search);
 
             break;
         }
@@ -791,39 +826,52 @@
           t.search("").draw();
         }
       });
-      
-      //Todos los chequeos para saber la id, el game mode y la run type
-      function ProcessFetchingOptions () {
-        if (isValidSteamID(steamidInput.val())){ //antes que nada fijarnos si es una steam id lo que pusieron
 
-          localStorage.setItem('game_mode', gameModeSelector.groupVal());
-          localStorage.setItem('run_type', runTypeSelector.groupVal());
+      //maps ajax should be called only once
+      if (maps==null && mapsRequest==null){
+          
+        mapsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+          
+          maps = result;
 
-          if (currentSteamID!= steamidInput.val() || firstfecth){  //detecting if a new steamid is written in the text input is important for player details refreshing (so we don't have to refresh every time)
-            currentSteamID = fixSteamID(steamidInput.val());
-            steamidInput.val(currentSteamID); //visual
+          //Autocomplete Initialization
+          multiPurposeInput.autocomplete({
+            source: maps,
+            label: "name",
+            treshold:2,
+            onSelectItem: onSelectAutocomplete
+          });
 
-            if (steamidRemember.is(":checked")){
-              localStorage.setItem('steamid', currentSteamID);
-            }
-            GetPlayerData(true);
-          } else {
-            GetPlayerData(false);
+          //if we have player data, that means that it fetched faster than maps and is waiting for maps ajax to succeed
+          if (currentPlayerData != null){
+            ProcessPlayerData();
           }
+          //if we don't have player data, it means that maps data fetched faster, so do nothing. As soon as player data arrives, we'll start analyzing
+        }});
+      }
 
-          if (runTypeSelector.groupVal() == "true"){
-            history.pushState({mapParams: "1"}, "", "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=tp");
-          } else if (runTypeSelector.groupVal() == "false") {
-            history.pushState({mapParams: "1"}, "", "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=pro");
-          }
-
-        } else {
-          alert("Please, use a valid SteamID.");
-        }
+      //Autocomplete Selection Callback
+      function onSelectAutocomplete (item, element) {
+        window.location.href = 'maps.html?map=' + item.label;
       }
 
       //Getting the data from the API
-      function GetPlayerData(new_id){
+      function GetPlayerData(){
+
+        if (currentSteamID == "" || currentSteamID == null) {
+          return;
+        }
+
+        if (storedSteamData != null && currentSteamID == storedSteamData.response.players[0].steamid) {
+          localStorage.setItem('game_mode', gameModeSelector.groupVal());
+          localStorage.setItem('run_type', runTypeSelector.groupVal());
+        }
+
+        if (runTypeSelector.groupVal() == "true"){
+          history.pushState({mapParams: "1"}, "", "?steamid=" + GetSteam32(currentSteamID) + "&mode=" + gameModeSelector.groupVal() + "&run=tp");
+        } else if (runTypeSelector.groupVal() == "false") {
+          history.pushState({mapParams: "1"}, "", "?steamid=" + GetSteam32(currentSteamID) + "&mode=" + gameModeSelector.groupVal() + "&run=pro");
+        }
 
         //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
         t.clear();
@@ -831,69 +879,54 @@
         ut.clear();
         ut.draw();
 
-        //Refresh name flag and avatar only if we are fetching a new player (different steamid is detected inside text input)
-        if (new_id){
-          $("#playerName").html("");
-          $("#playerAvatar").html("");
-          $("#playerPoints").html("");
-          $("#playerRank").html("");
-          $("#WRs_medals").html("");
-          $("#900s_medals").html("");
-          $("#800s_medals").html("");
-          jt.clear();
-          jt.draw();
-        }
-
         if (playerRequest != null && playerRequest.readyState < 4) {
-          playerRequest.abort();  //abort ajax request if another one is needed
-        }
-
-        //el ajax de mapas SOLO lo llamamos si la data de mapas es null, si no es null, ya tenemos la data, no ahcemos el ajax
-        if (maps==null && mapsRequest==null){
-          
-          mapsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
-            
-            maps = result;
-
-            //if we have player data, that means that it fetched faster than maps and is waiting for maps ajax to succeed
-            if (currentPlayerData != null){
-              if (currentPlayerData.length > 0){
-                ShowPlayerData(currentPlayerData, new_id);
-                if (new_id || firstfecth){
-                  firstfecth = false;
-                  GetSteamProfile(currentPlayerData[0].steamid64);
-                }
-              } else {  //si vino vacia es porque no hay datos sobre ese jugador
-                alert("No data was found for that player.");
-              }
-            }
-            //if we don't have player data, it means that maps data fetched faster, so do nothing. As soon as player data arrives, we'll start analyzing
-          }});
+          playerRequest.abort();  //abort ajax request if another one was requested
         }
 
         //PLAYER DATA
-        playerRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top?steam_id=" + currentSteamID + "&tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&has_teleports=" + runTypeSelector.groupVal() + "&limit=1000", dataType: 'json', success: function(result){
+        playerRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top?steamid64=" + currentSteamID + "&tickrate=128&stage=0&modes_list_string=" + gameModeSelector.groupVal() + "&has_teleports=" + runTypeSelector.groupVal() + "&limit=1000", dataType: 'json', success: function(result){
           
           currentPlayerData = result;
 
           //if we have map data, that means that it fetched faster than player and is waiting for player ajax to succeed
           if (maps != null) {
-            if (currentPlayerData.length > 0){
-              ShowPlayerData(currentPlayerData, new_id);
-              if (new_id || firstfecth){
-                firstfecth = false;
-                GetSteamProfile(currentPlayerData[0].steamid64);
-              }
-            } else {  //si vino vacia es porque no hay datos sobre ese jugador
-              alert("No data was found for that player.");
-            }
+            ProcessPlayerData();
           }
           //if we don't have map data, it means that player data fetched faster, so do nothing. As soon as map data arrives, we'll start analyzing
         }});
       }
 
+      function ProcessPlayerData () {
+        if (currentPlayerData.length > 0){
+          ShowPlayerData();
+          if (firstfetch) {
+            firstfetch = false;
+            GetSteamProfile();
+          }
+        } else {  //si vino vacia es porque no hay datos sobre ese jugador pero tal vez tenga runs en otro modo de juego
+          if (firstfetch) {
+            $.ajax({url: "https://kztimerglobal.com/api/v2.0/players?steamid64_list=" + currentSteamID, dataType: 'json', success: function(result){
+              if (result[0].name!=null){ //cuando no existe data del player en la api, el name viene null
+                //entonces este jugador tiene tiempos, pero no en este modo de juego
+                currentPlayerData = [{player_name: result[0].name, map_id: ""}]; //creamos este objeto para que muestre la info del player
+                ShowPlayerData();
+                firstfetch = false;
+                GetSteamProfile();
+                alert("This player has 0 runs in this game mode and run type.");
+              } else {
+                alert("This player has never played KZ smh.");
+              }
+            }});
+          } else {
+            alert("This player has 0 runs in this game mode and run type.");
+          }
+        }
+      }
+
       //proceso todo ahora para mostrar la información relevante (stats) sin tener que esperar a la info visual de steam (avatar, flag, url, etc)
-      function ShowPlayerData(arr, new_id){
+      function ShowPlayerData(){
+
+        let arr = currentPlayerData;
 
         let player_points = 0;
         let player_wrs = 0;
@@ -1026,8 +1059,8 @@
           }
         }
 
-        //Los puntos y rankings lo calculo siempre que cambio algo, pero el nombre no lo cambio si sigue siendo la misma id, para que la flag siga estando
-        if (new_id || firstfecth){ //si no verifico que sea el primer fetch, termino con el nombre en blanco si cambio el mode o run type mientras carga la pagina por primera vez
+        //don't need to update the name everytime we fetch
+        if (firstfetch){
           //Name
           $("#playerName").html(arr[0].player_name);
           document.title = arr[0].player_name;
@@ -1072,6 +1105,13 @@
         UpdateBadges();
       }
 
+      //focus multipurposeinput on empty key press
+      $(document).on('keypress',function() {
+        if ( $('input:focus').length == 0) {
+          multiPurposeInput.focus();
+        }
+      });
+
       //sinconizar la search box con la tabla
       $('#finishedMapsSearch').keyup(function(){
         switch (tableState) {
@@ -1084,13 +1124,13 @@
         }
       });
 
-      function GetSteamProfile (steam64){
+      function GetSteamProfile (){
 
         if (steamRequest != null && steamRequest.readyState < 4) {
-          steamRequest.abort();  //abort ajax request if another one is needed
+          steamRequest.abort();  //this abort was usefull in previous version, now it's just over prevention.
         }
 
-        steamRequest = $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + steam64, dataType: 'json', success: function(result){
+        steamRequest = $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + currentSteamID, dataType: 'json', success: function(result){
           //Avatar
           $("#playerAvatar").html('<a href="' + result.response.players[0].profileurl + '" target="blank"><img src="' + result.response.players[0].avatarfull + '" class="img-responsive"></img></a>');
 
@@ -1100,6 +1140,16 @@
             countryFlag = '<img class="countryFlag" title="' + result.response.players[0].loccountrycode + '" src="https://www.countryflags.io/' + result.response.players[0].loccountrycode + '/flat/64.png">'
           }
           $("#playerName").append(countryFlag);
+
+          if (storedSteamData!=null) {
+            if (result.response.players[0].steamid == storedSteamData.response.players[0].steamid) {
+              //This way we keep the login data up to date (user avatar)
+              if (result.response.players[0].avatar != storedSteamData.response.players[0].avatar) {
+                $("#userLogin").html('<a><img class="rounded-circle" src="' + result.response.players[0].avatar + '"></a>');
+              }
+              localStorage.setItem('steamProfileData', JSON.stringify(result));
+            }
+          }
         }});
       }
 
@@ -1247,6 +1297,10 @@
 
       function GetJumpstatsData () {
 
+        if (currentSteamID == "" || currentSteamID == null) {
+          return;
+        }
+
         jt.clear();
         jt.draw();
 
@@ -1255,8 +1309,8 @@
         }
 
         let isCrouchBind = $("#crouchbindCheck").is(":checked") && currentJumptype!="Ladderjump" ? "true" : "false";
-
-        jumpstatsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/jumpstats?steam_id=" + currentSteamID + "&jumptype=" + currentJumptype + "&is_crouch_bind=" + isCrouchBind + "&limit=50", dataType: 'json', success: function(result){
+        //the jumpstats endpoint "steamid64" parameter is broken! MUST use steam_id (32bits) at least for now...
+        jumpstatsRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/jumpstats?steam_id=" + GetSteam32(currentSteamID) + "&jumptype=" + currentJumptype + "&is_crouch_bind=" + isCrouchBind + "&is_crouch_boost=" + isCrouchBind + "&limit=50", dataType: 'json', success: function(result){
           
           if (result.length>0) {
 
@@ -1297,9 +1351,9 @@
 
         if (currentSteamID !=null) {
           if (tableState == 2 && currentJumptype != null) {
-            sharableURL += "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType + "&jumpstat=" + currentJumptype.toLowerCase();
+            sharableURL += "?steamid=" + GetSteam32(currentSteamID) + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType + "&jumpstat=" + currentJumptype.toLowerCase();
           } else {
-            sharableURL += "?steamid=" + currentSteamID + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType;
+            sharableURL += "?steamid=" + GetSteam32(currentSteamID) + "&mode=" + gameModeSelector.groupVal() + "&run=" + urlRunType;
           }
           
           const copyText = document.createElement('textarea');
@@ -1316,18 +1370,9 @@
           }, 2000);
 
         } else {
-          alert("Please input a SteamID first.")
+          alert("Please input a SteamID first.");
         }
       });
-
-      function isValidSteamID(steamID) {
-        return /^STEAM_[0-5]:[01]:\d+$/.test(steamID);
-      }
-
-      //CS:GO uses STEAM_1, but a lot of steamid finder websites return STEAM_0, so change it to one when saving to localstorage for better compatibility
-      function fixSteamID(steamID) {
-        return "STEAM_1" + steamID.substring(7);
-      }
 
       var $cards = $(".holoSticker");
       var $style = $(".holoHover");
@@ -1347,158 +1392,6 @@
       }).on("mouseout", function() {
         $cards.removeClass("active");
       });
-
-      function JumpstatColor (units) {
-        switch (currentJumptype) {
-          case "Longjump" :
-            if ($("#crouchbindCheck").is(":checked")) {
-              if (units >= 287){
-                return '#d22ce5';
-              } else if (units >= 285){
-                return '#e4ae39';
-              } else if(units >= 275){
-                return '#fa292e';
-              } else if (units >= 270) {
-                return '#4abc8d';
-              } else if (units >= 265) {
-                return '#5d96d6';
-              }
-            } else {
-              if (units >= 282){
-                return '#d22ce5';
-              } else if(units >= 280){
-                return '#e4ae39';
-              } else if (units >= 275) {
-                return '#fa292e';
-              } else if (units >= 270) {
-                return '#4abc8d';
-              } else if (units >= 265) {
-                return '#5d96d6';
-              }
-            }
-            break;
-          case "Bhop" :
-            if ($("#crouchbindCheck").is(":checked")) {
-              if (units >= 344){
-                return '#d22ce5';
-              } else if (units >= 342){
-                return '#e4ae39';
-              } else if(units >= 330){
-                return '#fa292e';
-              } else if (units >= 325) {
-                return '#4abc8d';
-              } else if (units >= 320) {
-                return '#5d96d6';
-              }
-            } else {
-              if (units >= 342){
-                return '#d22ce5';
-              } else if(units >= 340){
-                return '#e4ae39';
-              } else if (units >= 330) {
-                return '#fa292e';
-              } else if (units >= 325) {
-                return '#4abc8d';
-              } else if (units >= 320) {
-                return '#5d96d6';
-              }
-            }
-            break;
-          case "MultiBhop" :
-            if ($("#crouchbindCheck").is(":checked")) {
-              if (units >= 360){
-                return '#d22ce5';
-              } else if (units >= 358){
-                return '#e4ae39';
-              } else if(units >= 350){
-                return '#fa292e';
-              } else if (units >= 345) {
-                return '#4abc8d';
-              } else if (units >= 340) {
-                return '#5d96d6';
-              }
-            } else {
-              if (units >= 357){
-                return '#d22ce5';
-              } else if(units >= 355){
-                return '#e4ae39';
-              } else if (units >= 350) {
-                return '#fa292e';
-              } else if (units >= 345) {
-                return '#4abc8d';
-              } else if (units >= 340) {
-                return '#5d96d6';
-              }
-            }
-            break;
-          case "Ladderjump" :
-            if (units >= 200){
-              return '#d22ce5';
-            } else if (units >= 193){
-              return '#e4ae39';
-            } else if(units >= 175){
-              return '#fa292e';
-            } else if (units >= 165) {
-              return '#4abc8d';
-            } else if (units >= 155) {
-              return '#5d96d6';
-            }
-            break;
-          case "Weirdjump" :
-            if ($("#crouchbindCheck").is(":checked")) {
-              if (units >= 302){
-                return '#d22ce5';
-              } else if (units >= 300){
-                return '#e4ae39';
-              } else if(units >= 290){
-                return '#fa292e';
-              } else if (units >= 285) {
-                return '#4abc8d';
-              } else if (units >= 280) {
-                return '#5d96d6';
-              }
-            } else {
-              if (units >= 300){
-                return '#d22ce5';
-              } else if(units >= 298){
-                return '#e4ae39';
-              } else if (units >= 290) {
-                return '#fa292e';
-              } else if (units >= 285) {
-                return '#4abc8d';
-              } else if (units >= 280) {
-                return '#5d96d6';
-              }
-            }
-            break;
-          case "DropBhop" : //kztimer dropbhop tiers are wrong. They are the same as in gokz, but i won't take away from the player the ownage they got in server.
-            if (units >= 342){
-              return '#d22ce5';
-            } else if (units >= 340){
-              return '#e4ae39';
-            } else if(units >= 325){
-              return '#fa292e';
-            } else if (units >= 320) {
-              return '#4abc8d';
-            } else if (units >= 315) {
-              return '#5d96d6';
-            }
-            break;
-          case "Countjump" :  //they don't exist in gokz and almost noone jumps binded
-            if (units >= 307){
-              return '#d22ce5';
-            } else if (units >= 305){
-              return '#e4ae39';
-            } else if(units >= 295){
-              return '#fa292e';
-            } else if (units >= 290) {
-              return '#4abc8d';
-            } else if (units >= 285) {
-              return '#5d96d6';
-            }
-            break;
-        }
-      }
 
     });
   </script>

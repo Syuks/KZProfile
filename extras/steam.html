@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>KZ Profile</title>
+  <!-- Icon -->
+  <link rel="icon" href="../img/Logo.png" type="image/x-icon">
+</head>
+<body style="background-color:#121212">
+
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+
+    var URLSearchParameters = new URLSearchParams(window.location.search);
+    var steamIDParameter = URLSearchParameters.get("openid.claimed_id");
+    var logoutParameter = URLSearchParameters.get("logout");
+
+    if (steamIDParameter!=null) {
+
+      var steam64 = steamIDParameter.substring(37);
+
+      var xmlhttp = new XMLHttpRequest();
+      var url = "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + steam64;
+      
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            localStorage.setItem('steamProfileData', this.responseText);
+            window.location.replace("/");
+          }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+
+      /*
+      $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + steam64, dataType: 'json', success: function(result){
+        localStorage.setItem('steamProfileData', result.response.players[0]);
+        window.location.replace("/");  
+      }});*/
+    } else {
+      window.location.replace("error.html");
+    }
+
+    if (logoutParameter == "true") {
+      localStorage.removeItem('steamProfileData');
+      window.location.replace("../recent.html");
+    }
+
+    /*
+    OpenID Request
+    `https://steamcommunity.com/openid/login?
+        openid.ns=http://specs.openid.net/auth/2.0&
+        openid.mode=checkid_setup&
+        openid.return_to=http://127.0.0.1:8887/extras/steam.html?login&
+        openid.realm=http://127.0.0.1:8887&
+        openid.ns.sreg=http://openid.net/extensions/sreg/1.1&
+        openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&
+        openid.identity=http://specs.openid.net/auth/2.0/identifier_select`
+    
+    OpenID Response
+    `https://bensmith.in/steam/?login&
+        openid.ns=http://specs.openid.net/auth/2.0&
+        openid.mode=id_res&
+        openid.op_endpoint=https://steamcommunity.com/openid/login&
+        openid.claimed_id=https://steamcommunity.com/openid/id/76561198267993933&
+        openid.identity=https://steamcommunity.com/openid/id/76561198267993933&
+        openid.return_to=https://bensmith.in/steam/?login&
+        openid.response_nonce=2020-10-03T17:59:15ZKTe3i8vKTkWLqi5kZLw%2BwHCuNx8%3D&
+        openid.assoc_handle=1234567890&
+        openid.signed=signed%2Cop_endpoint%2Cclaimed_id%2Cidentity%2Creturn_to%2Cresponse_nonce%2Cassoc_handle&
+        openid.sig=p/jhslUgpPc8C2Y1W9DcFZtXRcY%3D`
+    */
+
+  </script>
+
+</body>
+</html>

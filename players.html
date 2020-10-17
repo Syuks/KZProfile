@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>KZ Profile</title>
+  <!-- Icon -->
+  <link rel="icon" href="img/Logo.png" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="css/addons/datatables.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Start -->
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark elegant-color">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="maps.html">Maps</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recent.html">Recent
+              </a>
+						</li>
+						
+						<!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownCommunityLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Community</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownCommunityLink">
+								<a class="dropdown-item" href="leaderboard.html">Leaderboards</a>
+								<a class="dropdown-item" href="servers.html">Servers</a>
+                <a class="dropdown-item" href="players.html">Players</a>
+                <a class="dropdown-item" href="bans.html">Bans</a>
+              </div>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Extras</a>
+              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="https://forum.gokz.org/" target="_blank">Forum</a>
+                <a class="dropdown-item" href="https://syuks.github.io/DistbugCalculator/" target="_blank">Distbug Calculator</a>
+                <a class="dropdown-item" href="https://www.youtube.com/c/Syuks" target="_blank">Tutorials</a>
+              </div>
+            </li>
+
+          </ul>
+          <!-- Links -->
+
+          <form id="multiPurposeForm" class="form-inline" method="GET" autocomplete="off" style="margin-right: 20px;">
+            <div class="md-form my-0">
+              <input id="multiPurposeInput" class="form-control mr-sm-2 multi-purpose-input" type="text" placeholder="Search" aria-label="Search" minlength="3">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </div>
+          </form>
+          <div id="userLogin"></div>
+        </div>
+      </div>
+    </nav>
+    <!--/.Navbar-->
+
+    <div class="container">
+
+      <div class="row" style="margin-top:40px;margin-bottom: 20px;">
+
+        <div class="col-lg text-center">
+          
+          <h1 style="font-weight: 400;">Player search</h1>
+        
+        </div>
+        
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg text-center">
+          
+          <form id="playerNameForm" class="form-inline d-flex justify-content-center md-form form-sm mt-0" autocomplete="off" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input id="playerNameInput" class="form-control form-control ml-3 w-75" type="text" placeholder="Search" aria-label="Search" minlength="3">
+
+            <div style="margin-top: 20px;">
+              <button value="playerSearchButton" id="playerSearchButton" type="submit" style="width: 150px; margin: 10px 15px;" class="btn btn-dark rounded-pill">Search</button>
+              <button value="feelLuckyButton" id="feelLuckyButton" type="submit" style="width: 150px; margin: 10px 15px;" class="btn btn-dark rounded-pill">Feel lucky?</button>
+            </div>
+          </form>
+
+          <div id="loadingMessage" class="d-none">
+            <img src="img/kz.gif" style="height: 64px;width: 64px;">
+            <p>Please wait, this may take a while...</p>
+          </div>
+        
+        </div>
+        
+      </div>
+
+      <div class="row">
+
+        <div id="players" class="col-lg">
+        
+        </div>
+        
+      </div>
+
+    </div>
+    
+  <!-- End -->
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Datatables  -->
+  <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+  <!-- My Utility functions-->
+  <script type="text/javascript" src="js/myUtils.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+
+		var currentPlayer;
+
+    var apiRequest;
+    var steamRequest;
+    var apiData;
+    var steamData;
+
+    var luckyRequest;
+    var luckyData;
+
+
+    //LOGIN LOGIC
+    var storedSteamData = JSON.parse(localStorage.getItem('steamProfileData'));
+    if (storedSteamData!=null) {
+      $("#userLogin").html('<div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="rounded-circle" src="' + storedSteamData.response.players[0].avatar + '"></a><div class="dropdown-menu"><a class="dropdown-item waves-effect waves-light" href="extras/steam.html?logout=true">Logout</a></div></div>');
+    } else {
+      $("#userLogin").html('<a onclick="loadOpenID();"><img src="https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"></a>');
+    }
+
+    $(document).ready(function () {
+
+      //UI Elements
+      var multiPurposeInput = $("#multiPurposeInput");
+      var playerInput = $("#playerNameInput");
+          
+      $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+        
+        var maps = result;
+
+        //Autocomplete Initialization
+        multiPurposeInput.autocomplete({
+          source: maps,
+          label: "name",
+          treshold:2,
+          onSelectItem: onSelectAutocomplete
+        });
+      }});
+    
+      //Autocomplete Selection Callback
+      function onSelectAutocomplete (item, element) {
+        window.location.href = 'maps.html?map=' + item.label;
+      }
+
+      //If Enter is pressed on the multi purpose form
+      $("#multiPurposeForm").submit(function( event ) {
+        //it can be a map, a player name, a steam profile, a steam64 or a steam32
+        let searchValue = multiPurposeInput.val();
+        
+        //MAP
+        if (isValidKZMap(searchValue)) {
+          window.location.href = 'maps.html?map=' + searchValue;
+        //STEAM 32/64
+        } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
+          window.location.href = "/?steamid=" + GetSteam32(searchValue);
+        //Vanity Profiles
+        } else if (isValidVanityProfile(searchValue)) {
+          let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
+          $.ajax({
+            url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+            dataType: 'json',
+            success: function(result){
+              window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
+            },
+            error: function(){
+              alert("Either this profile is invalid or the steam proxy is down.");
+            }
+          });
+        //Legacy Profiles
+        } else if (isValidSteamProfile(searchValue)) {
+          window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
+        //If they search for anything else, search a player with that name
+        } else {
+          window.location.href = "players.html?player=" + searchValue;
+        }
+        return false;
+      });
+
+      //focus playerinput on empty key press
+      $(document).on('keypress',function() {
+        if ( $('input:focus').length == 0) {
+          playerInput.focus();
+        }
+      });
+
+      //First of all see if there are parameters in url
+			var playerParameter = new URLSearchParams(window.location.search).get("player");
+			
+			if (playerParameter!=null) {
+        if (playerParameter.length<3) {
+          alert("The searched player name must be 3 letters long minimum.")
+        } else {
+          currentPlayer = playerParameter;
+          playerInput.val(currentPlayer);
+          GetPlayers();
+        }
+      }
+      
+      //What happens when a a new player is searched
+      $("#playerNameForm").submit(function( event ) {
+        if (playerInput.val() != "") {
+          let buttonPressed = $(document.activeElement).val();
+          if (playerInput.val()!=currentPlayer) {
+            if (buttonPressed == "feelLuckyButton") {
+              currentPlayer = playerInput.val();
+              GetLuckyPlayer();
+            } else {
+              currentPlayer = playerInput.val();
+              GetPlayers();
+            }
+          } else {
+            playerInput.val("");
+            playerInput.focus();
+          }
+        }
+        return false;
+      });
+
+      //Getting the data from the API
+      function GetPlayers(){
+
+        history.replaceState({mapParams: "1"}, "", "players.html?player=" + currentPlayer);
+
+        //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        $("#players").html("");
+
+        $("#loadingMessage").removeClass("d-none");
+
+        if (apiRequest != null && apiRequest.readyState < 4) {
+          apiRequest.abort();  //abort ajax request if another one is needed
+        }
+
+        //PLAYERS DATA
+        apiRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/players?name=" + currentPlayer + "&limit=100", dataType: 'json',
+          
+          success: function(apiResult){
+          
+            apiData = apiResult;
+
+            if (apiData.length > 0) {
+              if (steamRequest != null && steamRequest.readyState < 4) {
+                steamRequest.abort();  //abort ajax request if another one is needed
+              }
+
+              steamQueryString = "https://kzprofile.kreedz.top/api/v1/steam?steamids=";
+
+              var notBanned = 0;
+              var banned = 0;
+
+              for (let i = 0; i < apiData.length; i++) {
+                if (apiData[i].is_banned == false) { //la API se rompe cuando pongo en los parametros del url is_banned=false asi que hago el checkeo aca
+                  steamQueryString += (apiData[i].steamid64 + ",");
+                  notBanned ++;
+                } else {
+                  banned ++;
+                }
+              }
+
+              if (notBanned > 0) {
+                steamRequest = $.ajax({url: steamQueryString, dataType: 'json', success: function(steamResult){
+                  steamData = steamResult;
+                  ShowPlayersData();
+                }});
+              } else if (banned > 0) {
+                alert("This player is globally banned.");
+                $("#loadingMessage").addClass("d-none");
+              } else {
+                alert("There is no information about a player with this alias.");
+                $("#loadingMessage").addClass("d-none");
+              }
+            } else {
+              alert("There is no information about a player with this alias.");
+              $("#loadingMessage").addClass("d-none");
+            }
+
+          },
+
+          error: function(){
+            alert("Something went wrong, please try again later.");
+            $("#loadingMessage").addClass("d-none");
+          }
+
+        });
+      }
+
+      function ShowPlayersData(){
+
+        $("#loadingMessage").addClass("d-none");
+
+        for (let i = 0; i < steamData.response.players.length; i++) {
+
+          let steam32 = GetSteam32(steamData.response.players[i].steamid);
+          let avatar = steamData.response.players[i].avatarmedium;
+          let alias = steamData.response.players[i].personaname;
+          let realName = steamData.response.players[i].realname != null ? steamData.response.players[i].realname : "";
+          let profileURL = steamData.response.players[i].profileurl;
+          let flag = steamData.response.players[i].loccountrycode != null ? ("https://www.countryflags.io/" + steamData.response.players[i].loccountrycode + "/flat/64.png") : "img/NoFlag.png";
+
+          $("#players").append(`
+            <div class="card text-white bg-dark animated fadeInDown waves-effect waves-light" style="margin-bottom: 20px;animation-delay: ` + i/5 + `s;">
+              <div class="card-body">
+                <a href="/?steamid=` + steam32 + `" class="stretched-link"></a>
+                <div class="row">
+                  <div class="col-lg">
+                    <div class="row">
+                      <div class="col-auto">
+                        <a href="/?steamid=` + steam32 + `" style="z-index: 1;position: relative;">
+                          <img class="img-fluid rounded-circle" src="` + avatar + `">
+                        </a>
+                      </div>
+                      <div class="col-auto">
+                        <h5 class="card-title">
+                          <a href="/?steamid=` + steam32 +`" style="z-index: 1;position: relative;">` + alias + `</a>
+                        </h5>
+                        <p class="card-text">` + realName + `</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg">
+                    <div class="row">
+                      <div class="col-lg-10 text-truncate" style="margin:20px 0px;">
+                        <a href="` + profileURL + `" style="z-index: 1;position: relative;">` + profileURL + `</a>
+                      </div>
+                      <div class="col-sm-2 text-center">
+                        <img title="` + steamData.response.players[i].loccountrycode + `" src="` + flag + `">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `);
+        }
+      }
+
+      function GetLuckyPlayer() {
+
+        //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        $("#players").html("");
+
+        $("#loadingMessage").removeClass("d-none");
+
+        if (luckyRequest != null && luckyRequest.readyState < 4) {
+          luckyRequest.abort();  //abort ajax request if another one is needed
+        }
+
+        //PLAYERS DATA
+        luckyRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/records/top?tickrate=128&stage=0&player_name=" + currentPlayer + "&limit=1", dataType: 'json',
+          
+          success: function(luckyResult){
+          
+            luckyData = luckyResult;
+
+            if (luckyData.length > 0) {
+              window.location.href = "/?steamid=" + luckyData[0].steam_id;
+            } else {
+              alert("There is no information about a player with this alias.");
+              $("#loadingMessage").addClass("d-none");
+            }
+
+          },
+
+          error: function(){
+            alert("Something went wrong, please try again later.");
+            $("#loadingMessage").addClass("d-none");
+          }
+
+        });
+
+      }
+
+    });
+  </script>
+
+</body>
+</html>
