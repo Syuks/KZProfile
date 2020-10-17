@@ -361,12 +361,12 @@
         $("input[type='radio'][name=run_type][value=true]").prop('checked', true);
       } else if (runTypeParameter == "pro") {
         $("input[type='radio'][name=run_type][value=false]").prop('checked', true);
-      } else {
+      }/* else {
         //If there is no runtype in the url, get stored runtype if there is one
         if (storedRunType!=null){
           $("input[type='radio'][name=run_type][value=" + storedRunType + "]").prop('checked', true);
         }
-      }
+      }*/
 
       GetWRsData();
 
