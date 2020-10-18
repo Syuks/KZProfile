@@ -221,44 +221,12 @@
           </div>
           <div id="mapImageModalContent" class="modal-body text-center">
             <div id="mapImageCarousel" class="carousel slide" data-interval="false">
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div id="mapImageVideo" class="embed-responsive embed-responsive-16by9">
-                    
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="embed-responsive embed-responsive-16by9">
-                    <div id="mapImageFullRes" class="embed-responsive-item">
-
-                    </div>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="embed-responsive embed-responsive-16by9">
-                    <div class="embed-responsive-item workshop-container">
-                      <h1>
-                        <a id="WorkshopLink" href="" target="_blank">
-                          <i class="fab fa-steam"></i>
-                        </a>
-                        <span id="WorkshopID" style="margin-left: 20px;"></span>
-                      </h1>
-                    </div>
-                  </div>
-                </div>
+              <div id="carouselInner" class="carousel-inner">
+                
               </div>
               <!--/.Controls-->
-              <ol class="carousel-indicators">
-                <li data-target="#mapImageCarousel" data-slide-to="0" class="active">
-                  <img id="mapImageVideoThumb" src="" width="100" height="56">
-                  <div class="videoThumbOverlay"></div>
-                </li>
-                <li data-target="#mapImageCarousel" data-slide-to="1">
-                  <img id="mapImageFullResThumb" src="" width="100" height="56" onerror='this.src="img/kz.png"'>
-                </li>
-                <li data-target="#mapImageCarousel" data-slide-to="2">
-                  <img src="img/WorkshopThumb.png" width="100" height="56">
-                </li>
+              <ol id="carouselIndicators" class="carousel-indicators" style="overflow: auto;">
+                
               </ol>
             </div>
           </div>
@@ -358,6 +326,8 @@
       var runTypeSelector = $("input[type='radio'][name='run_type']");
       var bonusActivator = $("#bonus-activator");
       var bonusDropdown = $("#bonus-dropdown");
+      var carouselInner = $("#carouselInner"); //to append videos, image and workshop in modal
+      var carouselIndicators = $("#carouselIndicators"); //to append thumbnails in modal
 
       //Datatable Initialization
       var t = $('#MapRanking').DataTable({        
@@ -726,12 +696,8 @@
           $("#mapTier").html("");
           bonusActivator.addClass("d-none");
 
-          $("#mapImageVideo").html('');
-          $("#mapImageVideoThumb").attr('src', '');
-          $("#mapImageFullRes").html('')
-          $("#mapImageFullResThumb").attr('src', '');
-          $("#WorkshopLink").attr('href', '');
-          $("#WorkshopID").html('');
+          carouselInner.html("");
+          carouselIndicators.html("");
           emptyModal = true;
         }
 
@@ -1069,50 +1035,105 @@
 
           let imageMapName = event.target.id;
           $("#mapImageModalTitle").html(imageMapName);
-
-          //IMAGE
-          $("#mapImageFullRes").html('<img class="img-fluid" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/images/' + imageMapName + `.jpg" onerror='this.src="img/kz.png"'>`)
-          $("#mapImageFullResThumb").attr('src', 'https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/' + imageMapName + '.webp');
-
-          //WORKSHOP
-          let workshopURL;
-          if (currentMapData!=null) { //si es global...
-            workshopURL = currentMapData.workshop_url;
-            if (workshopURL != "") {
-              $("#WorkshopLink").attr('href', workshopURL);
-              $("#WorkshopID").html(workshopURL.substring(55));
-            } else {
-              $("#WorkshopLink").attr('href', '');
-              $("#WorkshopID").html('The url is missing from the api. Please report this issue.');
-            }
-          } else {
-            $("#WorkshopLink").attr('href', '');
-            $("#WorkshopID").html('This map is not global.');
-          }
-
-          //VIDEO
-          let videoURL;
-          let videoThumb;
+          var carouselItems = 0;
 
           $.getJSON( "js/videos.json", function( data ) {
 
+            var videoURLs;
+
+            //VIDEO
             if (data[imageMapName] != null) {
-              videoURL = data[imageMapName];
-              videoThumb = "https://img.youtube.com/vi/" + videoURL.substring(26, 37) + "/0.jpg";
-              $("#mapImageVideo").html('<iframe class="embed-responsive-item" src="' + videoURL + '"></iframe>');
-              $("#mapImageVideoThumb").attr('src', videoThumb);
-              $("#mapImageCarousel").carousel(0);
+
+              videoURLs = data[imageMapName];
+
+              for (let i = 0; i < videoURLs.length; i++) {
+                let videoThumb = "https://img.youtube.com/vi/" + videoURLs[i].substring(30, 41) + "/0.jpg";
+
+                carouselInner.append(`<div class="carousel-item">
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                          <iframe class="embed-responsive-item" src="` + videoURLs[i] + `"></iframe>
+                                        </div>
+                                      </div>`);
+                
+                carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `">
+                                              <img src="` + videoThumb + `" width="100" height="56">
+                                              <div class="videoThumbOverlay"></div>
+                                            </li>`);
+
+                carouselItems++;
+              }
+              
             } else {
-              $("#mapImageVideo").html(`<div class="embed-responsive-item d-flex align-items-center justify-content-center">
+              carouselInner.append(`<div class="carousel-item">
+                                      <div class="embed-responsive embed-responsive-16by9">
+                                        <div class="embed-responsive-item d-flex align-items-center justify-content-center">
                                           <div>
                                             <h1>KZ Profile</h1>
                                             <p>There is currently no youtube video for this map.</p>
                                             <p>If you have one, you can contribute to the site by submitting the link <a href="https://forms.gle/FMgWkKjBc53HDpkf8" target="_blank"><u>here</u></a>.</p>
                                             <p><img src="img/YTError.png"></p>
                                           </div>
-                                        </div>`);
-              $("#mapImageVideoThumb").attr('src', 'img/kz.png');
-              //if there is no video, just show the image
+                                        </div>
+                                      </div>
+                                    </div>`);
+              
+              carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `">
+                                            <img src="img/kz.png" width="100" height="56">
+                                            <div class="videoThumbOverlay"></div>
+                                          </li>`);
+              carouselItems++;
+            }
+
+            //IMAGE
+            carouselInner.append(`<div class="carousel-item active">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                      <div class="embed-responsive-item">
+                                        <img class="img-fluid" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/images/` + imageMapName + `.jpg" onerror='this.src="img/kz.png"'>
+                                      </div>
+                                    </div>
+                                  </div>`);
+            
+            carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `" class="active">
+                                          <img src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + imageMapName + `.webp" width="100" height="56" onerror='this.src="img/kz.png"'>
+                                        </li>`);
+            carouselItems++;
+
+            //WORKSHOP
+            let workshopURL;
+            carouselInner.append(`<div class="carousel-item">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                      <div class="embed-responsive-item workshop-container">
+                                        <h1>
+                                          <a id="WorkshopLink" href="" target="_blank">
+                                            <i class="fab fa-steam"></i>
+                                          </a>
+                                          <span id="WorkshopID" style="margin-left: 20px;"></span>
+                                        </h1>
+                                      </div>
+                                    </div>
+                                  </div>`);
+
+            carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `">
+                                          <img src="img/WorkshopThumb.png" width="100" height="56">
+                                        </li>`);
+
+            if (currentMapData!=null) { //si es global...
+              workshopURL = currentMapData.workshop_url;
+              if (workshopURL != "") {
+                $("#WorkshopLink").attr('href', workshopURL);
+                $("#WorkshopID").html(workshopURL.substring(55));
+              } else {
+                $("#WorkshopLink").attr('href', '');
+                $("#WorkshopID").html('The url is missing from the api. Please report this issue.');
+              }
+            } else {
+              $("#WorkshopLink").attr('href', '');
+              $("#WorkshopID").html('This map is not global.');
+            }
+
+            if (videoURLs != null) {
+              $("#mapImageCarousel").carousel(0);
+            } else {
               $("#mapImageCarousel").carousel(1);
             }
 

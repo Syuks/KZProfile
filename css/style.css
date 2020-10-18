@@ -460,6 +460,9 @@ animation: rainbow 5s ease infinite;
     height: 56px;
     margin-top: 1rem;
     margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: flex-start;
 }
 
 #mapImageCarousel .carousel-indicators>li {
