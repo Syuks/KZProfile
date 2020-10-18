@@ -528,6 +528,7 @@
       $(document).on('keypress',function() {
         if ( $('input:focus').length == 0) {
           multiPurposeInput.focus();
+          multiPurposeInput.select(); //asi borramos todo lo que tenga el input
         }
       });
 
@@ -559,6 +560,7 @@
         currentMap = item.label;
         firstfetch = true;
         mapStage = 0;
+        multiPurposeInput.blur(); //para hacer defocus en el input asi no sigue apareciendo el dropdown
         GetMapData();
       }
 
