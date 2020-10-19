@@ -471,6 +471,8 @@
 
     var mapsByTier = [0,0,0,0,0,0,0];
     var completedMapsByTier = [0,0,0,0,0,0,0];
+    var completedMapsTotal = 0;
+    var mapsTotal = 0;
 
     //This enum defines the order the Tier Column sorts
     $.fn.dataTable.enum( [ 'Very Easy', 'Easy', 'Medium', 'Hard', 'Very Hard', 'Extreme', 'Death' ] );
@@ -935,8 +937,9 @@
         let player_800s = 0;
 
         mapsByTier = [0,0,0,0,0,0,0];
-
+        mapsTotal = 0;
         completedMapsByTier = [0,0,0,0,0,0,0];
+        completedMapsTotal = 0;
 
         for (let i = 0; i < achievements.length; i++) {
           achievements[i].count = 0;
@@ -1067,8 +1070,11 @@
           document.title = arr[0].player_name;
         }
 
+        completedMapsTotal = completedMapsByTier.reduce((a, b) => a + b, 0);
+        mapsTotal = mapsByTier.reduce((a, b) => a + b, 0);
+
         //Points
-        $("#playerPoints").html(player_points.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + " (" + (player_points/arr.length).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ")");
+        $("#playerPoints").html(player_points.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + " (" + (player_points/completedMapsTotal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ")");
         
         //Rank
         //The rank is bassically dependant on avg points, but if you have less than 50k points, your rank will be decreased by an ease cubic function
@@ -1077,7 +1083,7 @@
         if (easeOutCubic > 1) {
           easeOutCubic = 1;
         }
-        ranking_placement = Math.floor(((player_points/arr.length) * easeOutCubic) * 0.02);
+        ranking_placement = Math.floor(((player_points/completedMapsTotal) * easeOutCubic) * 0.02);
         $("#playerRank").html('<span class="' + RANKING[ranking_placement] + '">' + RANKING[ranking_placement] + '</span>');
 
         //Medals
@@ -1155,9 +1161,6 @@
       }
 
       function UpdateCharts() {
-        
-        let mapsTotal = mapsByTier.reduce((a, b) => a + b, 0);
-        let completedMapsTotal = completedMapsByTier.reduce((a, b) => a + b, 0);
 
         myRadarChart.data.datasets[0].data = []; //primero vaciamos la data del chart
 
@@ -1201,8 +1204,6 @@
         //Hidden Stickers
 
         //100% Completion
-        let completedMapsTotal = completedMapsByTier.reduce((a, b) => a + b, 0);
-        let mapsTotal = mapsByTier.reduce((a, b) => a + b, 0);
         if (completedMapsTotal/mapsTotal == 1) {
           hiddenStickersContainer.append('<a data-toggle="modal" data-target="#singleBadgeModal"><img src="img/Stickers/80/Tyranids-Hive-Tyrant.png" id="100%" title="Tyranids Hive Tyrant"></a>');
           achievements[29].count = 1;
