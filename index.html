@@ -852,6 +852,7 @@
 
       //Autocomplete Selection Callback
       function onSelectAutocomplete (item, element) {
+        multiPurposeInput.blur(); //para hacer defocus en el input asi no sigue apareciendo el dropdown
         window.location.href = 'maps.html?map=' + item.label;
       }
 
