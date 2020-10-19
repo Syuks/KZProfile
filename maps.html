@@ -1051,13 +1051,15 @@
               for (let i = 0; i < videoURLs.length; i++) {
                 let videoThumb = "https://img.youtube.com/vi/" + videoURLs[i].substring(30, 41) + "/0.jpg";
 
-                carouselInner.append(`<div class="carousel-item">
+                let activeCarousel = i == 0 ? "active" : "";
+
+                carouselInner.append(`<div class="carousel-item ` + activeCarousel + `">
                                         <div class="embed-responsive embed-responsive-16by9">
                                           <iframe class="embed-responsive-item" src="` + videoURLs[i] + `"></iframe>
                                         </div>
                                       </div>`);
                 
-                carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `">
+                carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `" class="` + activeCarousel + `">
                                               <img src="` + videoThumb + `" width="100" height="56">
                                               <div class="videoThumbOverlay"></div>
                                             </li>`);
@@ -1066,7 +1068,7 @@
               }
               
             } else {
-              carouselInner.append(`<div class="carousel-item">
+              carouselInner.append(`<div class="carousel-item active">
                                       <div class="embed-responsive embed-responsive-16by9">
                                         <div class="embed-responsive-item d-flex align-items-center justify-content-center">
                                           <div>
@@ -1079,7 +1081,7 @@
                                       </div>
                                     </div>`);
               
-              carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `">
+              carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `" class="active">
                                             <img src="img/kz.png" width="100" height="56">
                                             <div class="videoThumbOverlay"></div>
                                           </li>`);
@@ -1087,7 +1089,7 @@
             }
 
             //IMAGE
-            carouselInner.append(`<div class="carousel-item active">
+            carouselInner.append(`<div class="carousel-item">
                                     <div class="embed-responsive embed-responsive-16by9">
                                       <div class="embed-responsive-item">
                                         <img class="img-fluid" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/images/` + imageMapName + `.jpg" onerror='this.src="img/kz.png"'>
@@ -1095,7 +1097,7 @@
                                     </div>
                                   </div>`);
             
-            carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `" class="active">
+            carouselIndicators.append( `<li data-target="#mapImageCarousel" data-slide-to="` + carouselItems + `">
                                           <img src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + imageMapName + `.webp" width="100" height="56" onerror='this.src="img/kz.png"'>
                                         </li>`);
             carouselItems++;
