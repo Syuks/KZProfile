@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="../css/mdb.min.css">
   <!-- Custom styles -->
   <link rel="stylesheet" href="../css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="../css/addons/datatables.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -48,10 +50,10 @@
               <a class="nav-link dropdown-toggle" id="navbarDropdownCommunityLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Community</a>
               <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownCommunityLink">
-								<a class="dropdown-item" href="leaderboard.html">Leaderboards</a>
-								<a class="dropdown-item" href="servers.html">Servers</a>
-                <a class="dropdown-item" href="players.html">Players</a>
-                <a class="dropdown-item" href="bans.html">Bans</a>
+								<a class="dropdown-item" href="../leaderboard.html">Leaderboards</a>
+								<a class="dropdown-item" href="../servers.html">Servers</a>
+                <a class="dropdown-item" href="../players.html">Players</a>
+                <a class="dropdown-item" href="../bans.html">Bans</a>
               </div>
             </li>
 
@@ -88,20 +90,52 @@
                 <p>Submit your video <a href="https://forms.gle/FMgWkKjBc53HDpkf8" target="_blank"><u>here</u></a>.</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col d-flex align-items-center justify-content-center">
-                <table class="table table-borderless table-hover table-dark table-top">
-                    <thead>
-                      <tr>
-                        <th style="border-top-left-radius: 10px;" scope="col">Map</th>
-                        <th style="border-top-right-radius: 10px;" scope="col">Workshop</th>
-                      </tr>
-                    </thead>
-                    <tbody id="videosList">
-                      
-                    </tbody>
-                </table>
+
+        <div class="row z-depth-1-half" style="margin-top: 24px;">
+          <div class="col">
+  
+            <!-- TABLE HEADER -->
+            <div class="row table-top">
+              <!-- 1. Refresh Button -->
+              <div class="col d-flex align-items-center" id="refreshColumn">
+                <a id="refreshButton">
+                  <i class="fas fa-redo-alt"></i>
+                </a>
+                <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
+                  <i class="fas fa-share-alt"></i>
+                </a>
+              </div>
+              <!-- 2. Table state changer -->
+              <div class="col d-flex align-items-center justify-content-center">
+                <div class="text-center" id="table-state-title" style="min-width: 150px;">
+                  No videos
+                </div>
+              </div>
+              <!-- 3. Search form -->
+              <div class="col d-flex flex-row-reverse align-items-center">
+                <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
+                  <input id="noVideoMapsSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </form>
+              </div>
             </div>
+  
+            <!-- TABLES -->
+            <div class="row">
+              <!-- NO VIDEO MAPS TABLE -->
+              <div class="table-responsive">
+                <table id="NoVideoMaps" class="table-sm table-borderless table-hover table-dark text-center text-nowrap" style="min-width: 100%;">
+                  <thead class="z-depth-1">
+                    <tr>
+                      <th class="text-center th-lg">Map</th>
+                      <th class="th-lg">Tier</th>
+                      <th class="th-lg">Workshop</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
     </div>  
     
@@ -115,12 +149,29 @@
   <script type="text/javascript" src="../js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="../js/mdb.min.js"></script>
+  <!-- Datatables  -->
+  <script type="text/javascript" src="../js/addons/datatables.min.js"></script>
+  <!-- Datatables Enum Ordering  -->
+  <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/enum.js"></script>
   <!-- Autocomplete: https://github.com/Honatas/bootstrap-4-autocomplete  -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
   <!-- My Utility functions-->
   <script type="text/javascript" src="../js/myUtils.js"></script>
   <!-- Custom scripts -->
   <script type="text/javascript">
+
+    var TIER = {
+      7: "Death",
+      6: "Extreme",
+      5: "Very Hard",
+      4: "Hard",
+      3: "Medium",
+      2: "Easy",
+      1: "Very Easy",
+    }
+
+    var maps;
+    var videosRequest;
 
     //LOGIN LOGIC
     var storedSteamData = JSON.parse(localStorage.getItem('steamProfileData'));
@@ -131,34 +182,6 @@
     }
 
     var multiPurposeInput = $("#multiPurposeInput");
-    
-    $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
-
-      var maps = result;
-      
-      //Autocomplete Initialization
-      multiPurposeInput.autocomplete({
-        source: maps,
-        label: "name",
-        treshold:2,
-        onSelectItem: onSelectAutocomplete
-      });
-
-      var videosList = $("#videosList");
-
-      $.getJSON( "../js/videos.json", function( data ) {
-          let total = maps.length;
-          let noVideoTotal = 0;
-          for (let j = 0; j < maps.length; j++) {
-            if (data[maps[j].name] == null) {
-              noVideoTotal++;
-              videosList.append('<tr><td><a href="../maps.html?map=' + maps[j].name + '">' + maps[j].name + '</a></td><td><a href="' + maps[j].workshop_url + '" target="_blank">' + maps[j].workshop_url + '</a></td></tr>');
-            }
-          }
-          $("#noVideoTotals").html(noVideoTotal + "/" + total);
-      });
-
-    }});
 
     //Autocomplete Selection Callback
     function onSelectAutocomplete (item, element) {
@@ -205,6 +228,101 @@
       if ( $('input:focus').length == 0) {
         multiPurposeInput.focus();
       }
+    });
+
+    //This enum defines the order the Tier Column sorts
+    $.fn.dataTable.enum( [ 'Very Easy', 'Easy', 'Medium', 'Hard', 'Very Hard', 'Extreme', 'Death' ] );
+
+    $(document).ready(function () {
+
+      var t = $('#NoVideoMaps').DataTable({
+                  "iDisplayLength": 1000,
+                  "columnDefs": [
+                    { "orderSequence": [ "desc", "asc" ], "targets": [1] } //defines the direction the column sorts when first clicked
+                  ],
+                  'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
+                    $(row).find('td:eq(1)').addClass(data[1].toUpperCase().replace(/ /g, "-"));
+                  },
+                  "dom": 'rt' //con esto elijo que partes de la datatable aparezcan: default: 'lfrtip' (length slector, filter input, ¿procesing element?, table, information, pagination)
+                });
+      $('.dataTables_length').addClass('bs-select');
+
+      $.ajax({url: "https://kztimerglobal.com/api/v2.0/maps?is_validated=true&limit=1000", dataType: 'json', success: function(result){
+
+        maps = result;
+
+        GetData();
+
+        //Autocomplete Initialization
+        multiPurposeInput.autocomplete({
+          source: maps,
+          label: "name",
+          treshold:2,
+          onSelectItem: onSelectAutocomplete
+        });
+      }});
+
+      //What happens when i click the Refresh Button on the table
+      $("#refreshButton").click(function() {
+        GetData();
+      });
+
+      function GetData () {
+
+        t.clear();
+        t.draw();
+
+        if (videosRequest != null && videosRequest.readyState < 4) {
+          videosRequest.abort();  //abort ajax request if another one was requested
+        }
+
+        videosRequest = $.getJSON( "../js/videos.json", function( data ) {
+          
+          let total = maps.length;
+          let noVideoTotal = 0;
+          for (let j = 0; j < maps.length; j++) {
+            if (data[maps[j].name] == null) {
+              noVideoTotal++;
+              t.row.add( [
+                '<a href="../maps.html?map=' + maps[j].name + '">' + maps[j].name + '</a>',
+                TIER[maps[j].difficulty],
+                '<a href="' + maps[j].workshop_url + '" target="_blank">' + maps[j].workshop_url + '</a>'
+              ]);
+            }
+          }
+          t.draw();
+          $("#noVideoTotals").html(noVideoTotal + "/" + total);
+        });
+
+          
+      }
+
+      //sinconizar la search box con la tabla
+      $('#noVideoMapsSearch').keyup(function(){
+        t.search($(this).val()).draw();
+      });
+
+      //Tooltip initialization
+      $('[data-toggle="tooltip"]').tooltip();
+      //Copy to clipboard Functionality
+      $('[data-toggle="tooltip"]').click(function(){
+
+        let sharableURL = window.location.host + window.location.pathname;
+        
+        const copyText = document.createElement('textarea');
+        copyText.value = sharableURL;
+        document.body.appendChild(copyText);
+        copyText.select();
+        document.execCommand('copy');
+        document.body.removeChild(copyText);
+
+        var shareTooltip = $(this)
+        shareTooltip.tooltip('show');
+        setTimeout(function(){
+          shareTooltip.tooltip('hide');
+        }, 2000);        
+      });
+
     });
 
   </script>
