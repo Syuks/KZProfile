@@ -152,6 +152,10 @@ thead th{
     min-width: 190px !important;
 }
 
+.map-name {
+    max-width: 190px;
+}
+
 .table-top{
     height: 50px;
     background-color: #232323;

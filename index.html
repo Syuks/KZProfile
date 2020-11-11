@@ -527,7 +527,7 @@
                   "order": [[ 1, "desc" ]],
                   "columnDefs": [
                     { "targets": 5 , className: "text-left"}, //para que los servers se justifiquen en la izquierda
-                    { "targets": 0, className: "text-wrap text-left"}, //la tabla usa text-truncate para que los servers sigan de largo, asi que le pongo wrap a los nombres para sobreescribirlo
+                    { "targets": 0, className: "text-truncate text-left map-name"}, //la tabla usa text-nowrap para que los servers sigan de largo. map-name es para determinar el max-width y que ande el truncate
                     { "orderSequence": [ "desc", "asc" ], "targets": [1,3,4] } //defines the direction the column sorts when first clicked
                   ],
                   'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
@@ -550,6 +550,7 @@
                   "iDisplayLength": 1000,
                   "order": [[ 0, "asc" ]],
                   "columnDefs": [
+                  { "targets": 0, className: "text-truncate text-left map-name"}, //la tabla usa text-nowrap para que los servers sigan de largo. map-name es para determinar el max-width y que ande el truncate
                     { "orderSequence": [ "desc", "asc" ], "targets": [1,3,4] } //defines the direction the column sorts when first clicked
                   ],
                   'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
