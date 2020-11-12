@@ -124,12 +124,12 @@
       </div>
       <!--Mode Chooser-->
 
-      <div class="alert alert-warning alert-dismissible fade show d-none" role="alert" style="margin-top: 20px;">
+      <!--div class="alert alert-warning alert-dismissible fade show d-none" role="alert" style="margin-top: 20px;">
         <strong>You are not signed in.</strong> To see your KZ profile please first <strong><a onclick="loadOpenID();">sign in</a></strong> to your Steam account. You can still use all the rest of the features in the site.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+      </div-->
 
       <!--Profile Portfolio-->
       <div class="row" style="margin-top: 20px;">
@@ -668,9 +668,9 @@
           GetPlayerData();
       } else {
         //mostrar un indicador para que inicie sesion
-        $('.alert').removeClass("d-none");
-        $('.alert').alert();
-        //window.location.replace("recent.html");
+        //$('.alert').removeClass("d-none");
+        //$('.alert').alert();
+        window.location.replace("recent.html");
       }
 
       //JUMPSTAT PARAMETER
@@ -1072,6 +1072,7 @@
         }
 
         completedMapsTotal = completedMapsByTier.reduce((a, b) => a + b, 0);
+        completedMapsTotal = completedMapsTotal == 0 ? 1 : completedMapsTotal;
         mapsTotal = mapsByTier.reduce((a, b) => a + b, 0);
 
         //Points
