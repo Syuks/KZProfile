@@ -406,7 +406,7 @@ animation: rainbow 5s ease infinite;
     background-position: 0% 0%;
     background-repeat: no-repeat;
     background-size: 300% 300%;
-    mix-blend-mode: color-dodge;
+    /*mix-blend-mode: color-dodge;*/
     opacity: 0.2;
     z-index: 1;
     animation: holoGradient 15s ease infinite;
