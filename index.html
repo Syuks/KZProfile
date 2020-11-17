@@ -487,6 +487,7 @@
     var mapsRequest;
     var steamRequest;
     var jumpstatsRequest;
+    var serverRequest;
 
     //usamos este bool para evitar problemas al cambiar el mode o run apenas carga la página
     var firstfetch = true;
@@ -1045,7 +1046,7 @@
                 new Date(arr[i].time * 1000).toISOString().substr(11, 11),
                 TIER[maps[j].difficulty],
                 arr[i].updated_on.substr(0,10) + '<span style="font-size:0px;">-' + arr[i].updated_on.substr(11,8) + '</span>', //This is the greatest fix of all time
-                arr[i].server_name
+                '<a class="server_button" name="' + arr[i].server_id + '" href="#">' + arr[i].server_name + '</a>'
               ]);
 
               break;
@@ -1291,6 +1292,19 @@
         //Footer
         $("#doubleBadgeFooter").html(selectedAchievement.achievement[selectedAchievement.count]);
 
+      });
+
+      //What happens when the server name is clicked
+      $(document).on('click','.server_button',function(e) {
+        let serverID = this.name;
+
+        if (serverRequest != null && serverRequest.readyState < 4) {
+          serverRequest.abort();  //abort ajax request if another one is needed
+        }
+
+        serverRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/servers/" + serverID, dataType: 'json', success: function(result){
+          window.location.replace("steam://connect/" + result.ip + ":" + result.port);
+        }});
       });
 
       //What happens when a jumptype is selected

@@ -278,7 +278,7 @@
 
           for (let i = 0; i < currentServersData.length; i++) {
             t.row.add( [
-              currentServersData[i].name,
+              '<a href="steam://connect/' + currentServersData[i].ip + ':' + currentServersData[i].port + '">' + currentServersData[i].name + '</a>',
               '<a href="steam://connect/' + currentServersData[i].ip + ':' + currentServersData[i].port + '" type="button" class="btn btn-dark rounded-pill btn-sm">Connect</a>',
               currentServersData[i].ip + ":" + currentServersData[i].port,
               currentServersData[i].owner_steamid64 == 0 ? "Hidden" : '<a href="/?steamid=' + GetSteam32(currentServersData[i].owner_steamid64) + '">' + currentServersData[i].owner_steamid64 + '</a>'
