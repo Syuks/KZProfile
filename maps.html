@@ -1063,7 +1063,14 @@
               videoURLs = data[imageMapName];
 
               for (let i = 0; i < videoURLs.length; i++) {
-                let videoThumb = "https://img.youtube.com/vi/" + videoURLs[i].substring(30, 41) + "/0.jpg";
+                let youtubeCode = videoURLs[i].substring(30, 41);
+                let videoThumb;
+
+                if (youtubeCode=="videoseries") { //support for playlists
+                  videoThumb = "img/Playlist.png";
+                } else {
+                  videoThumb = "https://img.youtube.com/vi/" + youtubeCode + "/0.jpg";
+                }
 
                 let activeCarousel = i == 0 ? "active" : "";
 
