@@ -199,6 +199,7 @@
 
         //Autocomplete Initialization
         multiPurposeInput.autocomplete({
+          dropdownClass: "mapsDropdown",
           source: maps,
           label: "name",
           treshold:2,
@@ -216,32 +217,38 @@
       $("#multiPurposeForm").submit(function( event ) {
         //it can be a map, a player name, a steam profile, a steam64 or a steam32
         let searchValue = multiPurposeInput.val();
-        
-        //MAP
-        if (isValidKZMap(searchValue)) {
-          window.location.href = 'maps.html?map=' + searchValue;
-        //STEAM 32/64
-        } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
-          window.location.href = "/?steamid=" + GetSteam32(searchValue);
-        //Vanity Profiles
-        } else if (isValidVanityProfile(searchValue)) {
-          let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
-          $.ajax({
-            url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
-            dataType: 'json',
-            success: function(result){
-              window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
-            },
-            error: function(){
-              alert("Either this profile is invalid or the steam proxy is down.");
-            }
-          });
-        //Legacy Profiles
-        } else if (isValidSteamProfile(searchValue)) {
-          window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
-        //If they search for anything else, search a player with that name
+        let mapsDropdown = $('.mapsDropdown');
+
+        //The dropdown options have priority
+        if (mapsDropdown.children().length > 0) {
+          mapsDropdown.children(":first").trigger('click');
         } else {
-          window.location.href = "players.html?player=" + searchValue;
+          //MAP (non globals for example)
+          if (isValidKZMap(searchValue)) {
+            window.location.href = 'maps.html?map=' + searchValue;
+          //STEAM 32/64
+          } else if (GetSteam32(searchValue)!=null) { //this function checks both 64 and 32 bit ids, will always return the 32 if input is valid
+            window.location.href = "/?steamid=" + GetSteam32(searchValue);
+          //Vanity Profiles
+          } else if (isValidVanityProfile(searchValue)) {
+            let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
+            $.ajax({
+              url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+              dataType: 'json',
+              success: function(result){
+                window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
+              },
+              error: function(){
+                alert("Either this profile is invalid or the steam proxy is down.");
+              }
+            });
+          //Legacy Profiles
+          } else if (isValidSteamProfile(searchValue)) {
+            window.location.href = "/?steamid=" + GetSteam32(searchValue.split("/profiles/").pop().match(/\d+/)); //just get the numbers, safer (steam64)
+          //If they search for anything else, search a player with that name
+          } else {
+            window.location.href = "players.html?player=" + searchValue;
+          }
         }
         return false;
       });
