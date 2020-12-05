@@ -1154,7 +1154,9 @@
           //Flag
           let countryFlag = "";
           if (result.response.players[0].loccountrycode!=null){  //algunos jugadores no configuran u ocultan su pais
-            countryFlag = '<img class="countryFlag" title="' + result.response.players[0].loccountrycode + '" src="https://www.countryflags.io/' + result.response.players[0].loccountrycode + '/flat/64.png">'
+            //countryFlag = '<img class="countryFlag" title="' + result.response.players[0].loccountrycode + '" src="https://www.countryflags.io/' + result.response.players[0].loccountrycode + '/flat/64.png">';
+            //Countryflags.io was down, this is an alternative. Change style.css for countryFlag and players.html if goind back to countryflags.io
+            countryFlag = '<img class="countryFlag" title="' + result.response.players[0].loccountrycode + '" src="https://flagcdn.com/' + result.response.players[0].loccountrycode.toLowerCase() + '.svg" height="42" width="64">';
           }
           $("#playerName").append(countryFlag);
 
