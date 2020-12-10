@@ -344,9 +344,9 @@
           let alias = steamData.response.players[i].personaname;
           let realName = steamData.response.players[i].realname != null ? steamData.response.players[i].realname : "";
           let profileURL = steamData.response.players[i].profileurl;
-          //let flag = steamData.response.players[i].loccountrycode != null ? ("https://www.countryflags.io/" + steamData.response.players[i].loccountrycode + "/flat/64.png") : "img/NoFlag.png";
-          //Countryflags.io was down, this is an alternative, delete height and width where this flag variable is used and margins in parent to go back to countryflags.io. Also change style.css for countryFlag and index.html
-          let flag = steamData.response.players[i].loccountrycode != null ? ("https://flagcdn.com/" + steamData.response.players[i].loccountrycode.toLowerCase() + ".svg") : "img/NoFlag.png";
+          let flag = steamData.response.players[i].loccountrycode != null ? ("https://www.countryflags.io/" + steamData.response.players[i].loccountrycode + "/flat/64.png") : "img/NoFlag.png";
+          //if Countryflags.io is down, this is an alternative, add height=64 and width=42 where this flag variable is used and "mt-auto mb-auto" in parent to use this alternative. Also change style.css for countryFlag and index.html
+          //let flag = steamData.response.players[i].loccountrycode != null ? ("https://flagcdn.com/" + steamData.response.players[i].loccountrycode.toLowerCase() + ".svg") : "img/NoFlag.png";
 
           $("#players").append(`
             <div class="card text-white bg-dark animated fadeInDown waves-effect waves-light" style="margin-bottom: 20px;animation-delay: ` + i/5 + `s;">
@@ -373,8 +373,8 @@
                       <div class="col-lg-10 text-truncate" style="margin:20px 0px;">
                         <a href="` + profileURL + `" style="z-index: 1;position: relative;">` + profileURL + `</a>
                       </div>
-                      <div class="col-sm-2 text-center mt-auto mb-auto">
-                        <img title="` + steamData.response.players[i].loccountrycode + `" src="` + flag + `" weight="64" height="42">
+                      <div class="col-sm-2 text-center">
+                        <img title="` + steamData.response.players[i].loccountrycode + `" src="` + flag + `">
                       </div>
                     </div>
                   </div>
