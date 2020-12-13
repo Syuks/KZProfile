@@ -111,6 +111,12 @@
       </div>
       <!--Mode Chooser-->
 
+      <div class="row" style="margin-top: 40px;">
+        <div class="col text-center">
+          <h1 class="animated fadeInDown">Congrats <a class="GOD" href="/?steamid=STEAM_1:0:182656610&mode=kz_timer&run=pro">smieszneznaczki</a> for <span class="GOD">200</span> KZT <span class="GOD">WRs</span>!</h1>
+        </div>
+      </div>
+
       <div class="row">
 
         <div class="col-lg-6 text-center">
@@ -207,6 +213,8 @@
   <script type="text/javascript" src="js/myUtils.js"></script>
   <!-- Humanized Time Span-->
   <script type="text/javascript" src="js/HumanizedTimeSpan.js"></script>
+  <!-- Confetti-->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
   <!-- Custom scripts -->
   <script type="text/javascript">
 
@@ -556,6 +564,21 @@
       //sinconizar la search box con la tabla
       $('#finishedMapsSearch').keyup(function(){
         t.search($(this).val()).draw();
+      });
+
+      confetti({
+        origin: {
+          x: 0,
+          y: 0.5
+        },
+        angle: 45
+      });
+      confetti({
+        origin: {
+          x: 1,
+          y: 0.5
+        },
+        angle: 135
       });
       
       function GetAchievementSticker (map_id) {
