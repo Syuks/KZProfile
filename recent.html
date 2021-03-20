@@ -121,6 +121,13 @@
       <!--Mode Chooser-->
 
       <div class="row">
+        <div class="col text-center">
+          <div id="erratum-pro">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
 
         <div class="col-lg-6 text-center">
           
@@ -423,6 +430,37 @@
           let d = new Date(currentWRRecentData[runIndex].created_on);
           let time_passed = Date.parse(d) - (timezoneOffset*60*1000); //parse gives miliseconds
 
+          if (currentWRRecentData[runIndex].map_id == 546) {
+            $("#erratum-pro").append(
+            `<h1 style="font-weight: 400;margin-top: 20px;">📣 Run of the decade</h1>
+             <div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:20px;">
+              <div class="embed-responsive-item">
+                <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
+                
+                <div class="card-img-overlay">
+                  <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro" class="stretched-link"></a>
+                  <div class="row" style="height: 50%;">
+                    <div class="col-9"></div>
+                    <div class="col-3">
+                      <img src="` + GetAchievementSticker(currentWRRecentData[runIndex].map_id) + `">  
+                    </div>
+                  </div>
+                  <div class="row align-items-end" style="height: 50%;">
+                    <div class="col-3" style="margin-bottom:5px">
+                      <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=pro` + `" style="z-index: 1;position: relative;">
+                        <img class="img-fluid rounded-circle ` + proSteamid64s[i].steam64 + `" src="img/kz.gif">
+                      </a>
+                    </div>
+                    <div class="col-9" style="padding-left: 0px;">
+                      <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro">` + currentWRRecentData[runIndex].map_name + `</a></div>
+                      <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=pro` + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
+                      <div style="font-size:15px; opacity: 0.6;">` + map_time + ` • ` + humanized_time_span(new Date (time_passed)) + `</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>`);
+          }
 
           $("#pro-records").append(
             `<div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:50px;">
