@@ -370,6 +370,7 @@
         history.replaceState({mapParams: "1"}, "", "recent.html?mode=" + gameModeSelector.groupVal());
 
         //Primero que nada borramos todos los datos para mostrar que estamos buscando unos nuevos
+        $("#erratum-pro").html("");
         $("#pro-records").html("");
         $("#tp-records").html("");
         proSteamid64s = [];
@@ -400,6 +401,41 @@
 
           ShowRecentData();
 
+          //erratum pro
+          let erratum_d = new Date("2021-03-20T10:45:25");
+          let time_passed = Date.parse(erratum_d) - (timezoneOffset*60*1000); //parse gives miliseconds
+          if (gameModeSelector.groupVal() == "kz_timer"){
+            $("#erratum-pro").append(
+              `<h1 style="font-weight: 400;margin-top: 20px;">📣 Run of the decade</h1>
+              <div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:20px;">
+                <div class="embed-responsive-item">
+                  <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/kz_erratum_v2.webp" onerror="this.src='img/kz.png'">
+                  
+                  <div class="card-img-overlay">
+                    <a href="maps.html?map=kz_erratum_v2&mode=kz_timer&run=pro" class="stretched-link"></a>
+                    <div class="row" style="height: 50%;">
+                      <div class="col-9"></div>
+                      <div class="col-3">
+                        <img src="img/Stickers/80/Crown.png">  
+                      </div>
+                    </div>
+                    <div class="row align-items-end" style="height: 50%;">
+                      <div class="col-3" style="margin-bottom:5px">
+                        <a href="/?steamid=STEAM_1:0:182656610&mode=kz_timer&run=pro" style="z-index: 1;position: relative;">
+                          <img class="img-fluid rounded-circle 76561198325578948" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/88/883780de5f55c71b1d346c49c45d8c2a99d068ba_medium.jpg">
+                        </a>
+                      </div>
+                      <div class="col-9" style="padding-left: 0px;">
+                        <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=kz_erratum_v2&mode=kz_timer&run=pro">kz_erratum_v2</a></div>
+                        <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=STEAM_1:0:182656610&mode=kz_timer&run=pro` + `">smieszneznaczki</a></div>
+                        <div style="font-size:15px; opacity: 0.6;">00:35:04.58 • ` + humanized_time_span(new Date (time_passed)) + `</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>`);
+        }
+
         }});
 
         GetTOP100Data();
@@ -429,38 +465,6 @@
           //Time passed
           let d = new Date(currentWRRecentData[runIndex].created_on);
           let time_passed = Date.parse(d) - (timezoneOffset*60*1000); //parse gives miliseconds
-
-          if (currentWRRecentData[runIndex].map_id == 546) {
-            $("#erratum-pro").append(
-            `<h1 style="font-weight: 400;margin-top: 20px;">📣 Run of the decade</h1>
-             <div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:20px;">
-              <div class="embed-responsive-item">
-                <img class="card-img" src="https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/` + currentWRRecentData[runIndex].map_name + `.webp" onerror="this.src='img/kz.png'">
-                
-                <div class="card-img-overlay">
-                  <a href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro" class="stretched-link"></a>
-                  <div class="row" style="height: 50%;">
-                    <div class="col-9"></div>
-                    <div class="col-3">
-                      <img src="` + GetAchievementSticker(currentWRRecentData[runIndex].map_id) + `">  
-                    </div>
-                  </div>
-                  <div class="row align-items-end" style="height: 50%;">
-                    <div class="col-3" style="margin-bottom:5px">
-                      <a href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=pro` + `" style="z-index: 1;position: relative;">
-                        <img class="img-fluid rounded-circle ` + proSteamid64s[i].steam64 + `" src="img/kz.gif">
-                      </a>
-                    </div>
-                    <div class="col-9" style="padding-left: 0px;">
-                      <div><a style="font-size:20px;z-index: 1;position: relative;" href="maps.html?map=` + currentWRRecentData[runIndex].map_name + `&mode=` + gameModeSelector.groupVal() + `&run=pro">` + currentWRRecentData[runIndex].map_name + `</a></div>
-                      <div><a style="font-size:15px;z-index: 1;position: relative;" href="/?steamid=` + currentWRRecentData[runIndex].steam_id + `&mode=` + gameModeSelector.groupVal() + `&run=pro` + `">` + currentWRRecentData[runIndex].player_name + `</a></div>
-                      <div style="font-size:15px; opacity: 0.6;">` + map_time + ` • ` + humanized_time_span(new Date (time_passed)) + `</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>`);
-          }
 
           $("#pro-records").append(
             `<div class="card bg-dark hvr-grow-shadow text-left embed-responsive embed-responsive-16by9" style="max-height: 253px;max-width: 450px;margin-top:50px;">
