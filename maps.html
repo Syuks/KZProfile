@@ -789,7 +789,15 @@
         for (let i = 0; i < arr.length; i++) {
           
           //Transform time
-          var map_time = new Date(arr[i].time * 1000).toISOString().substr(11, 11);
+          var map_time;
+          if (arr[i].time/86400 < 1) {
+            map_time = new Date(arr[i].time * 1000).toISOString().substr(11, 11);
+          } else {
+            var days = Math.floor(arr[i].time/86400);
+            map_time = new Date(arr[i].time * 1000).toISOString();
+            var totalHours = parseFloat(map_time.substr(11, 2)) + 24 * days;
+            map_time = `${totalHours}${map_time.substr(13, 9)}`;
+          }
 
           t.row.add( [
             "",

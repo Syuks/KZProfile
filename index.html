@@ -1056,10 +1056,21 @@
                 player_points += points;
               }
 
+              //Tansform time
+              var map_time;
+              if (arr[i].time/86400 < 1) {
+                map_time = new Date(arr[i].time * 1000).toISOString().substr(11, 11);
+              } else {
+                var days = Math.floor(arr[i].time/86400);
+                map_time = new Date(arr[i].time * 1000).toISOString();
+                var totalHours = parseFloat(map_time.substr(11, 2)) + 24 * days;
+                map_time = `${totalHours}${map_time.substr(13, 9)}`;
+              }
+
               t.row.add( [
                 '<a href="maps.html?map=' + map_name + '">' + map_name + '</a>',
                 points,
-                new Date(arr[i].time * 1000).toISOString().substr(11, 11),
+                map_time,
                 TIER[maps[j].difficulty],
                 arr[i].updated_on.substr(0,10) + '<span style="font-size:0px;">-' + arr[i].updated_on.substr(11,8) + '</span>', //This is the greatest fix of all time
                 '<a class="server_button" name="' + arr[i].server_id + '" href="#">' + arr[i].server_name + '</a>'
