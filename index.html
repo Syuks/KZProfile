@@ -253,88 +253,89 @@
         </div>
       </div>
       <!--/.Profile Portfolio-->
+      <div style="min-height: 100vh">
+        <div class="row z-depth-1-half" style="margin-top: 24px;">
+          <div class="col">
 
-      <div class="row z-depth-1-half" style="margin-top: 24px;">
-        <div class="col">
-
-          <!-- TABLE HEADER -->
-          <div class="row table-top">
-            <!-- 1. Refresh Button -->
-            <div class="col d-flex align-items-center" id="refreshColumn">
-              <a id="refreshButton">
-                <i class="fas fa-redo-alt"></i>
-              </a>
-              <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
-                <i class="fas fa-share-alt"></i>
-              </a>
-            </div>
-            <!-- 2. Table state changer -->
-            <div class="col d-flex align-items-center justify-content-center">
-              <a id="table-state-left" style="z-index: 1;">
-                <i class="fas fa-angle-left"></i>
-              </a>
-              <div class="text-center" id="table-state-title" style="min-width: 150px;">
-                Finished Maps
+            <!-- TABLE HEADER -->
+            <div class="row table-top">
+              <!-- 1. Refresh Button -->
+              <div class="col d-flex align-items-center" id="refreshColumn">
+                <a id="refreshButton">
+                  <i class="fas fa-redo-alt"></i>
+                </a>
+                <a id="shareButton" style="margin-left: 15px;" data-toggle="tooltip" title="Copied to clipboard!" data-trigger="click">
+                  <i class="fas fa-share-alt"></i>
+                </a>
               </div>
-              <a id="table-state-right" style="z-index: 1;">
-                <i class="fas fa-angle-right"></i>
-              </a>
+              <!-- 2. Table state changer -->
+              <div class="col d-flex align-items-center justify-content-center">
+                <a id="table-state-left" style="z-index: 1;">
+                  <i class="fas fa-angle-left"></i>
+                </a>
+                <div class="text-center" id="table-state-title" style="min-width: 150px;">
+                  Finished Maps
+                </div>
+                <a id="table-state-right" style="z-index: 1;">
+                  <i class="fas fa-angle-right"></i>
+                </a>
+              </div>
+              <!-- 3. Search form -->
+              <div class="col d-flex flex-row-reverse align-items-center">
+                <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
+                  <input id="finishedMapsSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </form>
+              </div>
             </div>
-            <!-- 3. Search form -->
-            <div class="col d-flex flex-row-reverse align-items-center">
-              <form class="form-inline md-form form-sm mt-0 mb-0" autocomplete="off" onsubmit="return false">
-                <input id="finishedMapsSearch" class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
-                <i class="fas fa-search" aria-hidden="true"></i>
-              </form>
-            </div>
-          </div>
 
-          <!-- TABLES -->
-          <div class="row">
-            <!-- UNFINISHED MAPS TABLE -->
-            <div class="table-responsive">
-              <table id="UnfinishedMaps" class="d-none table-sm table-borderless table-hover table-dark text-center">
-                <thead class="z-depth-1">
-                  <tr>
-                    <th class="text-center th-lg">Map</th>
-                    <th class="th-lg">Points</th>
-                    <th class="th-lg">Time</th>
-                    <th class="th-lg">Tier</th>
-                    <th class="th-lg">Date</th>
-                    <th class="th-lg">Server</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            <!-- FINISHED MAPS TABLE -->
-            <div class="table-responsive">
-              <table id="FinishedMaps" class="table-sm table-borderless table-hover table-dark text-center text-nowrap">
-                <thead class="z-depth-1">
-                  <tr>
-                    <th class="text-center th-lg">Map</th>
-                    <th class="th-lg">Points</th>
-                    <th class="th-lg">Time</th>
-                    <th class="th-lg">Tier</th>
-                    <th class="th-lg">Date</th>
-                    <th class="th-lg">Server</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            <!-- JUMPSTAT TABLE -->
-            <div class="table-responsive">
-              <table id="Jumpstats" class=" d-none table-sm table-borderless table-hover table-dark text-center">
-                <thead class="z-depth-1">
-                  <tr>
-                    <th class="text-center th-lg">Type</th>
-                    <th class="th-lg">Units</th>
-                    <th class="th-lg">Strafes</th>
-                    <th class="th-lg">Crouchbind</th>
-                    <th class="th-lg">Date</th>
-                    <th class="th-lg">Server</th>
-                  </tr>
-                </thead>
-              </table>
+            <!-- TABLES -->
+            <div class="row">
+              <!-- UNFINISHED MAPS TABLE -->
+              <div class="table-responsive">
+                <table id="UnfinishedMaps" class="d-none table-sm table-borderless table-hover table-dark text-center">
+                  <thead class="z-depth-1">
+                    <tr>
+                      <th class="text-center th-lg">Map</th>
+                      <th class="th-lg">Points</th>
+                      <th class="th-lg">Time</th>
+                      <th class="th-lg">Tier</th>
+                      <th class="th-lg">Date</th>
+                      <th class="th-lg">Server</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <!-- FINISHED MAPS TABLE -->
+              <div class="table-responsive">
+                <table id="FinishedMaps" class="table-sm table-borderless table-hover table-dark text-center text-nowrap">
+                  <thead class="z-depth-1">
+                    <tr>
+                      <th class="text-center th-lg">Map</th>
+                      <th class="th-lg">Points</th>
+                      <th class="th-lg">Time</th>
+                      <th class="th-lg">Tier</th>
+                      <th class="th-lg">Date</th>
+                      <th class="th-lg">Server</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <!-- JUMPSTAT TABLE -->
+              <div class="table-responsive">
+                <table id="Jumpstats" class=" d-none table-sm table-borderless table-hover table-dark text-center">
+                  <thead class="z-depth-1">
+                    <tr>
+                      <th class="text-center th-lg">Type</th>
+                      <th class="th-lg">Units</th>
+                      <th class="th-lg">Strafes</th>
+                      <th class="th-lg">Crouchbind</th>
+                      <th class="th-lg">Date</th>
+                      <th class="th-lg">Server</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -558,10 +559,10 @@
       //Unfinished Maps Datatable Initialization
       ut = $('#UnfinishedMaps').DataTable({        
                   "iDisplayLength": 1000,
-                  "order": [[ 0, "asc" ]],
+                  "order": [[ 4, "desc" ], [3, "desc"]],
                   "columnDefs": [
-                  { "targets": 0, className: "text-truncate text-left map-name"}, //la tabla usa text-nowrap para que los servers sigan de largo. map-name es para determinar el max-width y que ande el truncate
-                    { "orderSequence": [ "desc", "asc" ], "targets": [1,3,4] } //defines the direction the column sorts when first clicked
+                    { "targets": 0, className: "text-truncate text-left map-name"}, //la tabla usa text-nowrap para que los servers sigan de largo. map-name es para determinar el max-width y que ande el truncate
+                    { "orderSequence": [ "desc", "asc" ], "targets": [3,4] }, //defines the direction the column sorts when first clicked
                   ],
                   'rowCallback': function(row, data, index){      //tengo que cambiarles el color aca porque ponerlos con span no ordena numericamente
                     $(row).find('td:eq(3)').addClass(data[3].toUpperCase().replace(/ /g, "-"));
@@ -1086,7 +1087,7 @@
               "-",
               "00:00:00.00",
               TIER[maps[j].difficulty],
-              "XXXX-XX-XX",
+              maps[j].updated_on.substr(0,10),
               "-"
             ]);
           }
