@@ -802,7 +802,7 @@
           t.row.add( [
             "",
             '<a href="/?steamid=' + arr[i].steam_id + '">' + arr[i].player_name + '</a>',
-            map_time,
+            '<span id="' + arr[i].id + '">' + map_time + '</span>',
             arr[i].points,
             arr[i].teleports,
             arr[i].updated_on.substr(0,10),

@@ -1071,7 +1071,7 @@
               t.row.add( [
                 '<a href="maps.html?map=' + map_name + '">' + map_name + '</a>',
                 points,
-                map_time,
+                '<span id="' + arr[i].id + '">' + map_time + '</span>',
                 TIER[maps[j].difficulty],
                 arr[i].updated_on.substr(0,10) + '<span style="font-size:0px;">-' + arr[i].updated_on.substr(11,8) + '</span>', //This is the greatest fix of all time
                 '<a class="server_button" name="' + arr[i].server_id + '" href="#">' + arr[i].server_name + '</a>'
