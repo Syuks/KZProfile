@@ -654,7 +654,7 @@
 
       //VANITY URL
       if (vanityParameter!=null) { //we prioritize vanity urls
-        $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityParameter, dataType: 'json',
+        $.ajax({url: "https://kzprofile-api.vercel.app/api/steam/vanity?url=" + vanityParameter, dataType: 'json',
           success: function(result){
             if (result.response.success == 1) {
               currentSteamID = result.response.steamid;
@@ -731,7 +731,7 @@
           } else if (isValidVanityProfile(searchValue)) {
             let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
             $.ajax({
-              url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+              url: "https://kzprofile-api.vercel.app/api/steam/vanity?url=" + vanityID,
               dataType: 'json',
               success: function(result){
                 window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
@@ -1168,7 +1168,7 @@
           steamRequest.abort();  //this abort was usefull in previous version, now it's just over prevention.
         }
 
-        steamRequest = $.ajax({url: "https://kzprofile.kreedz.top/api/v1/steam?steamids=" + currentSteamID, dataType: 'json', success: function(result){
+        steamRequest = $.ajax({url: "https://kzprofile-api.vercel.app/api/steam/profile?steamids=" + currentSteamID, dataType: 'json', success: function(result){
           //Avatar
           $("#playerAvatar").html('<a href="' + result.response.players[0].profileurl + '" target="blank"><img src="' + result.response.players[0].avatarfull + '" class="img-responsive"></img></a>');
 

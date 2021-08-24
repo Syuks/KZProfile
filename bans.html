@@ -281,7 +281,7 @@
           } else if (isValidVanityProfile(searchValue)) {
             let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
             $.ajax({
-              url: "https://kzprofile.kreedz.top/api/v1/steam/vanity?url=" + vanityID,
+              url: "https://kzprofile-api.vercel.app/api/steam/vanity?url=" + vanityID,
               dataType: 'json',
               success: function(result){
                 window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
