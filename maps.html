@@ -616,7 +616,7 @@
       }
 
       //MAP PARAMETER
-      if (mapNameParameter!=null && mapNameParameter!="" ){
+      if (isValidKZMap(mapNameParameter)){
         currentMap = mapNameParameter;
         firstfetch = true;
         GetMapData();

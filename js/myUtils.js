@@ -71,17 +71,17 @@ function isValidSteamId64(steamID) {
 function isValidSteamProfile(steamProfile) {
     //profiles is with steam64s
     //https://steamcommunity.com/profiles/76561199039866117/
-    return /https:\/\/steamcommunity\.com\/profiles\/[0-9]{17}(?:\/|)$/.test(steamProfile);
+    return /^https:\/\/steamcommunity\.com\/profiles\/([0-9]{17})(?:\/)?$/.test(steamProfile);
 }
 
 function isValidVanityProfile(steamProfile) {
     //id is with vanity url
     //https://steamcommunity.com/id/Syuks/
-    return /https:\/\/steamcommunity\.com\/id\/\S+$/.test(steamProfile);
+    return /^https:\/\/steamcommunity\.com\/id\/\w+$/.test(steamProfile);
 }
 
 function isValidKZMap(map) {
-    return /(?:bkz_|kzpro_|kz_|skz_|vnl_|xc_)\S+$/i.test(map);
+    return /^(?:bkz|kzpro|kz|skz|vnl|xc)_[\w!]+$/i.test(map);
 }
 
 function JumpstatColor (units) {
