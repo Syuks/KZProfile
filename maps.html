@@ -1013,7 +1013,7 @@
       function GetRecordFilters () {
         //pido todos los filtros de una y proceso despues para no sobrecargar la api con 1 consulta cada vez que apretan el dropdown y es el mismo mapa
         if (recordFiltersRequest==null){ //para pedirlo solo una vez, reseteamos a null cuando cambiamos de mapa, no de modo/run type
-          recordFiltersRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/record_filters?map_ids=" + currentMapID, dataType: 'json', success: function(result){
+          recordFiltersRequest = $.ajax({url: "https://kztimerglobal.com/api/v2.0/record_filters?map_ids=" + currentMapID + "&limit=999", dataType: 'json', success: function(result){
             ShowRecordFilters(result);
           }});
         } else {
