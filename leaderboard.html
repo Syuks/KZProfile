@@ -325,7 +325,7 @@
         } else if (isValidVanityProfile(searchValue)) {
           let vanityID = searchValue.split("/id/").pop().replace("/",""); //if there is a / at the end I don't want it, little unsafe
           $.ajax({
-            url: "https://kzprofile-api.vercel.app/api/steam/vanity?url=" + vanityID,
+            url: "https://kzprofile-api.vercel.app/api/steam/vanity?vanityKey=" + vanityID,
             dataType: 'json',
             success: function(result){
               window.location.href = "/?steamid=" + GetSteam32(result.response.steamid);
@@ -478,7 +478,7 @@
 
           }});
 
-          SteamProfilesString = "https://kzprofile-api.vercel.app/api/steam/profile?steamids=" + currentWRsData[0].steamid64 + "," + currentWRsData[1].steamid64 + "," + currentWRsData[2].steamid64;
+          SteamProfilesString = "https://kzprofile-api.vercel.app/api/steam/profiles?steamids=" + currentWRsData[0].steamid64 + "," + currentWRsData[1].steamid64 + "," + currentWRsData[2].steamid64;
 
           if (steamRequest != null && steamRequest.readyState < 4) {
             steamRequest.abort();

@@ -19,7 +19,7 @@
       var steam64 = steamIDParameter.substring(37);
 
       var xmlhttp = new XMLHttpRequest();
-      var url = "https://kzprofile-api.vercel.app/api/steam/profile?steamids=" + steam64;
+      var url = "https://kzprofile-api.vercel.app/api/steam/profiles?steamids=" + steam64;
       
       xmlhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
@@ -31,7 +31,7 @@
       xmlhttp.send();
 
       /*
-      $.ajax({url: "https://kzprofile-api.vercel.app/api/steam/profile?steamids=" + steam64, dataType: 'json', success: function(result){
+      $.ajax({url: "https://kzprofile-api.vercel.app/api/steam/profiles?steamids=" + steam64, dataType: 'json', success: function(result){
         localStorage.setItem('steamProfileData', result.response.players[0]);
         window.location.replace("/");  
       }});*/
